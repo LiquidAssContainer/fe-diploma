@@ -1,0 +1,134 @@
+.footer
+  --bg-color: #2d2b2f
+  --main-text-color: #e5e5e5
+  --header-text-color: #fff
+  --select-color: #ffa800
+
+  background-color: var(--bg-color)
+  color: var(--main-text-color)
+  white-space: pre-wrap
+
+  &_contact-info
+    display: flex
+    padding-inline: 13%
+    padding-block: 50px
+
+  &_contact-info > div
+    width: 50%
+
+  &_header
+    font-weight: 500
+    font-size: 30px
+    line-height: 35px
+    color: var(--header-text-color)
+    margin-bottom: 25px
+
+.subscription-form_text
+  margin-bottom: 15px
+
+  font-size: 24px
+  line-height: 28px
+
+  color: var(--main-text-color)
+
+.contact_item
+  display: flex
+
+  &:not(:last-child)
+    margin-bottom: 30px
+
+.contact_icon
+  height: 30px
+
+  &_wrapper
+    display: flex
+    justify-content: center
+
+    width: 30px
+    height: 30px
+    margin-right: 35px
+
+.contact_text
+  font-size: 24px
+  line-height: 28px
+
+.subscription-form_container
+  margin-bottom: 44px
+
+.subscribe-form
+  display: flex
+  gap: 32px
+  width: 100%
+
+  &_input
+    background-color: #ffffff
+    border: none
+    border-radius: 3px
+    padding: 16px 21px
+    width: 100%
+    outline: none
+
+    font-size: 24px
+
+  &_btn
+    padding-inline: 15px
+    border: 1px solid #ffffff
+    border-radius: 3px
+
+    background-color: transparent
+
+    font-size: 24px
+    text-transform: uppercase
+    color: var(--main-text-color)
+
+    cursor: pointer
+
+.social-network
+  &_list
+    display: flex
+
+  &_item
+    cursor: pointer
+
+    &:hover svg
+      fill: var(--select-color)
+
+    &:not(:last-child)
+      margin-right: 48px
+
+  &_icon
+    fill: var(--main-text-color)
+
+.footer_logo_section
+  /* border-top: 1px solid #e5e5e5; */
+  position: relative
+  padding-inline: 13%
+  padding-block: 22px 33px
+
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+  &:before
+    content: ''
+    position: absolute
+    left: 0
+    right: 0
+    top: 0
+
+    height: 1px
+    background-color: var(--main-text-color)
+
+.scroll_up_btn
+  display: flex
+  justify-content: center
+  align-items: center
+
+  width: 36px
+  height: 36px
+
+  background-color: transparent
+  border: 1px solid var(--main-text-color)
+  border-radius: 50%
+
+  cursor: pointer
