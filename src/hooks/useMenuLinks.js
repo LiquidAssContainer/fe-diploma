@@ -1,23 +1,20 @@
 export const useMenuLinks = () => {
-  // const history = useHistory()
-  // const { pathname } = useLocation()
-
   const menuLinks = [
     {
       label: 'О нас',
-      href: '/rent',
+      href: 'about',
     },
     {
       label: 'Как это работает',
-      href: '/sale',
+      href: 'features',
     },
     {
       label: 'Отзывы',
-      href: '/sale',
+      href: 'reviews',
     },
     {
       label: 'Контакты',
-      href: '/sale',
+      href: 'contacts',
     },
   ];
 

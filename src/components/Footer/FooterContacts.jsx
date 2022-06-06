@@ -13,14 +13,14 @@ export const FooterContacts = () => {
 
   return (
     <div className="contacts">
-      <h4 className="footer_header">Свяжитесь с нами</h4>
-      <ul className="contact_list">
-        {contacts.map(({ icon: IconComponent, text }) => (
-          <li className="contact_item">
-            <div className="contact_icon_wrapper">
-              <IconComponent className="contact_icon" />
+      <h4 className="footer__header header_size_s">Свяжитесь с нами</h4>
+      <ul className="contacts__list">
+        {contacts.map(({ icon: IconComponent, text }, i) => (
+          <li key={i} className="contacts__item">
+            <div className="contact__icon_wrapper">
+              <IconComponent className="contact__icon_content" />
             </div>
-            <div className="contact_text">{text}</div>
+            <div className="contact__text">{text}</div>
           </li>
         ))}
       </ul>

@@ -1,0 +1,149 @@
+@import '../../styles/variables'
+
+$color-typo-primary: $grey-light
+$color-typo-secondary: $white
+$color-bg-primary: $grey-dark-2
+$color-bg-btn-hover: $orange-pale-3
+$color-bg-btn-focus: $orange-pale-3
+
+$breakpoint-tablet: 768px
+
+@media (min-width: $breakpoint-tablet)
+
+@media (max-width: $breakpoint-tablet + 1px)
+
+.footer
+  --select-color: #ffa800
+
+  background-color: $color-bg-primary
+  color: $color-typo-primary
+  white-space: pre-wrap
+
+  &__contacts
+    display: flex
+
+    max-width: 1320px
+    margin: 0 auto
+    padding: 50px
+
+  &__contacts > div
+    width: 50%
+
+  &__header
+    color: $color-typo-secondary
+    margin-bottom: 25px
+
+.subscription__text
+  margin-bottom: 15px
+
+  font-size: 24px
+  line-height: 28px
+
+  color: $color-typo-primary
+
+.contacts__item
+  display: flex
+
+  &:not(:last-child)
+    margin-bottom: 30px
+
+.contact__icon
+  height: 30px
+
+  &_wrapper
+    display: flex
+    justify-content: center
+
+    width: 30px
+    height: 30px
+    margin-right: 35px
+
+.contact__text
+  font-size: 24px
+  line-height: 28px
+
+.subscription__form_container
+  margin-bottom: 44px
+
+.input__container
+  width: 100%
+  display: flex
+  background-color: #ffffff
+  border-radius: 3px
+  padding: 16px 21px
+
+.form__input
+  // background-color: #ffffff
+  border: none
+  // border-radius: 3px
+  // padding: 16px 21px
+  width: 100%
+  outline: none
+
+  font-size: 24px
+
+.subscription__form
+  display: flex
+  gap: 32px
+  width: 100%
+
+.form__button
+  padding-inline: 15px
+  border: 1px solid #ffffff
+  border-radius: 3px
+
+  font-size: 24px
+  text-transform: uppercase
+  color: $color-typo-primary
+
+  &:hover
+    background-color: $orange-pale-3
+    border-color: $orange-pale-3
+    color: $color-bg-primary
+
+.socials
+  &__list
+    display: flex
+
+  &__item
+    cursor: pointer
+
+    &:hover svg
+      fill: $color-bg-btn-hover
+
+    &:not(:last-child)
+      margin-right: 48px
+
+.social__icon
+  fill: $color-typo-primary
+
+.footer__logo_section
+  /* border-top: 1px solid #e5e5e5; */
+  position: relative
+  padding-inline: 13%
+  padding-block: 22px 33px
+
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+  &:before
+    content: ''
+    position: absolute
+    left: 0
+    right: 0
+    top: 0
+
+    height: 1px
+    background-color: $color-typo-primary
+
+.button_scroll-up
+  display: flex
+  justify-content: center
+  align-items: center
+
+  width: 36px
+  height: 36px
+
+  border: 1px solid $color-typo-primary
+  border-radius: 50%

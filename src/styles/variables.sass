@@ -1,0 +1,43 @@
+$white: #fff
+$grey-light: #e5e5e5
+$grey-1: #C4C4C4
+$grey-2: #928F94
+$grey-dark-1: #3E3C41
+$grey-dark-2: #2d2b2f
+$grey-dark-3: #292929
+$black: #000
+$orange: #ffa800
+$orange-pale-1: #FCDC9D
+$orange-pale-2: #FFD98F
+$orange-pale-3: #FFCA62
+$violet-light-1: #F4F3F6
+$violet-light-2: #E4E0E9
+$green-light: #B2F6A1
+
+$padding-inline-section: 50px
+$max-width-section: 1420px + $padding-inline-section * 2
+
+@mixin section-width
+  padding-inline: $padding-inline-section
+  max-width: $max-width-section
+  margin: 0 auto
+
+@mixin media($keys...)
+  @each $key in $keys
+    @if ($key == mobile)
+      @media (max-width: 480px)
+        @content
+
+    @else if ($key == tablet)
+      @media (min-width: 481px) and (max-width: 768px)
+        @content
+
+    @else if ($key == desktop)
+      @media screen and (min-width: 769px)
+        @content
+
+// $color-bg-primary: $grey-dark-2
+// $color-bg-orange: #ffa800
+// $color-bg-colored-hover: $orange-pale-3
+// $color-typo-primary: $grey-light
+// $color-typo-light-secondary: $white

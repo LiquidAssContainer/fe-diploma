@@ -1,0 +1,75 @@
+.steps__list
+  display: flex
+
+.step__item
+  position: relative
+  background: #3E3C41
+  display: flex
+  align-items: center
+  padding-block: 20px
+  padding-left: 70px
+
+  &:not(:last-child)
+    &::before, &::after
+      content: ''
+      position: absolute
+      left: calc(100% - 2px)
+      border-top: calc(95px / 2) solid transparent
+      border-bottom: calc(95px / 2) solid transparent
+
+      border-left: 40px solid
+      z-index: 1
+    &::before
+      left: calc(100% + 0px)
+      border-left-color: #fff
+    &::after
+      border-left-color: #3E3C41
+
+  &.step__item_colored
+    background-color: #FFA800
+
+    &::after
+      border-left-color: #FFA800
+
+  &:first-child, &:last-child
+    flex: 1
+
+  &:first-child
+    justify-content: flex-end
+
+.steps__item_number
+  font-weight: 700
+  font-size: 36px
+  line-height: 42px
+  text-align: center
+  text-transform: uppercase
+  color: #fff
+  border: 3px solid #FFFFFF
+  border-radius: 50%
+  width: 55px
+  height: 55px
+  display: flex
+  justify-content: center
+  align-items: center
+  margin-right: 20px
+
+.steps__item_label
+  font-weight: 700
+  font-size: 30px
+  line-height: 35px
+  color: #FFFFFF
+
+.order-page__content
+  max-width: 1360px
+  margin: 0 auto
+  padding-top: 95px
+  display: flex
+
+.order-page__aside
+  width: 360px
+
+.ticket-filter__form
+  background-color: #3E3C41
+
+.ticket-filter__form_section:not(:last-child)
+  border: 1px solid #E5E5E5
