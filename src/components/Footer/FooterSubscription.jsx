@@ -4,6 +4,7 @@ import { ReactComponent as Googleplus } from '../../assets/icons/google_plus.svg
 import { ReactComponent as Twitter } from '../../assets/icons/twitter.svg';
 import { ReactComponent as Facebook } from '../../assets/icons/facebook.svg';
 import { EmailInput } from '../Input';
+import { Button } from 'components/Button';
 
 export const FooterSubscription = () => {
   const socialNetworks = [
@@ -18,12 +19,12 @@ export const FooterSubscription = () => {
     <div className="subscription">
       <div className="subscription__form_container">
         <h4 className="footer__header header_size_s">Подписка</h4>
-        <div className="subscription__text">
-          Будьте в курсе событий
-        </div>
+        <div className="subscription__text">Будьте в курсе событий</div>
         <form className="subscription__form">
           <EmailInput className="form__input" placeholder="e-mail" />
-          <button className="form__button">Отправить</button>
+          <Button classname="footer__button" style="transparent-light" size="l">
+            Отправить
+          </Button>
         </form>
       </div>
       <div className="socials">

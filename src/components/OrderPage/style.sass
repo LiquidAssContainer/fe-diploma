@@ -1,3 +1,9 @@
+@import 'styles/variables'
+
+.order-page__hero
+  background-image: url('/assets/station_background.jpg')
+  background-size: cover
+
 .steps__list
   display: flex
 
@@ -64,12 +70,236 @@
   margin: 0 auto
   padding-top: 95px
   display: flex
+  @include section-width
 
 .order-page__aside
   width: 360px
+  margin-right: 85px
+
+.order-page__main
+  flex: 1
 
 .ticket-filter__form
+  padding-block: 15px
   background-color: #3E3C41
+  margin-bottom: 95px
 
-.ticket-filter__form_section:not(:last-child)
-  border: 1px solid #E5E5E5
+.ticket-filter__form_section
+  padding: 20px 30px
+
+  &:not(:last-child)
+    border-bottom: 1px solid #E5E5E5
+
+.ticket-filter__form_label
+  display: block
+
+.ticket-filter__form_label:not(:last-child)
+  margin-bottom: 25px
+
+.ticket-filter__form_header
+  display: flex
+  align-items: center
+
+.ticket-filter__title
+  margin-bottom: 15px
+
+.ticket-filter__arrow_wrapper
+  margin-right: 12px
+
+.ticket-filter__button_expand
+  padding: 0
+  margin-left: auto
+
+//   &::before
+//     content: ''
+//     position: absolute
+//     height: 3px
+//     background-color: red
+//     width: 100%
+//     left: 0
+//     right: 0
+
+// aside
+//   padding: 50px
+//   position: relative
+
+.last-tickets__header
+  text-transform: uppercase
+  margin-bottom: 30px
+
+.last-tickets__item
+  background: #FFFFFF
+  border: 1px solid #C4C4C4
+  box-shadow: 0px 2px 2px rgba(62, 60, 65, 0.25)
+  margin-bottom: 15px
+  padding: 20px 20px 15px
+
+.last-ticket
+  &__stations
+    display: flex
+    justify-content: space-between
+    margin-bottom: 30px
+
+    &_to
+      text-align: right
+      width: 40%
+
+  &__station
+    font-size: 16px
+    line-height: 19px
+    color: #928F94
+
+  &__city
+    font-size: 20px
+    color: #292929
+    margin-bottom: 5px
+
+  &__info
+    display: flex
+    justify-content: space-between
+
+  &__icons
+    display: flex
+
+  &__price
+    font-size: 36px
+
+    &_from
+      font-size: 16px
+      font-weight: 400
+      line-height: 19px
+      color: #928F94
+      margin-right: 5px
+
+    &_amount
+      margin-right: 5px
+      font-weight: 700
+      color: #FFA800
+
+    &_currency
+      font-weight: 400
+      color: #928F94
+
+.results
+  &__info
+    display: flex
+    justify-content: flex-end
+    align-items: baseline
+
+    margin-bottom: 45px
+
+    font-size: 18px
+
+    color: #928F94
+
+  &__amount
+    margin-right: auto
+
+  &__sort-by
+    margin-right: 50px
+
+    &_select
+      border: none
+      font-size: 18px
+      cursor: pointer
+      margin-left: 0.5em
+      -webkit-appearance: none
+      -moz-appearance: none
+      // text-indent: 1px
+      // text-overflow: ''
+
+      // ::-ms-expand
+      //   display: none
+
+.results__amount-per-page_inputs
+  display: inline
+  margin-left: 0.5em
+
+.amount-per-page__input
+  position: absolute
+  width: 0
+  height: 0
+
+  &:checked + .amount-per-page__input_span
+    color: black
+
+  &_label
+    user-select: none
+    cursor: pointer
+
+    &:not(:last-child)
+      margin-right: 0.5em
+
+.form__switch_list
+  padding-left: 35px
+
+.form__switch_item:not(:last-child)
+  margin-bottom: 35px
+
+.input_checkbox
+  opacity: 0
+  width: 100%
+  height: 100%
+  margin: 0
+  &_wrapper
+    position: relative
+    width: 72px
+    height: 19px
+    margin-left: auto
+  & + .input_checkbox_slider
+    display: flex
+    align-items: center
+    background: #fff
+    border-radius: 10px
+    @include stretch-on-parent
+    // transition-duration: .5s
+    &::before
+      content: ''
+      position: absolute
+      left: 0
+      width: 28px
+      height: 28px
+      background: #C4C4C4
+      border-radius: 50%
+  &:checked + .input_checkbox_slider
+    background: #FCDC9D
+    &::before
+      background: #FFA800
+      left: auto
+      right: 0
+
+.checkbox__label
+  display: flex
+  align-items: center
+  cursor: pointer
+
+span.checkbox__label_text
+  font-size: 18px
+    /* line-height: 21px; */
+  color: #FFFFFF
+
+.checkbox__icon_wrapper
+  display: flex
+  justify-content: center
+  align-items: center
+
+  width: 20px
+  height: 20px
+  margin-right: 35px
+
+.checkbox__icon
+  position: absolute
+
+.range-slider
+  margin-bottom: 60px
+  &__from-and-to
+    display: flex
+    justify-content: space-between
+    font-size: 18px
+    color: #FFFFFF
+    margin-block: 10px 3px
+
+.input__container_size_s
+  padding: 12px 8px
+  & .form__input
+    font-size: 18px

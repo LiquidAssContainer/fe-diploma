@@ -1,4 +1,4 @@
-import './style.sass'
+import './style.sass';
 
 import { Features } from './Features';
 import { Reviews } from './Reviews';
@@ -14,11 +14,11 @@ export const MainPage = () => {
           <div className="hero_content_text">
             Вся жизнь — <span className="text_accent">путешествие!</span>
           </div>
-          <SearchTicketsForm />
+          <SearchTicketsForm isSquare />
         </div>
       </section>
       <section className="about" id="about">
-        <h3 className="header_size_l about__header">О нас</h3>
+        <h3 className="header_size_m about__header">О нас</h3>
         <div className="about__content">
           <p>
             Мы рады видеть вас! Мы рботаем для Вас с 2003 года. 14 лет мы

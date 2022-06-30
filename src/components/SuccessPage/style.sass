@@ -1,0 +1,145 @@
+@import 'styles/variables'
+
+.success-page__container
+  // margin-bottom: 9%
+
+  // background-image: url('/assets/train_stop.jpg')
+  // background-repeat: no-repeat
+  // background-position: top right
+  // position: relative
+
+  // &::after
+
+  //   content: ''
+  //   position: absolute
+  //   background-image: url('/assets/train_stop.jpg')
+  //   height: 300px
+  //   width: 100%
+  //   background-repeat: no-repeat
+  //   background-position: top right
+
+.success-page__header
+  // padding-bottom: 9%
+  // background-image: url('/assets/train_stop.jpg')
+  // background-repeat: no-repeat
+  // background-position: top right
+  padding-bottom: 175px
+  background-image: url('/assets/train_stop.jpg')
+  background-repeat: no-repeat
+  background-size: cover
+  background-color: $orange-2
+
+.success-page__header_text
+  margin-top: 18%
+  margin-bottom: 0.5em
+  @include section-width
+
+.success-page__content
+  background: #FFFFFF
+  border: 1px solid #C4C4C4
+  box-shadow: 0px 2px 2px rgb(0 0 0 / 25%)
+  position: relative
+  top: -175px
+
+  &_section
+    @include section-width
+
+.order-header
+  display: flex
+  justify-content: space-between
+
+  padding: 60px 80px 40px
+  border-bottom: 1px solid grey
+
+  font-size: 36px
+
+  &__number,
+  &__digits
+    font-weight: 700
+    color: $grey-dark-1
+  &__sum
+    color: $grey-2
+
+.ticket-steps__list
+  display: flex
+  justify-content: center
+  gap: 40px
+
+  padding-block: 50px 40px
+
+  background-color: $violet-light-1
+
+li.ticket-steps__item
+  display: flex
+  flex-direction: column
+  align-items: center
+
+  width: 15%
+
+.ticket-step__icon
+  width: 130px
+  height: 130px
+  display: block
+
+  &_wrapper
+    margin-bottom: 25px
+    border: 12px solid #fff
+    border-radius: 50%
+  path
+    fill: $orange-2
+
+.ticket-step__text
+  text-align: center
+
+.success-page__text
+  padding: 95px 14% 130px
+
+.order-information__title
+  margin-bottom: 50px
+  text-transform: none
+
+.success-page__paragraph
+  font-size: 24px
+  line-height: 28px
+  color: #292929
+
+  &:first-of-type
+    margin-bottom: 90px
+
+footer.order-footer
+  display: flex
+  justify-content: space-between
+  padding: 50px 80px
+  background: #ffb31f
+
+.rate-service
+  display: flex
+  align-items: center
+  gap: 30px
+
+  &__label
+    font-size: 24px
+    line-height: 28px
+    color: $grey-dark-3
+  &__stars
+    display: flex
+    gap: 20px
+
+.star
+  fill: none
+  &__wrapper
+    width: 48px
+    height: 48px
+    cursor: pointer
+  path
+    stroke: white
+    stroke-width: 2px
+
+.success-page__button.success-page__button
+  // padding-inline: 0
+  width: auto
+  max-width: none
+  text-transform: uppercase
+  background-color: transparent
+  color: $grey-dark-3
+  border: 1px solid $grey-dark-3

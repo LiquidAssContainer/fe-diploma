@@ -16,7 +16,7 @@ const zahlushka = [
 export const Reviews = () => {
   return (
     <section className="reviews" id="reviews">
-      <h3 className="header_size_l">Отзывы</h3>
+      <h3 className="header_size_m">Отзывы</h3>
       <ul className="reviews__list">
         {zahlushka.map((review) => (
           <ReviewItem {...review} />

@@ -33,6 +33,11 @@ $breakpoint-tablet: 768px
     color: $color-typo-secondary
     margin-bottom: 25px
 
+  &__button.footer__button
+    width: auto
+    border-radius: 3px
+    text-transform: uppercase
+
 .subscription__text
   margin-bottom: 15px
 
@@ -87,20 +92,6 @@ $breakpoint-tablet: 768px
   gap: 32px
   width: 100%
 
-.form__button
-  padding-inline: 15px
-  border: 1px solid #ffffff
-  border-radius: 3px
-
-  font-size: 24px
-  text-transform: uppercase
-  color: $color-typo-primary
-
-  &:hover
-    background-color: $orange-pale-3
-    border-color: $orange-pale-3
-    color: $color-bg-primary
-
 .socials
   &__list
     display: flex
@@ -118,24 +109,16 @@ $breakpoint-tablet: 768px
   fill: $color-typo-primary
 
 .footer__logo_section
-  /* border-top: 1px solid #e5e5e5; */
-  position: relative
-  padding-inline: 13%
-  padding-block: 22px 33px
-
   display: flex
   justify-content: space-between
   align-items: center
 
-  &:before
-    content: ''
-    position: absolute
-    left: 0
-    right: 0
-    top: 0
+  max-width: 1400px
+  margin-inline: auto
+  padding-block: 22px 33px
 
-    height: 1px
-    background-color: $color-typo-primary
+  &_wrapper
+    border-top: 1px solid #e5e5e5
 
 .button_scroll-up
   display: flex

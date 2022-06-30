@@ -1,4 +1,5 @@
 
+import { SuccessPage } from 'components/SuccessPage';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { Footer } from './components/Footer';
@@ -14,6 +15,7 @@ export const App = () => {
         <Route path="/catalog" component={Catalog} />
         <Route path="/about" component={About} />
         <Route path="/contacts" component={Contacts} /> */}
+        <Route path="/success" component={SuccessPage} />
         <Route path="/order" component={OrderPage} />
         <Route exact path="/" component={MainPage}/>
       </Switch>

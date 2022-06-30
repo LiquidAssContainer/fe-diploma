@@ -1,0 +1,57 @@
+@import 'styles/variables'
+
+.form__button
+  width: 100%
+  max-width: 325px
+  padding-inline: 15px
+  border: 1px solid
+  border-radius: 5px
+
+  font-size: 24px
+  font-weight: 700
+  text-align: center
+  word-break: normal
+
+  cursor: pointer
+  transition-duration: 0.3s
+
+  &:disabled
+    background: $grey-2
+  &:hover
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
+  &_size
+    &_s
+      height: 40px
+
+    &_m
+      height: 52px
+
+    &_l
+      height: 60px
+
+  &_style
+    &_colored
+      color: $white
+      background-color: $orange-1
+    &_transparent-light
+      border-color: $white
+      color: $white
+      background-color: transparent
+
+      &:hover
+        border-color: $orange-pale-3
+        background-color: $orange-pale-3
+        color: $grey-dark-2
+      &:active
+        background-color: $white
+        color: #2D2B2F
+
+    &_transparent-dark
+      border: 1px solid #292929
+      color: #292929
+      &:hover
+        color: #FFA800
+      &:active
+        background: #FFA800
+        border-color: #FFA800
+        color: #2D2B2F

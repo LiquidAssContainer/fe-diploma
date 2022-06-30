@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.2.1",
     "classnames": "^2.3.1",
     "nanoid": "^3.3.4",
+    "rc-slider": "^10.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",

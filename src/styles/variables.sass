@@ -6,7 +6,8 @@ $grey-dark-1: #3E3C41
 $grey-dark-2: #2d2b2f
 $grey-dark-3: #292929
 $black: #000
-$orange: #ffa800
+$orange-1: #ffa800
+$orange-2: #FDC354
 $orange-pale-1: #FCDC9D
 $orange-pale-2: #FFD98F
 $orange-pale-3: #FFCA62
@@ -17,10 +18,17 @@ $green-light: #B2F6A1
 $padding-inline-section: 50px
 $max-width-section: 1420px + $padding-inline-section * 2
 
+@mixin stretch-on-parent
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+
 @mixin section-width
   padding-inline: $padding-inline-section
   max-width: $max-width-section
-  margin: 0 auto
+  margin-inline: auto
 
 @mixin media($keys...)
   @each $key in $keys

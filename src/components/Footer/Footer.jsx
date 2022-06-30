@@ -12,15 +12,17 @@ export const Footer = () => {
         <FooterContacts />
         <FooterSubscription />
       </div>
-      <div className="footer__logo_section">
-        <div className="logo">Лого</div>
-        <button className="button_scroll-up">
-          <UpArrowIcon />
-          {
-            //todo
-          }
-        </button>
-        <div className="footer__copyright">2018 WEB</div>
+      <div className="footer__logo_section_wrapper">
+        <div className="footer__logo_section">
+          <div className="logo">Лого</div>
+          <button className="button_scroll-up">
+            <UpArrowIcon />
+            {
+              //todo
+            }
+          </button>
+          <div className="footer__copyright">2018 WEB</div>
+        </div>
       </div>
     </footer>
   );

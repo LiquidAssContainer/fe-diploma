@@ -4,6 +4,7 @@ import { ReactComponent as GlobeIcon } from '../../assets/icons/globe.svg';
 
 import { cn } from '../../lib/bem';
 import { nanoid } from 'nanoid';
+import { Button } from 'components/Button';
 
 const features = cn('features');
 
@@ -18,8 +19,10 @@ export const Features = () => {
     <div className="features__wrapper" id="features">
       <section className="features">
         <header className="features__header">
-          <h3 className="header_size_l text_light">Как это работает</h3>
-          <a className="features__button">Узнать больше</a>
+          <h3 className="header_size_m text_light">Как это работает</h3>
+          <Button style="transparent-light" size="l">
+            Узнать больше
+          </Button>
         </header>
         <FeatureList items={items} />
       </section>

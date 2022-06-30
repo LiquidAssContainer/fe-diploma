@@ -1,5 +1,6 @@
 import { ReactComponent as LocationIcon } from '../../assets/icons/location.svg';
 import { ReactComponent as CalendarIcon } from '../../assets/icons/calendar.svg';
+import cn from 'classnames';
 
 export const EmailInput = (props) => {
   return <Input {...props} type="email" />;
@@ -29,9 +30,13 @@ export const LocationInput = (props) => {
   );
 };
 
-const Input = ({ children, ...props }) => {
+const Input = ({ children, size, ...props }) => {
   return (
-    <div className="input__container">
+    <div
+      className={cn('input__container', {
+        input__container_size_s: size === 'small',
+      })}
+    >
       <input {...props} />
       {children}
     </div>

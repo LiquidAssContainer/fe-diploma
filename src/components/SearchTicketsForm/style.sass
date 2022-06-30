@@ -1,0 +1,67 @@
+@import 'styles/variables'
+
+.tickets__form
+  background-color: rgba(41, 41, 41, 0.69)
+
+.form__square
+  max-width: 720px
+  padding: 80px 20px 50px
+
+  .tickets__form_block:not(:last-of-type)
+    margin-bottom: 60px
+
+  .tickets__form_inputs_container
+    margin-bottom: 90px
+
+.form__flex
+  max-width: 1490px
+  margin-top: 110px
+  margin-inline: auto
+  padding: 30px 45px 75px
+
+  .tickets__form_inputs_container
+    display: flex
+    gap: 35px
+
+    margin-bottom: 45px
+
+    .tickets__form_block
+      flex: 1
+
+.tickets__form_inputs_group
+  display: flex
+  align-items: center
+  gap: 40px
+
+  &.without-gap
+    gap: 0
+
+.form__button_inverse
+  // padding: 0
+  // width: 24px
+  // height: 24px
+  padding: 0 8px
+  width: 40px
+  height: 24px
+
+  svg
+    width: 24px
+    height: 24px
+
+.tickets__form_button_submit
+  display: block
+  min-width: 321px
+  border: 1px solid $orange-1
+  padding: 15px 15px
+  border-radius: 5px
+
+  margin-left: auto
+
+  background-color: $orange-1
+
+  font-weight: 700
+  font-size: 24px
+  text-align: center
+  text-transform: uppercase
+
+  color: #292929
