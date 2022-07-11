@@ -8,7 +8,10 @@ export const FooterContacts = () => {
     { icon: Phone, text: '8 (800) 000 00 00' },
     { icon: Mail, text: 'inbox@mail.ru' },
     { icon: Skype, text: 'tu.train.tickets' },
-    { icon: Location, text: 'г. Москва\nул. Московская\u00A027-35\n555 555' },
+    {
+      icon: Location,
+      text: 'г. Москва,\nул. Московская\u00A027-35,\n555\u00A0555',
+    },
   ];
 
   return (

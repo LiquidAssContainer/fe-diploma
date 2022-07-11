@@ -1,12 +1,18 @@
 @import 'https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700;900&display=swap'
 @import 'variables'
+@import 'mixins'
 
 html,
 body
   font-family: 'Roboto', sans-serif
-  background-color: $white
+  background: $white
   word-break: break-word
   height: 100%
+  font-size: 16px
+  line-height: 1.1
+  
+  @include to(tablet)
+    font-size: 14px
 
 ul
   list-style-type: none
@@ -19,7 +25,7 @@ a
   text-decoration: none
 
 button
-  background-color: transparent
+  background: transparent
   border: none
   cursor: pointer
 
@@ -31,22 +37,6 @@ button
     flex: 1 0 auto
   & > footer
     flex-shrink: 0
-
-.header_size_m
-  font-weight: 500
-  font-size: 36px
-  text-transform: uppercase
-
-  color: $grey-dark-3
-
-.header_size_s
-  font-weight: 500
-  font-size: 30px
-
-.header_size_xs
-  font-weight: 500
-  font-size: 24px
-  color: $black
 
 .uppercase
   text-transform: uppercase

@@ -2,6 +2,7 @@ import './style.sass';
 
 import { ReactComponent as TrainIcon } from 'assets/icons/train.svg';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow.svg';
+import { Header } from 'components/Header';
 
 export const TicketList = () => {
   return (
@@ -21,7 +22,7 @@ const Ticket = () => {
           <div className="ticket__train-icon_wrapper">
             <TrainIcon className="ticket__train-icon" />
           </div>
-          <h3 className="header_size_xs">116C</h3>
+          <Header size="xs">116C</Header>
         </div>
         <div className="ticket__trip-points">
           Адлер → Москва → Санкт-Петербург

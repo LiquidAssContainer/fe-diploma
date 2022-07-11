@@ -1,16 +1,17 @@
 import './style.sass';
 
-import { Header } from '../Header';
+import { PageHeader } from '../PageHeader';
 import { SearchTicketsForm } from '../SearchTicketsForm';
 import { TicketFilter } from './TicketFilter';
 import { TicketList } from './TicketList';
 import { Pagination } from 'components/Pagination';
+import { Header } from 'components/Header';
 
 export const OrderPage = () => {
   return (
     <>
       <section className="order-page__hero">
-        <Header />
+        <PageHeader />
         <SearchTicketsForm />
         <Stepper />
       </section>
@@ -69,7 +70,9 @@ const LastTickets = () => {
 
   return (
     <div className="last-tickets">
-      <h3 className="header_size_s last-tickets__header">Последние билеты</h3>
+      <Header size="s" className="last-tickets__header">
+        Последние билеты
+      </Header>
       <ul className="last-tickets__list">
         <LastTicketItem />
         <LastTicketItem />

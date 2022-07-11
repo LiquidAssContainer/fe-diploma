@@ -1,3 +1,5 @@
+import { Header } from 'components/Header';
+
 const zahlushka = [
   {
     title: 'Екатерина Вальнова',
@@ -16,7 +18,7 @@ const zahlushka = [
 export const Reviews = () => {
   return (
     <section className="reviews" id="reviews">
-      <h3 className="header_size_m">Отзывы</h3>
+      <Header size="m">Отзывы</Header>
       <ul className="reviews__list">
         {zahlushka.map((review) => (
           <ReviewItem {...review} />

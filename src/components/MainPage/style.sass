@@ -1,4 +1,5 @@
 @import 'styles/variables'
+@import 'styles/mixins'
 
 .hero
   height: 100vh
@@ -62,8 +63,8 @@
   // max-width: 50%
 
   font-weight: 100
-  font-size: 72px
-  line-height: 84px
+  font-size: 4.5rem
+  line-height: 1.1em
 
   color: #ffffff
 
@@ -141,7 +142,7 @@
     max-width: 900px
     margin: 0 auto
 
-    @include media(mobile, tablet)
+    @include to(tablet)
       flex-direction: column
       align-items: center
       gap: 30px
@@ -151,7 +152,7 @@
     flex-direction: column
     align-items: center
 
-    @include media(desktop)
+    @include from(laptop)
       width: 25%
 
   // &__button
@@ -182,13 +183,12 @@
     fill: #fff
 
   &_wrapper
-    @include media(desktop)
+    @include from(laptop)
       width: 162px
       height: 162px
       margin-bottom: 35px
 
-    @include media(tablet, mobile)
-
+    @include to(tablet)
       width: 240px
       height: 240px
       margin-bottom: 15px

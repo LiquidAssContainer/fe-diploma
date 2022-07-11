@@ -1,12 +1,13 @@
 import './style.sass';
 
-import { Header } from 'components/Header';
-
 import { ReactComponent as TicketsEmailIcon } from 'assets/icons/tickets_email.svg';
 import { ReactComponent as TicketsIcon } from 'assets/icons/tickets.svg';
 import { ReactComponent as ControlerIcon } from 'assets/icons/controler.svg';
 import { ReactComponent as StarIcon } from 'assets/icons/star.svg';
-import { Button } from 'components/Button/Button';
+
+import { PageHeader } from 'components/PageHeader';
+import { Button } from 'components/Button';
+import { Header } from 'components/Header';
 
 const ticketInstructions = [
   {
@@ -27,7 +28,7 @@ export const SuccessPage = () => {
   return (
     <div className="success-page__container">
       <section className="success-page__header">
-        <Header />
+        <PageHeader />
         <div className="success-page__header_text hero_content_text text_accent">
           Благодарим вас за заказ!
         </div>
@@ -47,9 +48,9 @@ export const SuccessPage = () => {
               ))}
             </ul>
             <div className="success-page__text">
-              <h3 className="header_size_m order-information__title">
+              <Header size="m" className="order-information__title">
                 Ирина Эдуардовна!
-              </h3>
+              </Header>
               <p className="success-page__paragraph">
                 Ваш заказ успешно оформлен.
                 <br />В ближайшее время с вами свяжется наш оператор для
@@ -72,11 +73,7 @@ export const SuccessPage = () => {
                 ))}
               </ul>
             </div>
-            <Button
-              classname="success-page__button"
-              // style="transparent-dark"
-              size="l"
-            >
+            <Button classname="success-page__button" size="l">
               Вернуться на главную
             </Button>
           </footer>

@@ -2,14 +2,15 @@ import './style.sass';
 
 import { Features } from './Features';
 import { Reviews } from './Reviews';
-import { Header } from '../Header';
+import { PageHeader } from '../PageHeader';
 import { SearchTicketsForm } from '../SearchTicketsForm';
+import { Header } from 'components/Header';
 
 export const MainPage = () => {
   return (
     <>
       <section className="hero">
-        <Header />
+        <PageHeader />
         <div className="hero_content">
           <div className="hero_content_text">
             Вся жизнь — <span className="text_accent">путешествие!</span>
@@ -18,7 +19,9 @@ export const MainPage = () => {
         </div>
       </section>
       <section className="about" id="about">
-        <h3 className="header_size_m about__header">О нас</h3>
+        <Header size="m" className="about__header">
+          О нас
+        </Header>
         <div className="about__content">
           <p>
             Мы рады видеть вас! Мы рботаем для Вас с 2003 года. 14 лет мы

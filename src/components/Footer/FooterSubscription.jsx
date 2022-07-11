@@ -3,7 +3,8 @@ import { ReactComponent as Linkedin } from '../../assets/icons/linked_in.svg';
 import { ReactComponent as Googleplus } from '../../assets/icons/google_plus.svg';
 import { ReactComponent as Twitter } from '../../assets/icons/twitter.svg';
 import { ReactComponent as Facebook } from '../../assets/icons/facebook.svg';
-import { EmailInput } from '../Input';
+
+import { EmailInput } from 'components/Input';
 import { Button } from 'components/Button';
 
 export const FooterSubscription = () => {
