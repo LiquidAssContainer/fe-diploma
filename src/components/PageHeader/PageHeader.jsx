@@ -1,3 +1,5 @@
+import './style.sass';
+
 import { useMenuLinks } from '../../hooks/useMenuLinks';
 import { HashLink as Link } from 'react-router-hash-link';
 

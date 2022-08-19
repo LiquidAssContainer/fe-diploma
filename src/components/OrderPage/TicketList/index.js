@@ -1,1 +1,1 @@
-export { TicketList } from './TicketList';
+export { TicketList, TripPoint } from './TicketList';

@@ -7,7 +7,7 @@ import { FooterSubscription } from './FooterSubscription';
 
 export const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className="footer" id="contacts">
       <div className="footer__contacts">
         <FooterContacts />
         <FooterSubscription />

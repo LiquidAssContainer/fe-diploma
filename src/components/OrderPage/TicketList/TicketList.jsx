@@ -69,7 +69,7 @@ const TicketDirection = ({ time, city, station, direction }) => {
   );
 };
 
-const TripPoint = ({ time, city, station }) => {
+export const TripPoint = ({ time, city, station }) => {
   return (
     <div className="trip__point">
       {/* <div className="trip__point_time">{time}</div>

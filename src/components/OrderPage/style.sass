@@ -1,12 +1,22 @@
 @import 'styles/variables'
 @import 'styles/mixins'
 
+$height-stepper: 95px
+
 .order-page__hero
   background-image: url('/assets/station_background.jpg')
   background-size: cover
 
 .steps__list
+  position: relative
+  z-index: 1
+
   display: flex
+  max-width: 1490px
+  margin-inline: auto
+
+  &_wrapper
+    overflow-x: hidden
 
 .step__item
   position: relative
@@ -14,35 +24,58 @@
   display: flex
   align-items: center
   padding-block: 20px
-  padding-left: 70px
-
-  &:not(:last-child)
-    &::before, &::after
-      content: ''
-      position: absolute
-      left: calc(100% - 2px)
-      border-top: calc(95px / 2) solid transparent
-      border-bottom: calc(95px / 2) solid transparent
-
-      border-left: 40px solid
-      z-index: 1
-    &::before
-      left: calc(100% + 0px)
-      border-left-color: #fff
-    &::after
-      border-left-color: #3E3C41
-
-  &.step__item_colored
-    background-color: #FFA800
-
-    &::after
-      border-left-color: #FFA800
-
-  &:first-child, &:last-child
-    flex: 1
+  padding-inline: 15px
+  flex: 1 1
 
   &:first-child
-    justify-content: flex-end
+    &::before
+      content: ''
+      position: absolute
+      top: 0
+      bottom: 0
+      left: -9999px
+      right: 100%
+      background: #FFA800
+
+  &:last-child
+    &::after
+      content: ''
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 100%
+      right: -9999px
+      background: #3E3C41
+
+    &.step__item_colored
+      &::after
+        background: #FFA800
+
+  &:not(:first-child)::before, &:not(:last-child)::after
+    content: ''
+    position: absolute
+
+    border-block: calc(95px / 2) solid
+    border-left: 40px solid transparent
+
+  &:not(:last-child)
+    &::after
+      right: 0
+      border-block-color: #E5E5E5
+      border-right: 3px solid #E5E5E5
+
+  &:not(:first-child)
+    padding-left: 30px
+
+    &::before
+      right: 100%
+      border-block-color: #3E3C41
+
+  &.step__item_colored
+    background: #FFA800
+
+    &::before
+      border-block-color: #FFA800
 
 .steps__item_number
   font-weight: 700
@@ -67,18 +100,27 @@
   color: #FFFFFF
 
 .order-page__content
+  display: flex
+  justify-content: space-between
+  gap: 30px
+
   max-width: 1360px
+  width: 100%
   margin: 0 auto
   padding-top: 95px
-  display: flex
+
   @include section-width
+
+  &_wrapper
+    background: #F7F5F9
 
 .order-page__aside
   width: 360px
-  margin-right: 85px
+  // margin-right: 85px
 
 .order-page__main
   flex: 1
+  max-width: 960px
 
 .ticket-filter__form
   padding-block: 15px
@@ -269,27 +311,29 @@
       left: auto
       right: 0
 
-.checkbox__label
-  display: flex
-  align-items: center
-  cursor: pointer
+.checkbox
+  &__label
+    display: flex
+    align-items: center
+    cursor: pointer
 
-span.checkbox__label_text
-  font-size: 18px
-    /* line-height: 21px; */
-  color: #FFFFFF
+    &_text
+      font-size: 18px
+        /* line-height: 21px; */
+      color: #FFFFFF
 
-.checkbox__icon_wrapper
-  display: flex
-  justify-content: center
-  align-items: center
+  &__icon
+    height: 100%
+    fill: $grey-light-2
 
-  width: 20px
-  height: 20px
-  margin-right: 35px
+    &_wrapper
+      display: flex
+      justify-content: center
+      align-items: center
 
-.checkbox__icon
-  position: absolute
+      width: 20px
+      height: 20px
+      margin-right: 35px
 
 .range-slider
   margin-bottom: 60px

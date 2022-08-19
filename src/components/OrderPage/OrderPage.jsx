@@ -1,65 +1,67 @@
 import './style.sass';
 
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+
 import { PageHeader } from '../PageHeader';
 import { SearchTicketsForm } from '../SearchTicketsForm';
 import { TicketFilter } from './TicketFilter';
 import { TicketList } from './TicketList';
 import { Pagination } from 'components/Pagination';
 import { Header } from 'components/Header';
+// import { PaymentStep, TicketsStep } from './OrderStep/TicketsStep';
+import { PassengersStep, PaymentStep, TicketsStep } from './OrderStep';
+import { ChoosePlacesStep } from './OrderStep/ChoosePlacesStep';
 
-export const OrderPage = () => {
+export const OrderPage = ({
+  match: {
+    params: { step },
+  },
+}) => {
+  // const { step, match } = props;
+  // console.log(match.url);
+  // console.log(match.path);
+  console.log(step);
+
   return (
     <>
       <section className="order-page__hero">
         <PageHeader />
         <SearchTicketsForm />
-        <Stepper />
+        <Stepper step={step} />
       </section>
-      <section className="order-page__content">
-        <aside className="order-page__aside">
-          <TicketFilter />
-          <LastTickets />
-        </aside>
-        <main className="order-page__main">
-          <div className="results__info">
-            <div className="results__amount">найдено 20</div>
-            <div className="results__sort-by">
-              сортировать по:
-              <select className="results__sort-by_select">
-                <option selected>времени</option>
-                <option>стоимости</option>
-                <option>длительности</option>
-              </select>
-            </div>
-            <div className="results__amount-per-page">
-              показывать по:
-              <AmountRadioGroup />
-            </div>
-          </div>
-          <TicketList />
-          <Pagination />
-        </main>
+      <section className="order-page__content_wrapper">
+        <div className="order-page__content">
+          <aside className="order-page__aside">
+            {step === 'tickets' ? (
+              <>
+                <TicketFilter />
+                <LastTickets />
+              </>
+            ) : (
+              <>
+                <TicketFilter />
+              </>
+            )}
+          </aside>
+          <main className="order-page__main">
+            {(() => {
+              switch (step) {
+                case 'passengers':
+                  return <PassengersStep />;
+                case 'payment':
+                  return <PaymentStep />;
+                case 'choose-place':
+                  return <ChoosePlacesStep />;
+                // case 'check':
+                //   return <CheckStep />;
+                default:
+                  return <TicketsStep />;
+              }
+            })()}
+          </main>
+        </div>
       </section>
     </>
-  );
-};
-
-const AmountRadioGroup = () => {
-  return (
-    <div className="results__amount-per-page_inputs">
-      <AmountRadioInput label="5" name="amount-per-page" />
-      <AmountRadioInput label="10" name="amount-per-page" />
-      <AmountRadioInput label="20" name="amount-per-page" />
-    </div>
-  );
-};
-
-const AmountRadioInput = ({ label, name }) => {
-  return (
-    <label className="amount-per-page__input_label">
-      <input className="amount-per-page__input" type="radio" name={name} />
-      <span className="amount-per-page__input_span">{label}</span>
-    </label>
   );
 };
 
@@ -116,11 +118,13 @@ const Stepper = ({ activeStep = 0 }) => {
   ];
 
   return (
-    <ul className="steps__list">
-      {steps.map((step, i) => {
-        return <Step {...step} i={i} isColored={i <= activeStep} />;
-      })}
-    </ul>
+    <div className="steps__list_wrapper">
+      <ul className="steps__list">
+        {steps.map((step, i) => {
+          return <Step {...step} i={i} isColored={i <= activeStep} />;
+        })}
+      </ul>
+    </div>
   );
 };
 

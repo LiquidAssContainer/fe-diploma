@@ -11,25 +11,29 @@ import { ReactComponent as WiFiIcon } from '../../assets/icons/wifi.svg';
 import { ReactComponent as ArrowInRectangleIcon } from '../../assets/icons/arrow_in_rectangle.svg';
 import { ReactComponent as ExpandBtnIcon } from '../../assets/icons/expand.svg';
 
-export const TicketFilter = () => {
-  const switchList = [
-    { name: 'second_class', Icon: SecondClassIcon, label: 'Купе' },
-    { name: 'third_class', Icon: ThirdClassIcon, label: 'Плацкарт' },
-    { name: 'fourth_class', Icon: FourthClassIcon, label: 'Сидячий' },
-    { name: 'first_class', Icon: FirstClassIcon, label: 'Люкс' },
-    { name: 'wifi', Icon: WiFiIcon, label: 'Wi-Fi' },
-    { name: 'express', Icon: SecondClassIcon, label: 'Экспресс' },
-  ];
+const switchList = [
+  { name: 'second_class', Icon: SecondClassIcon, label: 'Купе' },
+  { name: 'third_class', Icon: ThirdClassIcon, label: 'Плацкарт' },
+  { name: 'fourth_class', Icon: FourthClassIcon, label: 'Сидячий' },
+  { name: 'first_class', Icon: FirstClassIcon, label: 'Люкс' },
+  { name: 'wifi', Icon: WiFiIcon, label: 'Wi-Fi' },
+  { name: 'express', Icon: SecondClassIcon, label: 'Экспресс' },
+];
 
+export const TicketFilter = () => {
   return (
     <form action="" className="ticket-filter__form">
       <div className="ticket-filter__form_section">
         <label className="ticket-filter__form_label">
-          <h4 className="header_size_s text_light ticket-filter__title">Дата поездки</h4>
+          <h4 className="header_size_s text_light ticket-filter__title">
+            Дата поездки
+          </h4>
           <DateInput className="form__input" size="small" />
         </label>
         <label className="ticket-filter__form_label">
-          <h4 className="header_size_s text_light ticket-filter__title">Дата возвращения</h4>
+          <h4 className="header_size_s text_light ticket-filter__title">
+            Дата возвращения
+          </h4>
           <DateInput className="form__input" size="small" />
         </label>
       </div>
