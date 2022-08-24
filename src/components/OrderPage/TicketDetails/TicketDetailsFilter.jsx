@@ -1,7 +1,7 @@
 import './style.sass';
 
 import { DateInput } from '../../Input';
-import { RangeSlider } from './RangeSlider';
+import { HoursRangeSlider, RangeSlider } from './RangeSlider';
 
 import { ReactComponent as SecondClassIcon } from 'assets/icons/second_class.svg';
 import { ReactComponent as ThirdClassIcon } from 'assets/icons/third_class.svg';
@@ -11,6 +11,7 @@ import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
 
 import { ReactComponent as ArrowInRectangleIcon } from 'assets/icons/arrow_in_rectangle.svg';
 import {
+  Icon,
   TicketDetails,
   TicketDetailsHeader,
   TicketDetailsSection,
@@ -28,20 +29,22 @@ const switchList = [
 export const TicketDetailsFilter = () => {
   return (
     <TicketDetails>
-      <form action="" className="ticket-details__form">
+      <form action="" className="ticket-filter__form">
         <TicketDetailsSection isExpandable={false}>
-          <label className="ticket-filter__form_label">
-            <h4 className="header_size_s text_light ticket-filter__title">
-              Дата поездки
-            </h4>
-            <DateInput size="s" />
-          </label>
-          <label className="ticket-filter__form_label">
-            <h4 className="header_size_s text_light ticket-filter__title">
-              Дата возвращения
-            </h4>
-            <DateInput size="s" />
-          </label>
+          <div className="ticket-filter__form_dates">
+            <label className="ticket-filter__form_label">
+              <h4 className="header_size_s text_light ticket-filter__form_title">
+                Дата поездки
+              </h4>
+              <DateInput size="s" />
+            </label>
+            <label className="ticket-filter__form_label">
+              <h4 className="header_size_s text_light ticket-filter__form_title">
+                Дата возвращения
+              </h4>
+              <DateInput size="s" />
+            </label>
+          </div>
         </TicketDetailsSection>
 
         <TicketDetailsSection isExpandable={false}>
@@ -56,44 +59,72 @@ export const TicketDetailsFilter = () => {
 
         <TicketDetailsSection isExpandable={false}>
           <h4 className="header_size_s text_light">Стоимость</h4>
-          <RangeSlider />
+          <div className="range-slider__container">
+            <RangeSlider
+              labelSlot={
+                <div className="range-slider__from-and-to">
+                  <div className="range-slider__from-and-to_item">от</div>
+                  <div className="range-slider__from-and-to_item">до</div>
+                </div>
+              }
+            />
+          </div>
         </TicketDetailsSection>
 
         <TicketDetailsSection
           isExpandable={true}
           headerSlot={
             <TicketDetailsHeader
+              title="Туда"
               iconSlot={
-                <div className="ticket-filter__arrow">
-                  <ArrowInRectangleIcon className="ticket-filter__arrow_icon" />
-                </div>
+                <Icon
+                  wrapperClassName="ticket-details__icon"
+                  icon={ArrowInRectangleIcon}
+                />
               }
-            >
-              Туда
-            </TicketDetailsHeader>
+            />
           }
         >
-          <RangeSlider />
+          <TimeRangeSliders name="forward" />
         </TicketDetailsSection>
 
         <TicketDetailsSection
           isExpandable={true}
           headerSlot={
             <TicketDetailsHeader
+              title="Обратно"
               iconSlot={
-                <div className="ticket-filter__arrow">
-                  <ArrowInRectangleIcon className="ticket-filter__arrow_icon arrow_left" />
-                </div>
+                <Icon
+                  wrapperClassName="ticket-details__icon arrow_left"
+                  icon={ArrowInRectangleIcon}
+                />
               }
-            >
-              Обратно
-            </TicketDetailsHeader>
+            />
           }
         >
-          <RangeSlider />
+          <TimeRangeSliders name="return" />
         </TicketDetailsSection>
       </form>
     </TicketDetails>
+  );
+};
+
+const TimeRangeSliders = ({ name }) => {
+  return (
+    <div className="range-slider__container">
+      <HoursRangeSlider
+        name={name}
+        labelSlot={<div className="range-slider__title">Время отбытия</div>}
+      />
+      <HoursRangeSlider
+        name={name}
+        labelSlot={
+          <div className="range-slider__title range-slider__title_right">
+            Время прибытия
+          </div>
+        }
+      />
+    </div>
   );
 };
 
