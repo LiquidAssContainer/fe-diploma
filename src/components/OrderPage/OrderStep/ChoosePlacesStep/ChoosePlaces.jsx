@@ -24,7 +24,7 @@ const railcarTypes = [
   { label: 'Люкс', Icon: FirstClassIcon },
 ];
 
-export const ChoosePlacesStep = () => {
+export const ChoosePlaces = () => {
   return (
     <>
       <Header size="s" className="uppercase">

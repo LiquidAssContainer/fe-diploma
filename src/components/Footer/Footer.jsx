@@ -21,7 +21,7 @@ export const Footer = () => {
               //todo
             }
           </button>
-          <div className="footer__copyright">2018 WEB</div>
+          <div className="footer__copyright">© 2022 WEB</div>
         </div>
       </div>
     </footer>

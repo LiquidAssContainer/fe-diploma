@@ -10,7 +10,7 @@ body
   height: 100%
   font-size: 16px
   line-height: 1.1
-  
+
   @include to(tablet)
     font-size: 14px
 
@@ -42,4 +42,5 @@ button
   text-transform: uppercase
 
 .arrow_left
-  transform: rotate(180deg)
+  // transform: rotate(180deg)
+  transform: matrix(-1, 0, 0, 1, 0, 0)

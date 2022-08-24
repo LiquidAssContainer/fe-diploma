@@ -1,0 +1,259 @@
+@import 'styles/variables'
+@import 'styles/mixins'
+
+$color-typo-white-primary: $white
+$color-typo-grey-primary: $grey-light-2
+$color-typo-grey-secondary: $grey-2
+
+$color-bg-main: $grey-dark-1
+$color-bg-icon: $orange-1
+
+$color-border-primary: $grey-light-2
+
+.ticket-details
+  &__container
+    margin-bottom: 95px
+
+    background: $color-bg-main
+    color: $color-typo-white-primary
+
+  &__section
+    position: relative
+    padding: 20px 30px
+
+    &:not(:last-child)
+      border-bottom: 1px solid $color-border-primary
+
+    &_header
+      display: flex
+      align-items: center
+
+    &_content
+      display: flex
+      flex-direction: column
+      gap: 20px
+
+      padding-block: 30px 25px
+
+  &__row
+    display: flex
+    justify-content: space-between
+    align-items: baseline
+
+    &_label
+      font-size: 18px
+      color: $color-typo-grey-primary
+
+    &_value
+      font-weight: 700
+      font-size: 24px
+
+  &__date
+    font-size: 1.125rem
+
+  &__from-to
+    font-weight: 700
+    font-size: 1rem
+    line-height: 1.2
+    text-align: right
+
+  &__arrival-dates
+    margin-top: 25px
+
+  &__arrival-time
+    align-items: flex-end
+    margin-bottom: 5px
+    line-height: 1
+
+.ticket-details__from-to
+  font-weight: 700
+  font-size: 1rem
+  line-height: 1.2
+  text-align: right
+
+.ticket-details__trip-duration
+  font-size: 1.125rem
+  color: $color-typo-grey-primary
+
+.ticket-details__station
+  max-width: 50%
+  display: flex
+  flex-direction: column
+
+  &:last-child
+    align-items: flex-end
+    text-align: right
+
+  &_city
+    font-size: 1.125rem
+
+  &_name
+    color: $color-typo-grey-secondary
+    max-width: 90%
+
+.ticket-details__icon_arrow
+  display: flex
+  justify-content: center
+  align-items: center
+
+  height: 1.5rem
+  margin-top: 5px
+
+  .icon
+    width: 30px
+    height: 20px
+    fill: $color-bg-icon
+
+.ticket-details__date_grey
+  color: $color-typo-grey-secondary
+
+.ticket-details__icon
+  display: flex
+  width: 32px
+  height: 26px
+  margin-right: 12px
+
+  .icon
+    fill: $color-bg-icon
+    margin: auto
+
+.ticket-details__button_expand
+  padding: 0
+  position: absolute
+  right: 30px
+  top: 30px
+
+.button_expand_icon
+  width: 20px
+  height: 20px
+
+  .icon
+    fill: white
+    stroke: white
+
+    &__grey
+      fill: #C4C4C4
+      stroke: #C4C4C4
+
+  &:hover .icon
+    fill: #FCDC9D
+    stroke: #FCDC9D
+
+.icon
+  display: block
+  max-width: 100%
+  max-height: 100%
+
+.ticket-details__tickets-summary_currency
+  color: $color-typo-grey-secondary
+  font-weight: 300
+  margin-left: 0.25em
+
+.ticket-details__info
+  &_header
+    text-transform: uppercase
+    text-align: center
+    color: $color-typo-grey-primary
+    padding-block: 15px
+
+  &_total
+    font-weight: 700
+    font-size: 1.875rem
+    text-transform: uppercase
+
+  &_price
+    font-weight: 700
+    font-size: 3rem
+    color: #FFA800
+
+  &_currency
+    color: $color-typo-grey-primary
+    font-weight: 300
+
+.ticket-details__form
+  padding-block: 15px
+
+.ticket-filter__form_label
+  display: block
+
+.ticket-filter__form_label:not(:last-child)
+  margin-bottom: 25px
+
+.ticket-filter__title
+  margin-bottom: 15px
+
+.form__switch_list
+  padding-left: 35px
+
+.form__switch_item:not(:last-child)
+  margin-bottom: 35px
+
+.input_checkbox
+  opacity: 0
+  width: 100%
+  height: 100%
+  margin: 0
+
+  &_wrapper
+    position: relative
+    width: 72px
+    height: 19px
+    margin-left: auto
+
+  & + .input_checkbox_slider
+    display: flex
+    align-items: center
+    background: #fff
+    border-radius: 10px
+    @include stretch-on-parent
+    // transition-duration: .5s
+
+    &::before
+      content: ''
+      position: absolute
+      left: 0
+      width: 28px
+      height: 28px
+      background: #C4C4C4
+      border-radius: 50%
+
+  &:checked + .input_checkbox_slider
+    background: #FCDC9D
+
+    &::before
+      background: #FFA800
+      left: auto
+      right: 0
+
+.checkbox
+  &__label
+    display: flex
+    align-items: center
+    cursor: pointer
+
+    &_text
+      font-size: 18px
+      color: $color-typo-white-primary
+
+  &__icon
+    height: 100%
+    fill: $grey-light-2
+
+    &_wrapper
+      display: flex
+      justify-content: center
+      align-items: center
+
+      width: 20px
+      height: 20px
+      margin-right: 35px
+
+.range-slider
+  margin-bottom: 60px
+
+  &__from-and-to
+    display: flex
+    justify-content: space-between
+    font-size: 18px
+    color: $color-typo-white-primary
+    margin-block: 10px 3px

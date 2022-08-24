@@ -3,7 +3,11 @@ import './style.sass';
 import { Pagination } from 'components/Pagination';
 import { TicketList } from '../TicketList';
 
-export const TicketsStep = () => {
+// export const TicketsStep = ({ stage }) => {
+//   return stage === 'tickets' ? <SearchTickets /> : <SearchTickets />;
+// };
+
+export const SearchTickets = () => {
   return (
     <>
       <div className="results__info">

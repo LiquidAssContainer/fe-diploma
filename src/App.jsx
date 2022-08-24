@@ -15,7 +15,7 @@ export const App = () => {
           <Route path="/about" component={About} />
           <Route path="/contacts" component={Contacts} /> */}
           <Route path="/success" component={SuccessPage} />
-          <Route path="/order/:step?" component={OrderPage} />
+          <Route path="/order/:step?/:stepStage?" component={OrderPage} />
           <Route exact path="/" component={MainPage} />
         </Switch>
       </Router>

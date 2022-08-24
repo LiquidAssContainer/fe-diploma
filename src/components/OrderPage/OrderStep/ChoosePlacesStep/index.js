@@ -1,1 +1,1 @@
-export { ChoosePlacesStep } from './ChoosePlacesStep';
+export { ChoosePlaces } from './ChoosePlaces';

@@ -4,17 +4,18 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { PageHeader } from '../PageHeader';
 import { SearchTicketsForm } from '../SearchTicketsForm';
-import { TicketFilter } from './TicketFilter';
+import { TicketDetailsFilter, TicketDetailsInfo } from './TicketDetails';
 import { TicketList } from './TicketList';
 import { Pagination } from 'components/Pagination';
 import { Header } from 'components/Header';
 // import { PaymentStep, TicketsStep } from './OrderStep/TicketsStep';
 import { PassengersStep, PaymentStep, TicketsStep } from './OrderStep';
-import { ChoosePlacesStep } from './OrderStep/ChoosePlacesStep';
+import { ChoosePlaces, ChoosePlacesStep } from './OrderStep/ChoosePlacesStep';
+import { SearchTickets } from './OrderStep/TicketsStep';
 
 export const OrderPage = ({
   match: {
-    params: { step },
+    params: { step, stepStage },
   },
 }) => {
   // const { step, match } = props;
@@ -27,35 +28,37 @@ export const OrderPage = ({
       <section className="order-page__hero">
         <PageHeader />
         <SearchTicketsForm />
-        <Stepper step={step} />
+        <Stepper activeStep={step} />
       </section>
       <section className="order-page__content_wrapper">
         <div className="order-page__content">
           <aside className="order-page__aside">
             {step === 'tickets' ? (
               <>
-                <TicketFilter />
+                <TicketDetailsFilter />
                 <LastTickets />
               </>
             ) : (
-              <>
-                <TicketFilter />
-              </>
+              <TicketDetailsInfo />
             )}
           </aside>
           <main className="order-page__main">
             {(() => {
               switch (step) {
+                case 'tickets':
+                  return stepStage === 'tickets' ? (
+                    <SearchTickets />
+                  ) : (
+                    <ChoosePlaces />
+                  );
                 case 'passengers':
                   return <PassengersStep />;
                 case 'payment':
                   return <PaymentStep />;
-                case 'choose-place':
-                  return <ChoosePlacesStep />;
+                // case 'choose-place':
+                //   return <ChoosePlacesStep />;
                 // case 'check':
                 //   return <CheckStep />;
-                default:
-                  return <TicketsStep />;
               }
             })()}
           </main>
@@ -109,7 +112,7 @@ const LastTicketItem = () => {
   );
 };
 
-const Stepper = ({ activeStep = 0 }) => {
+const Stepper = ({ activeStep }) => {
   const steps = [
     { name: 'tickets', label: 'Билеты' },
     { name: 'passengers', label: 'Пассажиры' },
@@ -117,11 +120,13 @@ const Stepper = ({ activeStep = 0 }) => {
     { name: 'check', label: 'Проверка' },
   ];
 
+  const activeStepIndex = steps.findIndex((step) => step.name === activeStep);
+
   return (
     <div className="steps__list_wrapper">
       <ul className="steps__list">
         {steps.map((step, i) => {
-          return <Step {...step} i={i} isColored={i <= activeStep} />;
+          return <Step {...step} i={i} isColored={i <= activeStepIndex} />;
         })}
       </ul>
     </div>

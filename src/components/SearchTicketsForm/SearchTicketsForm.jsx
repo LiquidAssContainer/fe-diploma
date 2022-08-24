@@ -14,18 +14,18 @@ export const SearchTicketsForm = ({ direction, dates, isSquare }) => {
         <div className="tickets__form_block">
           <h4 className="header__size_s">Направление</h4>
           <div className="tickets__form_inputs_group without-gap">
-            <LocationInput className="form__input" placeholder="Откуда" />
+            <LocationInput size="l" placeholder="Откуда" />
             <button className="form__button_inverse">
               <InverseBtnIcon />
             </button>
-            <LocationInput className="form__input" placeholder="Куда" />
+            <LocationInput size="l" placeholder="Куда" />
           </div>
         </div>
         <div className="tickets__form_block">
           <h4 className="header__size_s">Дата</h4>
           <div className="tickets__form_inputs_group">
-            <DateInput className="form__input" />
-            <DateInput className="form__input" />
+            <DateInput size="l" />
+            <DateInput size="l" />
           </div>
         </div>
       </div>

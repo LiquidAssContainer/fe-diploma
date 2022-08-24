@@ -16,6 +16,7 @@ export const Button = ({
         [`form__button_style_${style}`]: style,
         form__button_disabled: isDisabled,
       })}
+      type="button"
     >
       {children}
     </button>
