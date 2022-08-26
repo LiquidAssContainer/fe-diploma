@@ -7,6 +7,7 @@ export const Button = ({
   size,
   style,
   classname,
+  onClick,
   isDisabled = false,
 }) => {
   return (
@@ -17,6 +18,7 @@ export const Button = ({
         form__button_disabled: isDisabled,
       })}
       type="button"
+      onClick={onClick}
     >
       {children}
     </button>
