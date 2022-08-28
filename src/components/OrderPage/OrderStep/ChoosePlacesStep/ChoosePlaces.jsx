@@ -10,12 +10,12 @@ import { ReactComponent as ThirdClassIcon } from 'assets/icons/third_class.svg';
 import { ReactComponent as FourthClassIcon } from 'assets/icons/fourth_class.svg';
 import { ReactComponent as FirstClassIcon } from 'assets/icons/first_class.svg';
 import { ReactComponent as ClockIcon } from 'assets/icons/clock.svg';
-import { TripPoint } from '../../TicketList';
 
 import { ReactComponent as TrainIcon } from 'assets/icons/train.svg';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow.svg';
 import { ReactComponent as ArrowInRectangleLarge } from 'assets/icons/arrow_in_rectangle_large.svg';
 import { PlaceSelection } from './PlaceSelection';
+import { TripPoint } from 'components/Ticket';
 
 const railcarTypes = [
   { label: 'Сидячий', Icon: FourthClassIcon },
@@ -34,7 +34,7 @@ export const ChoosePlaces = () => {
         <ChoosePlacesBlock direction="forward" />
         <ChoosePlacesBlock direction="return" />
       </div>
-      <Button classname="button__further" size="l" style="colored">
+      <Button classname="button__next-step" size="l" style="colored">
         Далее
       </Button>
     </>

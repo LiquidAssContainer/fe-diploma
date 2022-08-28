@@ -5,13 +5,19 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { PageHeader } from '../PageHeader';
 import { SearchTicketsForm } from '../SearchTicketsForm';
 import { TicketDetailsFilter, TicketDetailsInfo } from './TicketDetails';
-import { TicketList } from './TicketList';
 import { Pagination } from 'components/Pagination';
 import { Header } from 'components/Header';
 // import { PaymentStep, TicketsStep } from './OrderStep/TicketsStep';
-import { PassengersStep, PaymentStep, TicketsStep } from './OrderStep';
+import {
+  CheckStep,
+  PassengersStep,
+  PaymentStep,
+  TicketsStep,
+} from './OrderStep';
 import { ChoosePlaces, ChoosePlacesStep } from './OrderStep/ChoosePlacesStep';
 import { SearchTickets } from './OrderStep/TicketsStep';
+import cn from 'classnames';
+import { Button } from 'components/Button';
 
 export const OrderPage = ({
   match: {
@@ -57,8 +63,8 @@ export const OrderPage = ({
                   return <PaymentStep />;
                 // case 'choose-place':
                 //   return <ChoosePlacesStep />;
-                // case 'check':
-                //   return <CheckStep />;
+                case 'check':
+                  return <CheckStep />;
               }
             })()}
           </main>
@@ -141,3 +147,9 @@ const Step = ({ label, isColored, i }) => {
     </li>
   );
 };
+
+export const NextStepButton = ({ children, onClick }) => (
+  <Button classname="button__next-step" size="l" style="colored">
+    {children}
+  </Button>
+);

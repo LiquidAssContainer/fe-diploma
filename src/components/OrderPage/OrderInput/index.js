@@ -1,1 +1,1 @@
-export { OrderInput } from './OrderInput'
+export { OrderInput, OrderCheckboxInput } from './OrderInput';

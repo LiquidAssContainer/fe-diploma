@@ -1,7 +1,7 @@
 import './style.sass';
 
 import { Pagination } from 'components/Pagination';
-import { TicketList } from '../TicketList';
+import { Ticket } from 'components/Ticket/Ticket';
 
 // export const TicketsStep = ({ stage }) => {
 //   return stage === 'tickets' ? <SearchTickets /> : <SearchTickets />;
@@ -25,7 +25,11 @@ export const SearchTickets = () => {
           <AmountRadioGroup />
         </div>
       </div>
-      <TicketList />
+      <ul className="tickets__list">
+        <Ticket />
+        <Ticket />
+        <Ticket />
+      </ul>
       <Pagination />
     </>
   );

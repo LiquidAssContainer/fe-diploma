@@ -1,31 +1,38 @@
 import './style.sass';
 
+import cn from 'classnames';
+
+import { Header } from 'components/Header';
+import { Button } from 'components/Button';
+import { Icon } from 'components/OrderPage/TicketDetails/TicketDetails';
+
 import { ReactComponent as TrainIcon } from 'assets/icons/train.svg';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow.svg';
-import { Header } from 'components/Header';
+import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
+import { ReactComponent as ExpressIcon } from 'assets/icons/express.svg';
 
-export const TicketList = () => {
-  return (
-    <ul className="tickets__list">
-      <Ticket />
-      <Ticket />
-      <Ticket />
-    </ul>
-  );
-};
+const features = [WiFiIcon, ExpressIcon, ExpressIcon];
 
-const Ticket = () => {
+export const Ticket = ({ isChecking }) => {
   return (
-    <div className="tickets__item">
+    <div
+      className={cn('tickets__item', { tickets__item_checking: isChecking })}
+    >
       <div className="ticket__main-info">
         <div className="ticket__main-info_header">
           <div className="ticket__train-icon_wrapper">
             <TrainIcon className="ticket__train-icon" />
           </div>
-          <Header size="xs">116C</Header>
+          <Header className="ticket__header" size="xs">
+            116C
+          </Header>
         </div>
         <div className="ticket__trip-points">
-          Адлер → Москва → Санкт-Петербург
+          <div className="ticket__trip-points_item ticket__trip-points_item_train-start">
+            Адлер →
+          </div>
+          <div className="ticket__trip-points_item">Москва →</div>
+          <div className="ticket__trip-points_item">Санкт-Петербург</div>
         </div>
       </div>
       <TicketDirections />
@@ -35,8 +42,29 @@ const Ticket = () => {
           <TicketPlacesItem />
           <TicketPlacesItem />
         </ul>
-        <button className="ticket__places_button">Выбрать места</button>
+        <ul className="ticket__places_features">
+          {features.map((icon) => (
+            <TicketPlacesFeature icon={icon} />
+          ))}
+        </ul>
+        {isChecking ? (
+          <Button size="s" style="transparent-dark">
+            Изменить
+          </Button>
+        ) : (
+          <Button size="s" style="colored">
+            Выбрать места
+          </Button>
+        )}
       </div>
+    </div>
+  );
+};
+
+const TicketPlacesFeature = ({ icon }) => {
+  return (
+    <div className="ticket__places_features_item">
+      <Icon wrapperClassName="ticket__places_feature_icon" icon={icon} />
     </div>
   );
 };
@@ -44,8 +72,8 @@ const Ticket = () => {
 const TicketDirections = ({ duration, directions }) => {
   return (
     <div className="ticket__directions">
-      <TicketDirection />
-      <TicketDirection />
+      <TicketDirection direction="forward" />
+      <TicketDirection direction="backward" />
     </div>
   );
 };
@@ -57,7 +85,7 @@ const TicketDirection = ({ time, city, station, direction }) => {
       <div className="trip__duration_container">
         <div className="trip__duration">9 : 42</div>
         <div className="trip__direction trip__direction_right">
-          {direction === 'left' ? (
+          {direction === 'forward' ? (
             <ArrowIcon className="trip__direction_icon" />
           ) : (
             <ArrowIcon className="trip__direction_icon arrow_left" />
@@ -89,7 +117,7 @@ const TicketPlacesItem = () => {
       <div className="place__quantity">52</div>
       <div className="place__price">
         <span className="place__price_from">от</span>
-        <span className="place__price_amount">3800</span>
+        <span className="place__price_amount">3 800</span>
         <span className="place__price_currency">₽</span>
       </div>
     </div>
