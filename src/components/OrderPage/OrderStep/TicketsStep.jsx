@@ -2,6 +2,7 @@ import './style.sass';
 
 import { Pagination } from 'components/Pagination';
 import { Ticket } from 'components/Ticket/Ticket';
+import { Select } from 'components/Select';
 
 // export const TicketsStep = ({ stage }) => {
 //   return stage === 'tickets' ? <SearchTickets /> : <SearchTickets />;
@@ -12,14 +13,10 @@ export const SearchTickets = () => {
     <>
       <div className="results__info">
         <div className="results__amount">найдено 20</div>
-        <div className="results__sort-by">
-          сортировать по:
-          <select className="results__sort-by_select">
-            <option selected>времени</option>
-            <option>стоимости</option>
-            <option>длительности</option>
-          </select>
-        </div>
+        <SortBySelect
+          className="results__sort-by_select"
+          label="сортировать по:"
+        />
         <div className="results__amount-per-page">
           показывать по:
           <AmountRadioGroup />
@@ -51,5 +48,19 @@ const AmountRadioInput = ({ label, name }) => {
       <input className="amount-per-page__input" type="radio" name={name} />
       <span className="amount-per-page__input_span">{label}</span>
     </label>
+  );
+};
+
+const SortBySelect = ({ options1, label, name }) => {
+  const options = [
+    { label: 'времени', value: 'adult' },
+    { label: 'стоимости', value: 'child' },
+    { label: 'длительности', value: 'child2' },
+  ];
+  return (
+    <div className="results__sort-by">
+      {label && <label className="results__sort-by_label">{label}</label>}
+      <Select className="results__sort-by_select" optionsList={options} />
+    </div>
   );
 };

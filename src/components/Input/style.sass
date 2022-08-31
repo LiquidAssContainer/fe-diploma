@@ -33,17 +33,20 @@ $color-bg-input: $white
   background: transparent
   position: relative
 
-  &[type="date"]:not(:focus)::before
-    content: "ДД/ММ/ГГГГ"
-    position: absolute
-    top: 0
-    bottom: 0
-    width: 100%
-    display: flex
-    align-items: center
-    background: white
-    color: #E5E5E5
-    pointer-events: none
+  &[type="date"]
+    text-transform: uppercase
+
+    &:not(:focus)::before
+      content: "ДД/ММ/ГГГГ"
+      position: absolute
+      top: 0
+      bottom: 0
+      width: 100%
+      display: flex
+      align-items: center
+      background: white
+      color: #E5E5E5
+      pointer-events: none
 
   &::placeholder
     color: #E5E5E5

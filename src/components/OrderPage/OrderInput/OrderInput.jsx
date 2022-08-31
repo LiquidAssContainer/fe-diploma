@@ -21,7 +21,12 @@ export const OrderInput = ({ label, type, placeholder, name }) => {
   );
 };
 
-export const OrderCheckboxInput = ({ label, name, type = 'checkbox' }) => {
+export const OrderCheckboxInput = ({
+  label,
+  name,
+  textSize = 'm',
+  type = 'checkbox',
+}) => {
   return (
     <label className="order__checkbox">
       <input className="order__checkbox_input" type={type} name={name} />
@@ -31,7 +36,11 @@ export const OrderCheckboxInput = ({ label, name, type = 'checkbox' }) => {
           icon={CheckedIcon}
         />
       </div>
-      <div className="order__checkbox_text">{label}</div>
+      <div
+        className={`order__checkbox_text order__checkbox_text_size_${textSize}`}
+      >
+        {label}
+      </div>
     </label>
   );
 };
