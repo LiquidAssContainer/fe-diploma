@@ -5,6 +5,7 @@ import { Reviews } from './Reviews';
 import { PageHeader } from '../PageHeader';
 import { SearchTicketsForm } from '../SearchTicketsForm';
 import { Header } from 'components/Header';
+import { DatePicker } from 'components/DatePicker';
 
 export const MainPage = () => {
   return (
