@@ -22,7 +22,7 @@ export const FooterSubscription = () => {
         <h4 className="footer__header header_size_s">Подписка</h4>
         <div className="subscription__text">Будьте в курсе событий</div>
         <form className="subscription__form">
-          <EmailInput size="l" placeholder="e-mail" />
+          {/* <EmailInput size="l" placeholder="e-mail" /> */}
           <Button classname="footer__button" style="transparent-light" size="l">
             Отправить
           </Button>

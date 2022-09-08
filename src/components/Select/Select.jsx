@@ -2,6 +2,7 @@ import './style.sass';
 
 import cn from 'classnames';
 import { useRef, useState } from 'react';
+
 import { useOnClickOutside } from 'hooks/useOnClickOutside';
 
 export const Select = ({ className, optionsList }) => {
@@ -59,8 +60,6 @@ export const Select = ({ className, optionsList }) => {
       setIsOptionsOpen(false);
     }
   });
-
-  console.log(optionsList[selectedOption]);
 
   return (
     <div className={cn('select__container', className)}>

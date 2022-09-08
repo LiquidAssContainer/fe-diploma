@@ -1,6 +1,7 @@
 import './style.sass';
 
 import cn from 'classnames';
+import { getHours, getMinutes } from 'date-fns';
 
 import { Header } from 'components/Header';
 import { Button } from 'components/Button';
@@ -10,10 +11,40 @@ import { ReactComponent as TrainIcon } from 'assets/icons/train.svg';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow.svg';
 import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
 import { ReactComponent as ExpressIcon } from 'assets/icons/express.svg';
+import { formatDateToHM, formatNumber } from 'lib/helpers';
 
 const features = [WiFiIcon, ExpressIcon, ExpressIcon];
 
-export const Ticket = ({ isChecking }) => {
+const classTitles = {
+  fourth: 'Сидячий',
+  third: 'Плацкарт',
+  second: 'Купе',
+  first: 'Люкс',
+};
+
+const classOrder = Object.keys(classTitles);
+
+export const Ticket = ({
+  isChecking,
+  from,
+  to,
+  train,
+  price_info,
+  available_seats_info,
+  duration,
+}) => {
+  const availableSeats = classOrder.reduce((acc, classType) => {
+    const seatsCount = available_seats_info[classType];
+    if (seatsCount) {
+      acc.push({
+        seatsCount,
+        minPrice: price_info[classType].top_price,
+        classTitle: classTitles[classType],
+      });
+    }
+    return acc;
+  }, []);
+
   return (
     <div
       className={cn('tickets__item', { tickets__item_checking: isChecking })}
@@ -24,7 +55,7 @@ export const Ticket = ({ isChecking }) => {
             <TrainIcon className="ticket__train-icon" />
           </div>
           <Header className="ticket__header" size="xs">
-            116C
+            {train.name}
           </Header>
         </div>
         <div className="ticket__trip-points">
@@ -35,12 +66,15 @@ export const Ticket = ({ isChecking }) => {
           <div className="ticket__trip-points_item">Санкт-Петербург</div>
         </div>
       </div>
-      <TicketDirections />
+      <TicketDirections duration={duration} from={from} to={to} />
       <div className="ticket__places">
         <ul className="ticket__places_list">
+          {availableSeats.map((seats) => (
+            <TicketPlacesItem {...seats} />
+          ))}
+          {/* <TicketPlacesItem />
           <TicketPlacesItem />
-          <TicketPlacesItem />
-          <TicketPlacesItem />
+          <TicketPlacesItem /> */}
         </ul>
         <ul className="ticket__places_features">
           {features.map((icon) => (
@@ -69,21 +103,27 @@ const TicketPlacesFeature = ({ icon }) => {
   );
 };
 
-const TicketDirections = ({ duration, directions }) => {
+const TicketDirections = ({ ...props }) => {
   return (
     <div className="ticket__directions">
-      <TicketDirection direction="forward" />
-      <TicketDirection direction="backward" />
+      <TicketDirection direction="forward" {...props} />
+      <TicketDirection direction="backward" {...props} />
     </div>
   );
 };
 
-const TicketDirection = ({ time, city, station, direction }) => {
+const TicketDirection = ({ duration, direction, from, to }) => {
   return (
-    <div className="direction">
-      <TripPoint />
+    <div
+      className={cn('direction', {
+        direction_reversed: direction === 'backward',
+      })}
+    >
+      <TripPoint {...from} />
       <div className="trip__duration_container">
-        <div className="trip__duration">9 : 42</div>
+        <div className="trip__duration">
+          {getHours(duration)} : {getMinutes(duration)}
+        </div>
         <div className="trip__direction trip__direction_right">
           {direction === 'forward' ? (
             <ArrowIcon className="trip__direction_icon" />
@@ -92,32 +132,29 @@ const TicketDirection = ({ time, city, station, direction }) => {
           )}
         </div>
       </div>
-      <TripPoint />
+      <TripPoint {...to} />
     </div>
   );
 };
 
-export const TripPoint = ({ time, city, station }) => {
+export const TripPoint = ({ datetime, city, railway_station_name }) => {
   return (
     <div className="trip__point">
-      {/* <div className="trip__point_time">{time}</div>
-      <div className="trip__point_city">{city}</div>
-      <div className="trip__point_station">{station}</div> */}
-      <div className="trip__point_time">18:88</div>
-      <div className="trip__point_city">Екатеринбург</div>
-      <div className="trip__point_station">Курский вокзал</div>
+      <div className="trip__point_time">{formatDateToHM(datetime)}</div>
+      <div className="trip__point_city">{city.name}</div>
+      <div className="trip__point_station">{railway_station_name} вокзал</div>
     </div>
   );
 };
 
-const TicketPlacesItem = () => {
+const TicketPlacesItem = ({ classTitle, seatsCount, minPrice }) => {
   return (
     <div className="trip__places_item">
-      <div className="place__type">Плацкарт</div>
-      <div className="place__quantity">52</div>
+      <div className="place__type">{classTitle}</div>
+      <div className="place__quantity">{seatsCount}</div>
       <div className="place__price">
         <span className="place__price_from">от</span>
-        <span className="place__price_amount">3 800</span>
+        <span className="place__price_amount">{formatNumber(minPrice)}</span>
         <span className="place__price_currency">₽</span>
       </div>
     </div>

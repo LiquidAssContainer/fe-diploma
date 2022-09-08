@@ -43,7 +43,6 @@ export const RangeSlider = ({
   const maxValue = Math.ceil(max / step) * step;
   const [values, setValues] = useState([minValue, maxValue]);
   const onChange = (values) => setValues(values);
-  console.log(values);
 
   return (
     <div className={classNames('range-slider', `range-slider__size_${size}`)}>

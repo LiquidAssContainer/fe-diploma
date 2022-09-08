@@ -3,59 +3,84 @@ import './style.sass';
 import { Pagination } from 'components/Pagination';
 import { Ticket } from 'components/Ticket/Ticket';
 import { Select } from 'components/Select';
+import { useSelector } from 'react-redux';
+import { changeSearchParameter } from 'reducers/search';
+import { useDispatch } from 'react-redux';
 
 // export const TicketsStep = ({ stage }) => {
 //   return stage === 'tickets' ? <SearchTickets /> : <SearchTickets />;
 // };
+const pageLimits = [5, 10, 20];
 
 export const SearchTickets = () => {
+  const { resultItems, resultsCount, limit } = useSelector(
+    (state) => state.search,
+  );
+
   return (
     <>
       <div className="results__info">
-        <div className="results__amount">найдено 20</div>
+        <div className="results__amount">найдено {resultsCount}</div>
         <SortBySelect
           className="results__sort-by_select"
           label="сортировать по:"
         />
         <div className="results__amount-per-page">
           показывать по:
-          <AmountRadioGroup />
+          <AmountRadioGroup activeLimit={limit} />
         </div>
       </div>
       <ul className="tickets__list">
-        <Ticket />
-        <Ticket />
-        <Ticket />
+        {resultItems.map(({ departure }) => (
+          // НО МБ ЭТО КАК KEY НЕ ПОДХОДИТ???? // TODO
+          <Ticket key={departure._id} {...departure} />
+        ))}
       </ul>
       <Pagination />
     </>
   );
 };
 
-const AmountRadioGroup = () => {
+const AmountRadioGroup = ({ activeLimit }) => {
   return (
     <div className="results__amount-per-page_inputs">
-      <AmountRadioInput label="5" name="amount-per-page" />
-      <AmountRadioInput label="10" name="amount-per-page" />
-      <AmountRadioInput label="20" name="amount-per-page" />
+      {pageLimits.map((limit) => (
+        <AmountRadioInput
+          key={limit}
+          limit={limit}
+          isChecked={activeLimit === limit}
+          name="amount-per-page"
+        />
+      ))}
     </div>
   );
 };
 
-const AmountRadioInput = ({ label, name }) => {
+const AmountRadioInput = ({ limit, name, isChecked }) => {
+  const dispatch = useDispatch();
+  const onClick = () => {
+    dispatch(changeSearchParameter({ name: 'limit', value: limit }));
+  };
+
   return (
     <label className="amount-per-page__input_label">
-      <input className="amount-per-page__input" type="radio" name={name} />
-      <span className="amount-per-page__input_span">{label}</span>
+      <input
+        className="amount-per-page__input"
+        type="radio"
+        name={name}
+        checked={isChecked}
+        onClick={onClick}
+      />
+      <span className="amount-per-page__input_span">{limit}</span>
     </label>
   );
 };
 
 const SortBySelect = ({ options1, label, name }) => {
   const options = [
-    { label: 'времени', value: 'adult' },
-    { label: 'стоимости', value: 'child' },
-    { label: 'длительности', value: 'child2' },
+    { label: 'времени', value: 'date' },
+    { label: 'стоимости', value: 'price' },
+    { label: 'длительности', value: 'duration' },
   ];
   return (
     <div className="results__sort-by">

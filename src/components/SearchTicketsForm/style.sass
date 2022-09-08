@@ -28,6 +28,13 @@
     .tickets__form_block
       flex: 1
 
+.tickets__form_header
+  margin-bottom: 15px
+  font-weight: 300
+  font-size: 30px
+  line-height: 35px
+  color: #FFFFFF
+
 .tickets__form_inputs_group
   display: flex
   align-items: center
@@ -35,6 +42,37 @@
 
   &.without-gap
     gap: 0
+
+.city-select__container
+  position: relative
+  width: 100%
+
+.city-select__list
+  position: absolute
+  left: 0
+  right: 0
+  z-index: 10
+
+  margin-top: 5px
+  padding: 15px 20px
+
+  background: #F5F4F6
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
+  border-radius: 3px
+
+.city-select__item
+
+  &:not(:last-child)
+    margin-bottom: 5px
+
+  &_button
+    font-size: 18px
+    /* line-height: 21px; */
+    /* font-variant: small-caps; */
+    color: #292929
+    text-transform: uppercase
+    cursor: pointer
+    display: block
 
 .form__button_inverse
   // padding: 0

@@ -1,5 +1,4 @@
 import { nanoid } from 'nanoid';
-import { cn } from '../../lib/bem';
 
 import { ReactComponent as ScreenIcon } from '../../assets/icons/screen.svg';
 import { ReactComponent as BuildingIcon } from '../../assets/icons/building.svg';
@@ -7,8 +6,6 @@ import { ReactComponent as GlobeIcon } from '../../assets/icons/globe.svg';
 
 import { Button } from 'components/Button';
 import { Header } from 'components/Header';
-
-const features = cn('features');
 
 const items = [
   { Icon: ScreenIcon, text: 'Удобный заказ на сайте' },

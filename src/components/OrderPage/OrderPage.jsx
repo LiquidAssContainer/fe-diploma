@@ -18,16 +18,18 @@ import { ChoosePlaces, ChoosePlacesStep } from './OrderStep/ChoosePlacesStep';
 import { SearchTickets } from './OrderStep/TicketsStep';
 import cn from 'classnames';
 import { Button } from 'components/Button';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { getLastDirectionsAsync } from 'reducers/search';
+import { formatNumber } from 'lib/helpers';
 
 export const OrderPage = ({
   match: {
     params: { step, stepStage },
   },
 }) => {
-  // const { step, match } = props;
-  // console.log(match.url);
-  // console.log(match.path);
-  console.log(step);
+  const dispatch = useDispatch();
+  dispatch(getLastDirectionsAsync());
 
   return (
     <>
@@ -41,7 +43,7 @@ export const OrderPage = ({
           <aside className="order-page__aside">
             {step === 'tickets' ? (
               <>
-                <TicketDetailsFilter />
+                {/* <TicketDetailsFilter /> */}
                 <LastTickets />
               </>
             ) : (
@@ -75,9 +77,7 @@ export const OrderPage = ({
 };
 
 const LastTickets = () => {
-  // const tickets = [
-
-  // ]
+  const { lastDirections } = useSelector((state) => state.search);
 
   return (
     <div className="last-tickets">
@@ -85,34 +85,58 @@ const LastTickets = () => {
         Последние билеты
       </Header>
       <ul className="last-tickets__list">
-        <LastTicketItem />
-        <LastTicketItem />
-        <LastTicketItem />
+        {lastDirections.map(({ departure }) => (
+          <LastTicketItem {...departure} />
+        ))}
       </ul>
     </div>
   );
 };
 
-const LastTicketItem = () => {
+const LastTicketItem = ({
+  min_price,
+  from,
+  to,
+  is_express,
+  have_air_conditioning,
+  have_wifi,
+}) => {
   return (
     <div className="last-tickets__item">
       <div className="last-ticket__stations">
-        <div className="last-ticket__stations_from">
-          <div className="last-ticket__city">Москва</div>
-          <div className="last-ticket__station">Курский вокзал</div>
-        </div>
-        <div className="last-ticket__stations_to">
-          <div className="last-ticket__city">Казань</div>
-          <div className="last-ticket__station">Московский вокзал</div>
-        </div>
+        <LastTicketDirection {...from} direction="from" />
+        <LastTicketDirection {...to} direction="to" />
       </div>
       <div className="last-ticket__info">
+        {/* TODO */}
         <div className="last-ticket__icons"></div>
         <div className="last-ticket__price">
           <span className="last-ticket__price_from">от</span>
-          <span className="last-ticket__price_amount">3800</span>
+          <span className="last-ticket__price_amount">
+            {formatNumber(min_price)}
+          </span>
           <span className="last-ticket__price_currency">₽</span>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const LastTicketDirection = ({
+  direction,
+  railway_station_name,
+  city: { name },
+}) => {
+  return (
+    <div
+      className={cn(
+        'last-ticket__station',
+        `last-ticket__station_${direction}`,
+      )}
+    >
+      <div className="last-ticket__station_city">{name}</div>
+      <div className="last-ticket__station_name">
+        {railway_station_name} вокзал
       </div>
     </div>
   );

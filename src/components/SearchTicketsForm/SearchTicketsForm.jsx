@@ -1,12 +1,36 @@
-import cn from 'classnames';
-
 import './style.sass';
 
-import { DateInput, LocationInput } from '../Input';
-import { ReactComponent as InverseBtnIcon } from 'assets/icons/inverse_button.svg';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm, useFormContext } from 'react-hook-form';
+import { useHistory, useLocation } from 'react-router-dom';
+import cn from 'classnames';
 
-export const SearchTicketsForm = ({ direction, isSquare }) => {
+import { ReactComponent as InverseBtnIcon } from 'assets/icons/inverse_button.svg';
+import { useOnClickOutside } from 'hooks/useOnClickOutside';
+import {
+  clearCitiesList,
+  getCitiesAsync,
+  getDirectionsAsync,
+} from 'reducers/search';
+import { DateInput, LocationInput } from '../Input';
+import { Header } from 'components/Header';
+import { Form } from 'lib/Form';
+
+export const SearchTicketsForm = ({ isSquare }) => {
+  const form = useForm({
+    defaultValues: {
+      from_city: '',
+      to_city: '',
+      date_start: '',
+      date_end: '',
+    },
+  });
+  const history = useHistory();
+  const location = useLocation();
+
+  const { setValue } = form;
+
   const [dates, setDates] = useState({ start: null, end: null });
 
   const onSelectStartDate = (date) => {
@@ -17,31 +41,65 @@ export const SearchTicketsForm = ({ direction, isSquare }) => {
     setDates((prev) => ({ ...prev, end: date }));
   };
 
+  const onSubmit = (data) => {
+    dispatch(getDirectionsAsync(data));
+    if (location.pathname !== '/order/tickets/tickets') {
+      history.push('/order/tickets/tickets');
+    }
+  };
+
+  const dispatch = useDispatch();
+
+  const onChangeSearch = (fieldName, searchString) => {
+    if (searchString) {
+      dispatch(getCitiesAsync({ searchString, fieldName }));
+    } else {
+      dispatch(clearCitiesList(fieldName));
+    }
+  };
+
   return (
-    <form
+    <Form
+      form={form}
       className={cn('tickets__form', isSquare ? 'form__square' : 'form__flex')}
+      onSubmit={onSubmit}
     >
       <div className="tickets__form_inputs_container">
         <div className="tickets__form_block">
-          <h4 className="header__size_s">Направление</h4>
+          <Header className="tickets__form_header" size="s">
+            Направление
+          </Header>
           <div className="tickets__form_inputs_group without-gap">
-            <LocationInput size="l" placeholder="Откуда" />
+            <CitySelectInput
+              name="from_city"
+              placeholder="Откуда"
+              onChange={onChangeSearch}
+            />
             <button className="form__button_inverse" type="button">
               <InverseBtnIcon />
             </button>
-            <LocationInput size="l" placeholder="Куда" />
+            <CitySelectInput
+              name="to_city"
+              placeholder="Куда"
+              setValue={setValue}
+              onChange={onChangeSearch}
+            />
           </div>
         </div>
         <div className="tickets__form_block">
-          <h4 className="header__size_s">Дата</h4>
+          <Header className="tickets__form_header" size="s">
+            Дата
+          </Header>
           <div className="tickets__form_inputs_group">
             <DateInput
+              name="date_start"
               onSelectDate={onSelectStartDate}
               selected={dates.start}
               endDate={dates.end}
               size="l"
             />
             <DateInput
+              name="date_end"
               onSelectDate={onSelectEndDate}
               selected={dates.end}
               startDate={dates.start}
@@ -50,9 +108,73 @@ export const SearchTicketsForm = ({ direction, isSquare }) => {
           </div>
         </div>
       </div>
-      <button className="tickets__form_button_submit" type="button">
+      <button className="tickets__form_button_submit" type="submit">
         Найти билеты
       </button>
-    </form>
+    </Form>
+  );
+};
+
+const CitySelectInput = ({ name, placeholder, onChange }) => {
+  const ref = useRef();
+  const [isCitySelectOpen, setIsCitySelectOpen] = useState(false);
+
+  const { citiesList } = useSelector((state) => state.search);
+
+  const { setValue } = useFormContext();
+
+  const onClickCity = (cityName) => {
+    setValue(name, cityName);
+    setIsCitySelectOpen(false);
+  };
+
+  useOnClickOutside(ref, () => {
+    if (isCitySelectOpen) {
+      setIsCitySelectOpen(false);
+    }
+  });
+
+  return (
+    <div ref={ref} className="city-select__container">
+      <LocationInput
+        name={name}
+        size="l"
+        placeholder={placeholder}
+        required
+        onChange={(e) => {
+          onChange(name, e.target.value);
+        }}
+        onFocus={() => setIsCitySelectOpen(true)}
+      />
+      <CitySelect
+        citiesList={citiesList[name]}
+        onClick={onClickCity}
+        isOpen={isCitySelectOpen}
+      />
+    </div>
+  );
+};
+
+const CitySelect = ({ citiesList, onClick, isOpen }) => {
+  return isOpen ? (
+    <ul className="city-select__list">
+      {citiesList.map(({ name: city }) => (
+        <CitySelectItem key={city} city={city} onClick={() => onClick(city)} />
+      ))}
+    </ul>
+  ) : null;
+};
+
+const CitySelectItem = ({ city, onClick }) => {
+  return (
+    <li className="city-select__item">
+      <button
+        className="city-select__item_button"
+        onClick={onClick}
+        type="button"
+      >
+        {city}
+      </button>
+    </li>
   );
 };
