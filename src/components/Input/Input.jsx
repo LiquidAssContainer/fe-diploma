@@ -9,8 +9,45 @@ import { DatePicker } from 'components/DatePicker';
 import { ReactComponent as LocationIcon } from '../../assets/icons/location.svg';
 import { ReactComponent as CalendarIcon } from '../../assets/icons/calendar.svg';
 
-export const EmailInput = (props) => {
-  return <Input {...props} type="email" />;
+export const Input = ({
+  className,
+  name,
+  onChange,
+  type,
+  value,
+  isChecked,
+  ...props
+}) => {
+  const { control } = useFormContext();
+  const { field } = useController({
+    name,
+    control,
+  });
+
+  const handleChange = (event) => {
+    field.onChange(event);
+    onChange?.(event);
+  };
+
+  return (
+    <input
+      className={cn('form__input', className)}
+      {...field}
+      {...props}
+      value={value || field.value}
+      type={type}
+      checked={isChecked || (type === 'checkbox' && field.value)}
+      onChange={handleChange}
+    />
+  );
+};
+
+export const EmailInput = (size, ...props) => {
+  return (
+    <InputContainer size={size}>
+      <Input {...props} type="email" />
+    </InputContainer>
+  );
 };
 
 export const DateInput = ({
@@ -20,6 +57,7 @@ export const DateInput = ({
   endDate,
   onSelectDate,
   selected,
+  ...props
 }) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [value, setValue] = useState('');
@@ -40,15 +78,17 @@ export const DateInput = ({
 
   return (
     <div className="date-input__wrapper">
-      <Input
-        name={name}
-        size={size}
-        type="date"
-        value={value}
-        min={startDate && formatDate(startDate)}
-        max={endDate && formatDate(endDate)}
-        onChange={onChangeDate}
-      >
+      <InputContainer size={size}>
+        <Input
+          name={name}
+          size={size}
+          type="date"
+          value={value}
+          min={startDate && formatDate(startDate)}
+          max={endDate && formatDate(endDate)}
+          onChange={onChangeDate}
+          {...props}
+        />
         <button
           className="input__btn input__btn_pick-date"
           onClick={onClick}
@@ -56,7 +96,7 @@ export const DateInput = ({
         >
           <CalendarIcon className="input__btn_icon" />
         </button>
-      </Input>
+      </InputContainer>
 
       {isPickerOpen && (
         <DatePicker
@@ -70,42 +110,24 @@ export const DateInput = ({
   );
 };
 
-export const LocationInput = (props) => {
+export const LocationInput = ({ size, ...props }) => {
   return (
-    <Input {...props} type="text" autocomplete="off">
+    <InputContainer size={size}>
+      <Input {...props} type="text" autocomplete="off" />
       <button className="input__btn input__btn_pick-location" type="button">
         <LocationIcon className="input__btn_icon" />
       </button>
-    </Input>
+    </InputContainer>
   );
 };
 
-const Input = ({ children, size, className, name, onChange, ...props }) => {
-  const { control } = useFormContext();
-
-  const { field } = useController({
-    name,
-    control,
-  });
-
-  const handleChange = (event) => {
-    field.onChange(event);
-    onChange?.(event);
-  };
-
+export const InputContainer = ({ children, size }) => {
   return (
     <div
-      className={cn('input__container', className, {
+      className={cn('input__container', {
         [`input__container_size_${size}`]: size,
       })}
     >
-      <input
-        className="form__input"
-        {...field}
-        {...props}
-        value={field.value}
-        onChange={handleChange}
-      />
       {children}
     </div>
   );

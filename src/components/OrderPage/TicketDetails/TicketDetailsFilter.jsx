@@ -1,6 +1,10 @@
 import './style.sass';
 
-import { DateInput } from '../../Input';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+
+import { DateInput, Input } from '../../Input';
 import { HoursRangeSlider, RangeSlider } from './RangeSlider';
 
 import { ReactComponent as SecondClassIcon } from 'assets/icons/second_class.svg';
@@ -16,33 +20,86 @@ import {
   TicketDetailsHeader,
   TicketDetailsSection,
 } from './TicketDetails';
+import { Form } from 'lib/Form';
+import { updateQueryParams } from 'reducers/search';
+import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
 
 const switchList = [
-  { name: 'second_class', icon: SecondClassIcon, label: 'Купе' },
-  { name: 'third_class', icon: ThirdClassIcon, label: 'Плацкарт' },
-  { name: 'fourth_class', icon: FourthClassIcon, label: 'Сидячий' },
-  { name: 'first_class', icon: FirstClassIcon, label: 'Люкс' },
-  { name: 'wifi', icon: WiFiIcon, label: 'Wi-Fi' },
-  { name: 'express', icon: SecondClassIcon, label: 'Экспресс' },
+  { name: 'have_second_class', icon: SecondClassIcon, label: 'Купе' },
+  { name: 'have_third_class', icon: ThirdClassIcon, label: 'Плацкарт' },
+  { name: 'have_fourth_class', icon: FourthClassIcon, label: 'Сидячий' },
+  { name: 'have_first_class', icon: FirstClassIcon, label: 'Люкс' },
+  { name: 'have_wifi', icon: WiFiIcon, label: 'Wi-Fi' },
+  { name: 'have_express', icon: SecondClassIcon, label: 'Экспресс' },
 ];
 
 export const TicketDetailsFilter = () => {
+  const form = useForm({
+    defaultValues: {
+      date_start: '',
+      date_end: '',
+      have_first_class: false,
+      have_second_class: false,
+      have_third_class: false,
+      have_fourth_class: false,
+      have_wifi: false,
+      have_air_conditioning: false,
+      have_express: false,
+      price_from: 1900,
+      price_to: 7000,
+    },
+  });
+
+  const dispatch = useDispatch();
+
+  const onSubmit = () => {};
+
+  const { setValue } = form;
+
+  const onFieldChange = (e) => {
+    console.log('fieldchange', e);
+    dispatch(updateQueryParams({ [e.target.name]: e.target.checked }));
+  };
+
+  const [dates, setDates] = useState({ start: null, end: null });
+
+  const onSelectStartDate = (date) => {
+    setDates((prev) => ({ ...prev, start: date }));
+  };
+
+  const onSelectEndDate = (date) => {
+    setDates((prev) => ({ ...prev, end: date }));
+  };
+  useSetValuesByQuery(form.getValues(), setValue);
+
   return (
     <TicketDetails>
-      <form action="" className="ticket-filter__form">
+      <Form form={form} className="ticket-filter__form" onSubmit={onSubmit}>
         <TicketDetailsSection isExpandable={false}>
           <div className="ticket-filter__form_dates">
             <label className="ticket-filter__form_label">
               <h4 className="header_size_s text_light ticket-filter__form_title">
                 Дата поездки
               </h4>
-              <DateInput size="s" />
+              <DateInput
+                name="date_start"
+                onSelectDate={onSelectStartDate}
+                selected={dates.start}
+                endDate={dates.end}
+                size="s"
+              />
             </label>
             <label className="ticket-filter__form_label">
               <h4 className="header_size_s text_light ticket-filter__form_title">
                 Дата возвращения
               </h4>
-              <DateInput size="s" />
+              <DateInput
+                name="date_end"
+                onSelectDate={onSelectEndDate}
+                selected={dates.end}
+                startDate={dates.start}
+                size="s"
+              />
             </label>
           </div>
         </TicketDetailsSection>
@@ -51,7 +108,11 @@ export const TicketDetailsFilter = () => {
           <ul className="form__switch_list">
             {switchList.map((props) => (
               <li className="form__switch_item">
-                <CheckboxLabel key={props.name} {...props} />
+                <CheckboxLabel
+                  {...props}
+                  onChange={onFieldChange}
+                  key={props.name}
+                />
               </li>
             ))}
           </ul>
@@ -104,7 +165,7 @@ export const TicketDetailsFilter = () => {
         >
           <TimeRangeSliders name="return" />
         </TicketDetailsSection>
-      </form>
+      </Form>
     </TicketDetails>
   );
 };
@@ -128,22 +189,27 @@ const TimeRangeSliders = ({ name }) => {
   );
 };
 
-export const CheckboxLabel = ({ name, label, icon: Icon }) => {
+export const CheckboxLabel = ({ name, label, icon: Icon, ...props }) => {
   return (
     <label className="checkbox__label">
       <div className="checkbox__icon_wrapper">
         <Icon className="checkbox__icon" />
       </div>
       <span className="checkbox__label_text">{label}</span>
-      <CheckboxInput name={name} />
+      <CheckboxInput {...props} name={name} />
     </label>
   );
 };
 
-export const CheckboxInput = ({ name }) => {
+export const CheckboxInput = ({ ...props }) => {
   return (
     <div className="input_checkbox_wrapper">
-      <input className="input_checkbox" type="checkbox" name={name} />
+      <Input
+        {...props}
+        className="input_checkbox"
+        type="checkbox"
+        name={props.name}
+      />
       <div className="input_checkbox_slider"></div>
     </div>
   );

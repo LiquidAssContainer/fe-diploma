@@ -1,8 +1,10 @@
-import { Icon } from '../TicketDetails/TicketDetails';
 import './style.sass';
-import { ReactComponent as CheckedIcon } from 'assets/icons/checked.svg';
 
-export const OrderInput = ({ label, type, placeholder, name }) => {
+import { Icon } from '../TicketDetails/TicketDetails';
+import { ReactComponent as CheckedIcon } from 'assets/icons/checked.svg';
+import { Input } from 'components/Input';
+
+export const OrderInput = ({ label, type, placeholder, name, ...props }) => {
   return (
     <div className="order__input_container">
       {label && (
@@ -10,7 +12,7 @@ export const OrderInput = ({ label, type, placeholder, name }) => {
           {label}
         </label>
       )}
-      <input
+      <Input
         className="order__input"
         type={type}
         name={name}
@@ -26,10 +28,11 @@ export const OrderCheckboxInput = ({
   name,
   textSize = 'm',
   type = 'checkbox',
+  ...props
 }) => {
   return (
     <label className="order__checkbox">
-      <input className="order__checkbox_input" type={type} name={name} />
+      <Input className="order__checkbox_input" type={type} name={name} />
       <div className="order__checkbox_input_box">
         <Icon
           wrapperClassName="order__checkbox_input_checked-icon"

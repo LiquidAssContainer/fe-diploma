@@ -12,10 +12,13 @@ import {
   clearCitiesList,
   getCitiesAsync,
   getDirectionsAsync,
+  updateQueryParams,
 } from 'reducers/search';
 import { DateInput, LocationInput } from '../Input';
 import { Header } from 'components/Header';
 import { Form } from 'lib/Form';
+import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
+import { useWatchQueryParams } from 'hooks/useWatchQueryParams';
 
 export const SearchTicketsForm = ({ isSquare }) => {
   const form = useForm({
@@ -26,10 +29,12 @@ export const SearchTicketsForm = ({ isSquare }) => {
       date_end: '',
     },
   });
+
+  const { queryString, citiesList } = useSelector((state) => state.search);
   const history = useHistory();
   const location = useLocation();
-
-  const { setValue } = form;
+  const dispatch = useDispatch();
+  const { setValue, getValues } = form;
 
   const [dates, setDates] = useState({ start: null, end: null });
 
@@ -42,13 +47,22 @@ export const SearchTicketsForm = ({ isSquare }) => {
   };
 
   const onSubmit = (data) => {
-    dispatch(getDirectionsAsync(data));
+    const findCityId = (name, list) => {
+      if (!name || !list) return;
+      const city = list.find((city) => city.name === name);
+      return city?._id || name;
+    };
+
+    const { from_city, to_city } = getValues();
+    const from_city_id = findCityId(from_city, citiesList.from_city);
+    const to_city_id = findCityId(to_city, citiesList.to_city);
+
+    dispatch(updateQueryParams({ ...data, from_city_id, to_city_id }));
+
     if (location.pathname !== '/order/tickets/tickets') {
       history.push('/order/tickets/tickets');
     }
   };
-
-  const dispatch = useDispatch();
 
   const onChangeSearch = (fieldName, searchString) => {
     if (searchString) {
@@ -57,6 +71,9 @@ export const SearchTicketsForm = ({ isSquare }) => {
       dispatch(clearCitiesList(fieldName));
     }
   };
+
+  useSetValuesByQuery(form.getValues(), setValue);
+  useWatchQueryParams(queryString, () => dispatch(getDirectionsAsync()));
 
   return (
     <Form

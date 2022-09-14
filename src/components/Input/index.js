@@ -1,1 +1,1 @@
-export { EmailInput, DateInput, LocationInput } from './Input';
+export { Input, EmailInput, DateInput, LocationInput } from './Input';

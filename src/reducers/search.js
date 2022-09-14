@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import qs from 'qs';
+import { apiService } from 'services/apiService';
 
 const initialState = {
-  // departureCitySearch: { searchString: '', citiesList: [] },
-  // departureCity: { id: null, name: null },
-  // arrivalCity: { id: null, name: null },
-  // departureDate: '',
-  // arrivalDate: '',
+  departureCitySearch: { searchString: '', citiesList: [] },
+  departureCity: { id: null, name: null },
+  arrivalCity: { id: null, name: null },
+  departureDate: '',
+  arrivalDate: '',
   citiesList: { to_city: [], from_city: [] },
   cities: {
     'arrival-city': { id: null, name: '' },
@@ -18,15 +19,17 @@ const initialState = {
   page: 1,
   limit: 5,
   sortBy: 'date',
+  queryParams: {},
+  queryString: '',
 };
 
 export const getCitiesAsync = createAsyncThunk(
   'search/fetchCities',
   async ({ searchString, fieldName }, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/routes/cities?name=${searchString}`,
-      );
+      const response = await apiService.routes.citiesList({
+        name: searchString,
+      });
 
       const data = await response.json();
       return { fieldName, data };
@@ -38,36 +41,15 @@ export const getCitiesAsync = createAsyncThunk(
 
 export const getDirectionsAsync = createAsyncThunk(
   'search/fetchDirections',
-  async (
-    { from_city, to_city, ...formData },
-    { rejectWithValue, getState },
-  ) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
-      const findCityId = (name, list) => {
-        const city = list.find((city) => city.name === name);
-        return city?._id || name;
-      };
-
       const {
-        search: {
-          citiesList: { to_city: to_city_list, from_city: from_city_list },
-        },
+        search: { queryString },
       } = getState();
 
-      const from_city_id = findCityId(from_city, from_city_list);
-      const to_city_id = findCityId(to_city, to_city_list);
-      const qsdata = { ...formData, from_city_id, to_city_id };
-
-      const queryString = qs.stringify(qsdata, {
-        addQueryPrefix: true,
-        // skipNulls: true,
-      });
-      const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/routes${queryString}`,
-      );
-
-      const data = await response.json();
-      return data;
+      const queryParsed = qs.parse(queryString, { ignoreQueryPrefix: true });
+      const response = await apiService.routes.routesList(queryParsed);
+      return await response.json();
     } catch (e) {
       return rejectWithValue('Что-то пошло не так :(');
     }
@@ -82,46 +64,7 @@ export const getLastDirectionsAsync = createAsyncThunk(
         `${process.env.REACT_APP_BASE_URL}/routes/last`,
       );
 
-      const data = await response.json();
-      return data;
-    } catch (e) {
-      return rejectWithValue('Что-то пошло не так :(');
-    }
-  },
-);
-
-export const getLastTicketsAsync = createAsyncThunk(
-  'search/fetchLastTickets',
-  async (
-    { from_city, to_city, ...formData },
-    { rejectWithValue, getState },
-  ) => {
-    try {
-      const findCityId = (name, list) => {
-        const city = list.find((city) => city.name === name);
-        return city?.id || name;
-      };
-
-      const {
-        search: {
-          citiesList: { to_city: to_city_list, from_city: from_city_list },
-        },
-      } = getState();
-
-      const from_city_id = findCityId(from_city, from_city_list);
-      const to_city_id = findCityId(to_city, to_city_list);
-      const qsdata = { ...formData, from_city_id, to_city_id };
-
-      const queryString = qs.stringify(qsdata, {
-        addQueryPrefix: true,
-        // skipNulls: true,
-      });
-      const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/routes?${queryString}`,
-      );
-
-      const data = await response.json();
-      return { data };
+      return await response.json();
     } catch (e) {
       return rejectWithValue('Что-то пошло не так :(');
     }
@@ -138,8 +81,21 @@ export const searchSlice = createSlice({
     clearCitiesList: (state, { payload }) => {
       state.citiesList[payload] = [];
     },
-    changeSearchParameter: (state, { payload: { name, value } }) => {
-      state[name] = value;
+    // changeSearchParameter: (state, { payload: { name, value } }) => {
+    //   state[name] = value;
+    // },
+    updateQueryParams: (state, { payload }) => {
+      state.queryParams = {
+        ...state.queryParams,
+        ...payload,
+      };
+      state.queryString = qs.stringify(state.queryParams, {
+        addQueryPrefix: true,
+        filter: (_, value) => value || undefined,
+      });
+    },
+    updateQueryString: (state, { payload }) => {
+      state.queryString = payload;
     },
   },
   extraReducers: {
@@ -159,7 +115,12 @@ export const searchSlice = createSlice({
   },
 });
 
-export const { changeSearchString, clearCitiesList, changeSearchParameter } =
-  searchSlice.actions;
+export const {
+  changeSearchString,
+  clearCitiesList,
+  // changeSearchParameter,
+  updateQueryString,
+  updateQueryParams,
+} = searchSlice.actions;
 
 export const searchReducer = searchSlice.reducer;

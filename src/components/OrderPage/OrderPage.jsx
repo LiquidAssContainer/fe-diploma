@@ -1,6 +1,13 @@
 import './style.sass';
 
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  HashRouter as Router,
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
 
 import { PageHeader } from '../PageHeader';
 import { SearchTicketsForm } from '../SearchTicketsForm';
@@ -20,8 +27,14 @@ import cn from 'classnames';
 import { Button } from 'components/Button';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { getLastDirectionsAsync } from 'reducers/search';
+import {
+  getDirectionsAsync,
+  getLastDirectionsAsync,
+  updateQueryParams,
+} from 'reducers/search';
 import { formatNumber } from 'lib/helpers';
+import { useEffect } from 'react';
+import qs from 'qs';
 
 export const OrderPage = ({
   match: {
@@ -29,7 +42,9 @@ export const OrderPage = ({
   },
 }) => {
   const dispatch = useDispatch();
-  dispatch(getLastDirectionsAsync());
+  useEffect(() => {
+    dispatch(getLastDirectionsAsync());
+  }, []);
 
   return (
     <>
@@ -43,7 +58,7 @@ export const OrderPage = ({
           <aside className="order-page__aside">
             {step === 'tickets' ? (
               <>
-                {/* <TicketDetailsFilter /> */}
+                <TicketDetailsFilter />
                 <LastTickets />
               </>
             ) : (

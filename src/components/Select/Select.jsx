@@ -4,9 +4,11 @@ import cn from 'classnames';
 import { useRef, useState } from 'react';
 
 import { useOnClickOutside } from 'hooks/useOnClickOutside';
+import { useEffect } from 'react';
 
-export const Select = ({ className, optionsList }) => {
+export const Select = ({ className, optionsList, selected, onSelect }) => {
   const ref = useRef();
+
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(0);
 
@@ -17,19 +19,9 @@ export const Select = ({ className, optionsList }) => {
   const setSelectedThenCloseDropdown = (index) => {
     setSelectedOption(index);
     setIsOptionsOpen(false);
-  };
 
-  const handleKeyDown = (index) => (e) => {
-    switch (e.key) {
-      case ' ':
-      case 'SpaceBar':
-      case 'Enter':
-        e.preventDefault();
-        setSelectedThenCloseDropdown(index);
-        break;
-      default:
-        break;
-    }
+    const value = optionsList[index].value;
+    onSelect(value);
   };
 
   const handleListKeyDown = (e) => {
@@ -50,6 +42,12 @@ export const Select = ({ className, optionsList }) => {
           selectedOption == optionsList.length - 1 ? 0 : selectedOption + 1,
         );
         break;
+      case ' ':
+      case 'SpaceBar':
+      case 'Enter':
+        e.preventDefault();
+        setSelectedThenCloseDropdown(selectedOption);
+        break;
       default:
         break;
     }
@@ -60,6 +58,13 @@ export const Select = ({ className, optionsList }) => {
       setIsOptionsOpen(false);
     }
   });
+
+  useEffect(() => {
+    const valueIndex = optionsList.findIndex(
+      (option) => option.value === selected,
+    );
+    setSelectedOption(valueIndex);
+  }, [selected]);
 
   return (
     <div className={cn('select__container', className)}>
@@ -88,7 +93,6 @@ export const Select = ({ className, optionsList }) => {
             role="option"
             aria-selected={selectedOption == index}
             tabIndex={0}
-            onKeyDown={handleKeyDown(index)}
             onClick={() => {
               setSelectedThenCloseDropdown(index);
             }}
