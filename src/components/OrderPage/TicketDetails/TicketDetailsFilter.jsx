@@ -45,8 +45,16 @@ export const TicketDetailsFilter = () => {
       have_wifi: false,
       have_air_conditioning: false,
       have_express: false,
-      price_from: 1900,
-      price_to: 7000,
+      price_from: 0,
+      price_to: 10000,
+      start_departure_hour_from: 0,
+      start_departure_hour_to: 24,
+      start_arrival_hour_from: 0,
+      start_arrival_hour_to: 24,
+      end_departure_hour_from: 0,
+      end_departure_hour_to: 24,
+      end_arrival_hour_from: 0,
+      end_arrival_hour_to: 24,
     },
   });
 
@@ -70,6 +78,15 @@ export const TicketDetailsFilter = () => {
   const onSelectEndDate = (date) => {
     setDates((prev) => ({ ...prev, end: date }));
   };
+
+  const onRangeChange = ([from, to], [fromValue, toValue]) => {
+    setValue(from, fromValue);
+    setValue(to, toValue);
+    dispatch(updateQueryParams({ [from]: fromValue, [to]: toValue }));
+  };
+
+  const { price_from, price_to } = form.getValues();
+
   useSetValuesByQuery(form.getValues(), setValue);
 
   return (
@@ -122,6 +139,8 @@ export const TicketDetailsFilter = () => {
           <h4 className="header_size_s text_light">Стоимость</h4>
           <div className="range-slider__container">
             <RangeSlider
+              names={['price_from', 'price_to']}
+              onRangeChange={onRangeChange}
               labelSlot={
                 <div className="range-slider__from-and-to">
                   <div className="range-slider__from-and-to_item">от</div>
@@ -146,7 +165,13 @@ export const TicketDetailsFilter = () => {
             />
           }
         >
-          <TimeRangeSliders name="forward" />
+          <TimeRangeSliders
+            names={[
+              ['start_departure_hour_from', 'start_departure_hour_to'],
+              ['start_arrival_hour_from', 'start_arrival_hour_to'],
+            ]}
+            onRangeChange={onRangeChange}
+          />
         </TicketDetailsSection>
 
         <TicketDetailsSection
@@ -163,22 +188,30 @@ export const TicketDetailsFilter = () => {
             />
           }
         >
-          <TimeRangeSliders name="return" />
+          <TimeRangeSliders
+            names={[
+              ['end_departure_hour_from', 'end_departure_hour_to'],
+              ['end_arrival_hour_from', 'end_arrival_hour_to'],
+            ]}
+            onRangeChange={onRangeChange}
+          />
         </TicketDetailsSection>
       </Form>
     </TicketDetails>
   );
 };
 
-const TimeRangeSliders = ({ name }) => {
+const TimeRangeSliders = ({ names, onRangeChange }) => {
   return (
     <div className="range-slider__container">
       <HoursRangeSlider
-        name={name}
+        names={names[0]}
+        onRangeChange={onRangeChange}
         labelSlot={<div className="range-slider__title">Время отбытия</div>}
       />
       <HoursRangeSlider
-        name={name}
+        names={names[1]}
+        onRangeChange={onRangeChange}
         labelSlot={
           <div className="range-slider__title range-slider__title_right">
             Время прибытия

@@ -12,6 +12,7 @@ import {
   clearCitiesList,
   getCitiesAsync,
   getDirectionsAsync,
+  invertCities,
   updateQueryParams,
 } from 'reducers/search';
 import { DateInput, LocationInput } from '../Input';
@@ -30,13 +31,15 @@ export const SearchTicketsForm = ({ isSquare }) => {
     },
   });
 
-  const { queryString, citiesList } = useSelector((state) => state.search);
+  const { queryString, cityList } = useSelector((state) => state.search);
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
   const { setValue, getValues } = form;
 
   const [dates, setDates] = useState({ start: null, end: null });
+
+  const { from_city: fromCityList, to_city: toCityList } = cityList;
 
   const onSelectStartDate = (date) => {
     setDates((prev) => ({ ...prev, start: date }));
@@ -54,8 +57,8 @@ export const SearchTicketsForm = ({ isSquare }) => {
     };
 
     const { from_city, to_city } = getValues();
-    const from_city_id = findCityId(from_city, citiesList.from_city);
-    const to_city_id = findCityId(to_city, citiesList.to_city);
+    const from_city_id = findCityId(from_city, cityList.from_city);
+    const to_city_id = findCityId(to_city, cityList.to_city);
 
     dispatch(updateQueryParams({ ...data, from_city_id, to_city_id }));
 
@@ -70,6 +73,14 @@ export const SearchTicketsForm = ({ isSquare }) => {
     } else {
       dispatch(clearCitiesList(fieldName));
     }
+  };
+
+  const onClickInvertCities = () => {
+    const { from_city, to_city } = form.getValues();
+    setValue('from_city', to_city);
+    setValue('to_city', from_city);
+
+    dispatch(invertCities());
   };
 
   useSetValuesByQuery(form.getValues(), setValue);
@@ -91,8 +102,13 @@ export const SearchTicketsForm = ({ isSquare }) => {
               name="from_city"
               placeholder="Откуда"
               onChange={onChangeSearch}
+              cityList={fromCityList}
             />
-            <button className="form__button_inverse" type="button">
+            <button
+              className="form__button_inverse"
+              type="button"
+              onClick={onClickInvertCities}
+            >
               <InverseBtnIcon />
             </button>
             <CitySelectInput
@@ -100,6 +116,7 @@ export const SearchTicketsForm = ({ isSquare }) => {
               placeholder="Куда"
               setValue={setValue}
               onChange={onChangeSearch}
+              cityList={toCityList}
             />
           </div>
         </div>
@@ -132,11 +149,9 @@ export const SearchTicketsForm = ({ isSquare }) => {
   );
 };
 
-const CitySelectInput = ({ name, placeholder, onChange }) => {
+const CitySelectInput = ({ name, placeholder, onChange, cityList }) => {
   const ref = useRef();
   const [isCitySelectOpen, setIsCitySelectOpen] = useState(false);
-
-  const { citiesList } = useSelector((state) => state.search);
 
   const { setValue } = useFormContext();
 
@@ -164,7 +179,7 @@ const CitySelectInput = ({ name, placeholder, onChange }) => {
         onFocus={() => setIsCitySelectOpen(true)}
       />
       <CitySelect
-        citiesList={citiesList[name]}
+        cityList={cityList}
         onClick={onClickCity}
         isOpen={isCitySelectOpen}
       />
@@ -172,10 +187,10 @@ const CitySelectInput = ({ name, placeholder, onChange }) => {
   );
 };
 
-const CitySelect = ({ citiesList, onClick, isOpen }) => {
+const CitySelect = ({ cityList, onClick, isOpen }) => {
   return isOpen ? (
     <ul className="city-select__list">
-      {citiesList.map(({ name: city }) => (
+      {cityList.map(({ name: city }) => (
         <CitySelectItem key={city} city={city} onClick={() => onClick(city)} />
       ))}
     </ul>

@@ -171,7 +171,9 @@ const Stepper = ({ activeStep }) => {
     <div className="steps__list_wrapper">
       <ul className="steps__list">
         {steps.map((step, i) => {
-          return <Step {...step} i={i} isColored={i <= activeStepIndex} />;
+          return (
+            <Step key={i} {...step} i={i} isColored={i <= activeStepIndex} />
+          );
         })}
       </ul>
     </div>

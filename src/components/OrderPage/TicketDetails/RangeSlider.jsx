@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import Slider from 'rc-slider';
 
 import 'rc-slider/assets/index.css';
+import { useEffect } from 'react';
+import { useForm, useFormContext, useWatch } from 'react-hook-form';
 
 const railHeights = {
   s: 10,
@@ -33,16 +35,34 @@ export const HoursRangeSlider = (props) => {
 
 export const RangeSlider = ({
   labelSlot,
-  min = 1920,
-  max = 6950,
+  min = 0,
+  max = 10000,
   step = 100,
   size = 'l',
+  names,
   markSuffix = '',
+  onRangeChange,
 }) => {
+  const { control } = useFormContext();
+
+  const fromValue = useWatch({ control, name: names[0] });
+  const toValue = useWatch({ control, name: names[1] });
+  const [values, setValues] = useState([fromValue, toValue]);
+
   const minValue = Math.floor(min / step) * step;
   const maxValue = Math.ceil(max / step) * step;
-  const [values, setValues] = useState([minValue, maxValue]);
-  const onChange = (values) => setValues(values);
+
+  const onChange = (values) => {
+    setValues(values);
+  };
+
+  const onAfterChange = (values) => {
+    onRangeChange(names, values);
+  };
+
+  useEffect(() => {
+    setValues([fromValue, toValue]);
+  }, [fromValue, toValue]);
 
   return (
     <div className={classNames('range-slider', `range-slider__size_${size}`)}>
@@ -52,7 +72,8 @@ export const RangeSlider = ({
         max={maxValue}
         range
         onChange={onChange}
-        defaultValue={[minValue, maxValue]}
+        onAfterChange={onAfterChange}
+        value={values}
         step={step}
         dotStyle={{ display: 'none' }}
         trackStyle={{
