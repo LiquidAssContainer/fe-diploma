@@ -9,6 +9,9 @@ import { DatePicker } from 'components/DatePicker';
 import { ReactComponent as LocationIcon } from '../../assets/icons/location.svg';
 import { ReactComponent as CalendarIcon } from '../../assets/icons/calendar.svg';
 
+const parseDate = (date) => date && parseISO(date);
+const formatDate = (date) => format(date, 'yyyy-MM-dd');
+
 export const Input = ({
   className,
   name,
@@ -55,25 +58,23 @@ export const DateInput = ({
   size,
   startDate,
   endDate,
-  onSelectDate,
+  onChangeDate,
   selected,
   ...props
 }) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
-  const [value, setValue] = useState('');
-
-  const formatDate = (date) => {
-    format(date, 'yyyy-MM-dd');
-  };
 
   const onClick = () => {
     setIsPickerOpen(!isPickerOpen);
   };
 
-  const onChangeDate = (item) => {
-    const parsed = parseISO(item.target.value);
-    setValue(item.target.value);
-    onSelectDate(parsed);
+  const handleInputChange = ({ target: { value } }) => {
+    if (value) onChangeDate(name, value);
+  };
+
+  const handleDateSelect = (date) => {
+    const formattedDate = formatDate(date);
+    onChangeDate(name, formattedDate);
   };
 
   return (
@@ -83,10 +84,9 @@ export const DateInput = ({
           name={name}
           size={size}
           type="date"
-          value={value}
-          min={startDate && formatDate(startDate)}
-          max={endDate && formatDate(endDate)}
-          onChange={onChangeDate}
+          min={startDate}
+          max={endDate}
+          onChange={handleInputChange}
           {...props}
         />
         <button
@@ -100,10 +100,10 @@ export const DateInput = ({
 
       {isPickerOpen && (
         <DatePicker
-          onSelectDate={onSelectDate}
-          selected={selected}
-          startDate={startDate}
-          endDate={endDate}
+          onSelect={handleDateSelect}
+          selected={parseDate(selected)}
+          startDate={parseDate(startDate)}
+          endDate={parseDate(endDate)}
         />
       )}
     </div>

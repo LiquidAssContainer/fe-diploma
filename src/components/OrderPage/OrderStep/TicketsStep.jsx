@@ -41,7 +41,7 @@ export const SearchTickets = () => {
 
   return (
     <>
-      <Form form={form} onSubmit={() => console.log('submit')}>
+      <Form form={form}>
         <div className="results__info">
           <div className="results__amount">найдено {resultsCount}</div>
           <SortBySelect

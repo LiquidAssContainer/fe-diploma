@@ -31,11 +31,7 @@ const DatePickerCaption = ({ displayMonth, locale }) => {
   );
 };
 
-export const DatePicker = ({ onSelectDate, startDate, endDate, selected }) => {
-  // const onSelect = (date) => {
-  //   onSelectDate(date);
-  // };
-
+export const DatePicker = ({ onSelect, startDate, endDate, selected }) => {
   return (
     <DayPicker
       mode="single"
@@ -43,7 +39,7 @@ export const DatePicker = ({ onSelectDate, startDate, endDate, selected }) => {
       showOutsideDays
       hideHead
       locale={locale}
-      onSelect={onSelectDate}
+      onSelect={onSelect}
       disabled={[
         { before: startDate || new Date() },
         { after: endDate || addMonths(new Date(), 11) },

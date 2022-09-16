@@ -35,18 +35,15 @@ export const SearchTicketsForm = ({ isSquare }) => {
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { setValue, getValues } = form;
+  const { setValue, getValues, watch } = form;
 
-  const [dates, setDates] = useState({ start: null, end: null });
+  const dateStart = watch('date_start');
+  const dateEnd = watch('date_end');
 
   const { from_city: fromCityList, to_city: toCityList } = cityList;
 
-  const onSelectStartDate = (date) => {
-    setDates((prev) => ({ ...prev, start: date }));
-  };
-
-  const onSelectEndDate = (date) => {
-    setDates((prev) => ({ ...prev, end: date }));
+  const onChangeDate = (name, date) => {
+    setValue(name, date);
   };
 
   const onSubmit = (data) => {
@@ -127,16 +124,16 @@ export const SearchTicketsForm = ({ isSquare }) => {
           <div className="tickets__form_inputs_group">
             <DateInput
               name="date_start"
-              onSelectDate={onSelectStartDate}
-              selected={dates.start}
-              endDate={dates.end}
+              onChangeDate={onChangeDate}
+              selected={dateStart}
+              endDate={dateEnd}
               size="l"
             />
             <DateInput
               name="date_end"
-              onSelectDate={onSelectEndDate}
-              selected={dates.end}
-              startDate={dates.start}
+              onChangeDate={onChangeDate}
+              selected={dateEnd}
+              startDate={dateStart}
               size="l"
             />
           </div>

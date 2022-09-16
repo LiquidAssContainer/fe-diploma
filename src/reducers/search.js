@@ -14,9 +14,12 @@ const initialState = {
   resultsCount: 0,
   lastDirections: [],
   page: 1,
-  limit: 5,
-  sortBy: 'date',
-  queryParams: { from_city_id: '', to_city_id: '' },
+  queryParams: {
+    from_city_id: '',
+    to_city_id: '',
+    date_start: '',
+    date_end: '',
+  },
   queryString: '',
 };
 

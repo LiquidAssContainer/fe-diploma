@@ -23,6 +23,7 @@ import {
 import { Form } from 'lib/Form';
 import { updateQueryParams } from 'reducers/search';
 import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
+import { useSelector } from 'react-redux';
 
 const switchList = [
   { name: 'have_second_class', icon: SecondClassIcon, label: 'Купе' },
@@ -60,6 +61,10 @@ export const TicketDetailsFilter = () => {
 
   const dispatch = useDispatch();
 
+  const {
+    queryParams: { date_start, date_end },
+  } = useSelector((state) => state.search);
+
   const onSubmit = () => {};
 
   const { setValue } = form;
@@ -69,23 +74,16 @@ export const TicketDetailsFilter = () => {
     dispatch(updateQueryParams({ [e.target.name]: e.target.checked }));
   };
 
-  const [dates, setDates] = useState({ start: null, end: null });
-
-  const onSelectStartDate = (date) => {
-    setDates((prev) => ({ ...prev, start: date }));
-  };
-
-  const onSelectEndDate = (date) => {
-    setDates((prev) => ({ ...prev, end: date }));
-  };
-
   const onRangeChange = ([from, to], [fromValue, toValue]) => {
     setValue(from, fromValue);
     setValue(to, toValue);
     dispatch(updateQueryParams({ [from]: fromValue, [to]: toValue }));
   };
 
-  const { price_from, price_to } = form.getValues();
+  const onChangeDate = (name, date) => {
+    setValue(name, date);
+    dispatch(updateQueryParams({ [name]: date }));
+  };
 
   useSetValuesByQuery(form.getValues(), setValue);
 
@@ -100,9 +98,9 @@ export const TicketDetailsFilter = () => {
               </h4>
               <DateInput
                 name="date_start"
-                onSelectDate={onSelectStartDate}
-                selected={dates.start}
-                endDate={dates.end}
+                onChangeDate={onChangeDate}
+                selected={date_start}
+                endDate={date_end}
                 size="s"
               />
             </label>
@@ -112,9 +110,9 @@ export const TicketDetailsFilter = () => {
               </h4>
               <DateInput
                 name="date_end"
-                onSelectDate={onSelectEndDate}
-                selected={dates.end}
-                startDate={dates.start}
+                onChangeDate={onChangeDate}
+                selected={date_end}
+                startDate={date_start}
                 size="s"
               />
             </label>
