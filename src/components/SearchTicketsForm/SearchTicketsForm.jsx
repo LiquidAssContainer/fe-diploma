@@ -13,7 +13,6 @@ import {
   getCitiesAsync,
   getDirectionsAsync,
   invertCities,
-  setNoFetch,
   updateQueryParams,
 } from 'reducers/search';
 import { DateInput, LocationInput } from '../Input';
@@ -32,9 +31,7 @@ export const SearchTicketsForm = ({ isSquare }) => {
     },
   });
 
-  const { queryString, cityList, noFetch } = useSelector(
-    (state) => state.search,
-  );
+  const { queryString, cityList } = useSelector((state) => state.search);
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -90,11 +87,7 @@ export const SearchTicketsForm = ({ isSquare }) => {
   };
 
   const handleQueryUpdate = () => {
-    if (noFetch) {
-      dispatch(setNoFetch(false));
-    } else {
-      dispatch(getDirectionsAsync());
-    }
+    dispatch(getDirectionsAsync());
   };
 
   useSetValuesByQuery(form.getValues(), setValue);

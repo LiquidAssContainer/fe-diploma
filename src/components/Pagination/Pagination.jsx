@@ -53,7 +53,7 @@ export const Pagination = ({ perPage, total, currentPage, onPageChange }) => {
   const paginationList = setPaginationList(currentPage, pagesCount);
 
   return (
-    paginationList.length && (
+    paginationList.length > 0 && (
       <nav className="pagination__container">
         <ul className="pagination__list">
           <PaginationButton

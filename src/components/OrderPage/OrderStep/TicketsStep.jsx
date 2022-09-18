@@ -1,6 +1,6 @@
 import './style.sass';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm, useFormContext } from 'react-hook-form';
 
@@ -9,8 +9,8 @@ import { Ticket } from 'components/Ticket';
 import { Select } from 'components/Select';
 import { Input } from 'components/Input';
 import { Form } from 'lib/Form';
-import { setNoFetch, setPage, updateQueryParams } from 'reducers/search';
 
+import { updateQueryParams } from 'reducers/search';
 import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
 
 // export const TicketsStep = ({ stage }) => {
@@ -31,8 +31,7 @@ export const SearchTickets = () => {
   const dispatch = useDispatch();
   const {
     resultsCount,
-    currentPage,
-    pages,
+    resultItems,
     queryParams: { limit, offset },
   } = useSelector((state) => state.search);
 
@@ -46,16 +45,14 @@ export const SearchTickets = () => {
   const { sort } = form.getValues();
 
   const currentLimit = Number(limit || defaultLimit);
-  const results = pages[currentPage] || [];
+
+  const [page, setPage] = useState(1);
 
   const handlePaginate = (pageNumber) => {
-    if (pages[pageNumber]) {
-      dispatch(setNoFetch(true));
-    }
     dispatch(
       updateQueryParams({
         offset: (pageNumber - 1) * currentLimit,
-        resetPages: false,
+        resetOffset: false,
       }),
     );
   };
@@ -63,8 +60,8 @@ export const SearchTickets = () => {
   useSetValuesByQuery(form.getValues(), setValue);
 
   useEffect(() => {
-    const page = Number(offset) / currentLimit + 1;
-    dispatch(setPage(page));
+    const currentPage = Number(offset) / currentLimit + 1;
+    setPage(currentPage);
   }, [offset]);
 
   return (
@@ -86,7 +83,7 @@ export const SearchTickets = () => {
         </div>
       </Form>
       <ul className="tickets__list">
-        {results.map(({ departure }) => (
+        {resultItems.map(({ departure }) => (
           // НО МБ ЭТО КАК KEY НЕ ПОДХОДИТ???? // TODO
           <Ticket key={departure._id} {...departure} />
         ))}
@@ -94,7 +91,7 @@ export const SearchTickets = () => {
       <Pagination
         perPage={currentLimit}
         total={resultsCount}
-        currentPage={currentPage}
+        currentPage={page}
         onPageChange={handlePaginate}
       />
     </>
