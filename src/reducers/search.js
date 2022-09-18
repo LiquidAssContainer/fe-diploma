@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import qs from 'qs';
 import { apiService } from 'services/apiService';
 
@@ -10,15 +10,17 @@ const stringifyQuery = (params) =>
 
 const initialState = {
   cityList: { from_city: [], to_city: [] },
-  resultItems: [],
   resultsCount: 0,
   lastDirections: [],
-  page: 1,
+  currentPage: 1,
+  pages: {},
+  noFetch: false,
   queryParams: {
     from_city_id: '',
     to_city_id: '',
     date_start: '',
     date_end: '',
+    offset: 0,
   },
   queryString: '',
 };
@@ -40,6 +42,23 @@ export const getCitiesAsync = createAsyncThunk(
 );
 
 export const getDirectionsAsync = createAsyncThunk(
+  'search/fetchDirections',
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const {
+        search: { queryString },
+      } = getState();
+
+      const queryParsed = qs.parse(queryString, { ignoreQueryPrefix: true });
+      const response = await apiService.routes.routesList(queryParsed);
+      return await response.json();
+    } catch (e) {
+      return rejectWithValue('Что-то пошло не так :(');
+    }
+  },
+);
+
+export const getNextDirectionsAsync = createAsyncThunk(
   'search/fetchDirections',
   async (_, { rejectWithValue, getState }) => {
     try {
@@ -101,10 +120,24 @@ export const searchSlice = createSlice({
 
       state.queryString = stringifyQuery(state.queryParams);
     },
-    updateQueryParams: (state, { payload }) => {
+    setNoFetch: (state, { payload }) => {
+      state.noFetch = payload;
+    },
+    setPage: (state, { payload }) => {
+      state.currentPage = payload;
+    },
+    updateQueryParams: (
+      state,
+      { payload: { resetPages = true, ...params } },
+    ) => {
+      if (resetPages) {
+        state.currentPage = 1;
+        state.pages = {};
+        state.queryParams.offset = 0;
+      }
       state.queryParams = {
         ...state.queryParams,
-        ...payload,
+        ...params,
       };
       state.queryString = stringifyQuery(state.queryParams);
     },
@@ -120,8 +153,8 @@ export const searchSlice = createSlice({
       state,
       { payload: { total_count, items } },
     ) => {
-      state.resultItems = items;
       state.resultsCount = total_count;
+      state.pages[state.currentPage] = items;
     },
     [getLastDirectionsAsync.fulfilled]: (state, { payload }) => {
       state.lastDirections = payload;
@@ -135,6 +168,8 @@ export const {
   updateQueryString,
   updateQueryParams,
   invertCities,
+  setNoFetch,
+  setPage,
 } = searchSlice.actions;
 
 export const searchReducer = searchSlice.reducer;

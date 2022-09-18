@@ -65,13 +65,14 @@ export const TicketDetailsFilter = () => {
     queryParams: { date_start, date_end },
   } = useSelector((state) => state.search);
 
-  const onSubmit = () => {};
-
   const { setValue } = form;
 
   const onFieldChange = (e) => {
-    console.log('fieldchange', e);
-    dispatch(updateQueryParams({ [e.target.name]: e.target.checked }));
+    dispatch(
+      updateQueryParams({
+        [e.target.name]: e.target.checked,
+      }),
+    );
   };
 
   const onRangeChange = ([from, to], [fromValue, toValue]) => {
@@ -89,7 +90,7 @@ export const TicketDetailsFilter = () => {
 
   return (
     <TicketDetails>
-      <Form form={form} className="ticket-filter__form" onSubmit={onSubmit}>
+      <Form form={form} className="ticket-filter__form">
         <TicketDetailsSection isExpandable={false}>
           <div className="ticket-filter__form_dates">
             <label className="ticket-filter__form_label">

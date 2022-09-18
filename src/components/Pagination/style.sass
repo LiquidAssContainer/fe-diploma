@@ -1,13 +1,15 @@
 .pagination
   &__container
-    display: flex
-    justify-content: flex-end
-    gap: 35px
-    
     margin-top: 7vw
     margin-bottom: 10vw
 
-  &__element
+  &__list
+    display: flex
+    justify-content: flex-end
+    flex-wrap: wrap
+    gap: 35px
+
+  &__button
     display: flex
     justify-content: center
     align-items: center
@@ -21,21 +23,22 @@
     font-size: 30px
 
     color: #928F94
-    cursor: pointer
+    cursor: auto
 
     &_selected
       background-color: #FFA800
       border-color: #FFA800
       color: white
 
-    &:hover:not(.pagination__element_selected)
+    &:hover:not(&_selected):not(:disabled)
       border-color: #FFA800
       color: #FFA800
+      cursor: pointer
 
-      & > .pagination__element_chevron
+      & > .pagination__button_icon
         fill: #FFA800
 
-    &_chevron
+    &_icon
       width: 18px
       height: 29px
       fill: #928F94

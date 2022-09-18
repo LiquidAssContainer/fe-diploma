@@ -13,6 +13,7 @@ import {
   getCitiesAsync,
   getDirectionsAsync,
   invertCities,
+  setNoFetch,
   updateQueryParams,
 } from 'reducers/search';
 import { DateInput, LocationInput } from '../Input';
@@ -31,7 +32,9 @@ export const SearchTicketsForm = ({ isSquare }) => {
     },
   });
 
-  const { queryString, cityList } = useSelector((state) => state.search);
+  const { queryString, cityList, noFetch } = useSelector(
+    (state) => state.search,
+  );
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -57,7 +60,13 @@ export const SearchTicketsForm = ({ isSquare }) => {
     const from_city_id = findCityId(from_city, cityList.from_city);
     const to_city_id = findCityId(to_city, cityList.to_city);
 
-    dispatch(updateQueryParams({ ...data, from_city_id, to_city_id }));
+    dispatch(
+      updateQueryParams({
+        ...data,
+        from_city_id,
+        to_city_id,
+      }),
+    );
 
     if (location.pathname !== '/order/tickets/tickets') {
       history.push('/order/tickets/tickets');
@@ -80,8 +89,16 @@ export const SearchTicketsForm = ({ isSquare }) => {
     dispatch(invertCities());
   };
 
+  const handleQueryUpdate = () => {
+    if (noFetch) {
+      dispatch(setNoFetch(false));
+    } else {
+      dispatch(getDirectionsAsync());
+    }
+  };
+
   useSetValuesByQuery(form.getValues(), setValue);
-  useWatchQueryParams(queryString, () => dispatch(getDirectionsAsync()));
+  useWatchQueryParams(queryString, handleQueryUpdate);
 
   return (
     <Form

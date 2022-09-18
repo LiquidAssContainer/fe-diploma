@@ -1,14 +1,16 @@
 import './style.sass';
 
-import { Pagination } from 'components/Pagination';
-import { Ticket } from 'components/Ticket/Ticket';
-import { Select } from 'components/Select';
-import { useSelector } from 'react-redux';
-import { updateQueryParams } from 'reducers/search';
-import { useDispatch } from 'react-redux';
-import { Form } from 'lib/Form';
-import { Input } from 'components/Input';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useForm, useFormContext } from 'react-hook-form';
+
+import { Pagination } from 'components/Pagination';
+import { Ticket } from 'components/Ticket';
+import { Select } from 'components/Select';
+import { Input } from 'components/Input';
+import { Form } from 'lib/Form';
+import { setNoFetch, setPage, updateQueryParams } from 'reducers/search';
+
 import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
 
 // export const TicketsStep = ({ stage }) => {
@@ -17,6 +19,8 @@ import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
 
 const pageLimits = [5, 10, 20];
 
+const [defaultLimit] = pageLimits;
+
 const options = [
   { label: 'времени', value: 'date' },
   { label: 'стоимости', value: 'price' },
@@ -24,7 +28,13 @@ const options = [
 ];
 
 export const SearchTickets = () => {
-  const { resultItems, resultsCount } = useSelector((state) => state.search);
+  const dispatch = useDispatch();
+  const {
+    resultsCount,
+    currentPage,
+    pages,
+    queryParams: { limit, offset },
+  } = useSelector((state) => state.search);
 
   const form = useForm({
     defaultValues: {
@@ -32,12 +42,30 @@ export const SearchTickets = () => {
       sort: 'date',
     },
   });
-
   const { setValue } = form;
+  const { sort } = form.getValues();
 
-  const { limit, sort } = form.getValues();
+  const currentLimit = Number(limit || defaultLimit);
+  const results = pages[currentPage] || [];
+
+  const handlePaginate = (pageNumber) => {
+    if (pages[pageNumber]) {
+      dispatch(setNoFetch(true));
+    }
+    dispatch(
+      updateQueryParams({
+        offset: (pageNumber - 1) * currentLimit,
+        resetPages: false,
+      }),
+    );
+  };
 
   useSetValuesByQuery(form.getValues(), setValue);
+
+  useEffect(() => {
+    const page = Number(offset) / currentLimit + 1;
+    dispatch(setPage(page));
+  }, [offset]);
 
   return (
     <>
@@ -53,17 +81,22 @@ export const SearchTickets = () => {
           />
           <div className="results__amount-per-page">
             показывать по:
-            <AmountRadioGroup checked={limit} name="limit" />
+            <AmountRadioGroup checked={currentLimit} name="limit" />
           </div>
         </div>
       </Form>
       <ul className="tickets__list">
-        {resultItems.map(({ departure }) => (
+        {results.map(({ departure }) => (
           // НО МБ ЭТО КАК KEY НЕ ПОДХОДИТ???? // TODO
           <Ticket key={departure._id} {...departure} />
         ))}
       </ul>
-      <Pagination />
+      <Pagination
+        perPage={currentLimit}
+        total={resultsCount}
+        currentPage={currentPage}
+        onPageChange={handlePaginate}
+      />
     </>
   );
 };
