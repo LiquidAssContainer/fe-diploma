@@ -65,8 +65,8 @@ export const SearchTicketsForm = ({ isSquare }) => {
       }),
     );
 
-    if (location.pathname !== '/order/tickets/tickets') {
-      history.push('/order/tickets/tickets');
+    if (location.pathname !== '/search') {
+      history.push('/search');
     }
   };
 

@@ -1,50 +1,32 @@
 import './style.sass';
 
-import {
-  HashRouter as Router,
-  Route,
-  Switch,
-  useHistory,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
+import cn from 'classnames';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { PageHeader } from '../PageHeader';
 import { SearchTicketsForm } from '../SearchTicketsForm';
 import { TicketDetailsFilter, TicketDetailsInfo } from './TicketDetails';
-import { Pagination } from 'components/Pagination';
 import { Header } from 'components/Header';
-// import { PaymentStep, TicketsStep } from './OrderStep/TicketsStep';
 import {
   CheckStep,
   PassengersStep,
   PaymentStep,
-  TicketsStep,
+  SearchTickets,
 } from './OrderStep';
-import { ChoosePlaces, ChoosePlacesStep } from './OrderStep/ChoosePlacesStep';
-import { SearchTickets } from './OrderStep/TicketsStep';
-import cn from 'classnames';
+import { ChoosePlaces } from './OrderStep/ChoosePlacesStep';
 import { Button } from 'components/Button';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import {
-  getDirectionsAsync,
-  getLastDirectionsAsync,
-  updateQueryParams,
-} from 'reducers/search';
+import { getLastDirectionsAsync } from 'reducers/search';
 import { formatNumber } from 'lib/helpers';
-import { useEffect } from 'react';
-import qs from 'qs';
 
-export const OrderPage = ({
-  match: {
-    params: { step, stepStage },
-  },
-}) => {
+export const OrderPage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getLastDirectionsAsync());
   }, []);
+  const { step } = useSelector((state) => state.stepper);
 
   return (
     <>
@@ -56,7 +38,7 @@ export const OrderPage = ({
       <section className="order-page__content_wrapper">
         <div className="order-page__content">
           <aside className="order-page__aside">
-            {step === 'tickets' ? (
+            {step === 1 ? (
               <>
                 <TicketDetailsFilter />
                 <LastTickets />
@@ -68,19 +50,20 @@ export const OrderPage = ({
           <main className="order-page__main">
             {(() => {
               switch (step) {
-                case 'tickets':
-                  return stepStage === 'tickets' ? (
-                    <SearchTickets />
-                  ) : (
-                    <ChoosePlaces />
+                case 1:
+                  return (
+                    <Router>
+                      <Switch>
+                        <Route path="/search" component={SearchTickets} />
+                        <Route path="/seats/:id" component={ChoosePlaces} />
+                      </Switch>
+                    </Router>
                   );
-                case 'passengers':
+                case 2:
                   return <PassengersStep />;
-                case 'payment':
+                case 3:
                   return <PaymentStep />;
-                // case 'choose-place':
-                //   return <ChoosePlacesStep />;
-                case 'check':
+                case 4:
                   return <CheckStep />;
               }
             })()}
@@ -159,13 +142,13 @@ const LastTicketDirection = ({
 
 const Stepper = ({ activeStep }) => {
   const steps = [
-    { name: 'tickets', label: 'Билеты' },
-    { name: 'passengers', label: 'Пассажиры' },
-    { name: 'payment', label: 'Оплата' },
-    { name: 'check', label: 'Проверка' },
+    { number: 1, name: 'tickets', label: 'Билеты' },
+    { number: 2, name: 'passengers', label: 'Пассажиры' },
+    { number: 3, name: 'payment', label: 'Оплата' },
+    { number: 4, name: 'check', label: 'Проверка' },
   ];
 
-  const activeStepIndex = steps.findIndex((step) => step.name === activeStep);
+  const activeStepIndex = steps.findIndex((step) => step.number === activeStep);
 
   return (
     <div className="steps__list_wrapper">
@@ -190,7 +173,12 @@ const Step = ({ label, isColored, i }) => {
 };
 
 export const NextStepButton = ({ children, onClick }) => (
-  <Button classname="button__next-step" size="l" style="colored">
+  <Button
+    classname="button__next-step"
+    onClick={onClick}
+    size="l"
+    style="colored"
+  >
     {children}
   </Button>
 );

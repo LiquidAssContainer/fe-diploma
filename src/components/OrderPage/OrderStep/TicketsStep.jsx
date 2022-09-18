@@ -13,10 +13,6 @@ import { Form } from 'lib/Form';
 import { updateQueryParams } from 'reducers/search';
 import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
 
-// export const TicketsStep = ({ stage }) => {
-//   return stage === 'tickets' ? <SearchTickets /> : <SearchTickets />;
-// };
-
 const pageLimits = [5, 10, 20];
 
 const [defaultLimit] = pageLimits;

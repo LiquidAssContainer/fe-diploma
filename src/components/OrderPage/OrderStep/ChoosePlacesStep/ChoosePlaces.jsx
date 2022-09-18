@@ -1,6 +1,7 @@
 import './style.sass';
 
 import cn from 'classnames';
+import { useDispatch } from 'react-redux';
 
 import { Header } from 'components/Header';
 import { Button } from 'components/Button';
@@ -16,6 +17,8 @@ import { ReactComponent as ArrowIcon } from 'assets/icons/arrow.svg';
 import { ReactComponent as ArrowInRectangleLarge } from 'assets/icons/arrow_in_rectangle_large.svg';
 import { PlaceSelection } from './PlaceSelection';
 import { TripPoint } from 'components/Ticket';
+import { NextStepButton } from 'components/OrderPage/OrderPage';
+import { setNextStep } from 'reducers/stepper';
 
 const railcarTypes = [
   { label: 'Сидячий', Icon: FourthClassIcon },
@@ -25,6 +28,8 @@ const railcarTypes = [
 ];
 
 export const ChoosePlaces = () => {
+  const dispatch = useDispatch();
+
   return (
     <>
       <Header size="s" className="uppercase">
@@ -34,9 +39,9 @@ export const ChoosePlaces = () => {
         <ChoosePlacesBlock direction="forward" />
         <ChoosePlacesBlock direction="return" />
       </div>
-      <Button classname="button__next-step" size="l" style="colored">
+      <NextStepButton onClick={() => dispatch(setNextStep())}>
         Далее
-      </Button>
+      </NextStepButton>
     </>
   );
 };
