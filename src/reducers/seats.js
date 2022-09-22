@@ -1,14 +1,17 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
 import { apiService } from 'services/apiService';
 
-const defaultRailcarList = { first: [], second: [], third: [], fourth: [] };
+// const defaultRailcarList = { first: [], second: [], third: [], fourth: [] };
 
 const initialState = {
   tripInfo: {},
-  seatsInfo: { first: [], second: [], third: [], fourth: [] },
+  seatsInfo: null,
   selectedRailcarClass: null,
-  railcarSelection: null,
-  selectedSeats: null,
+  selectedSeats: [],
+  passengersAmount: {
+    passengers: {},
+    limit: 5,
+  },
   totalPrice: 0,
 };
 
@@ -35,42 +38,55 @@ export const seatsSlice = createSlice({
       state.selectedRailcarClass = payload;
     },
     changeRailcarSelection: (state, { payload: { id, railcarClass } }) => {
-      const list = current(state.railcarSelection[railcarClass]);
+      const list = current(state.seatsInfo[railcarClass]);
 
-      const railcar = list.find(({ _id }) => id === _id);
-      const railcarIndex = list.findIndex(({ _id }) => id === _id);
-      const { isSelected } = railcar;
+      const railcarIndex = list.findIndex(({ coach: { _id } }) => id === _id);
+      const railcar = list[railcarIndex];
+      const { isSelected } = railcar.coach;
 
-      state.railcarSelection[railcarClass][railcarIndex].isSelected =
+      state.seatsInfo[railcarClass][railcarIndex].coach.isSelected =
+        !isSelected;
+    },
+    changeSeatSelection: (
+      state,
+      { payload: { placeNumber, railcarId, railcarClass } },
+    ) => {
+      const list = current(state.seatsInfo[railcarClass]);
+
+      const railcarIndex = list.findIndex(
+        ({ coach: { _id } }) => railcarId === _id,
+      );
+      const railcar = list[railcarIndex];
+
+      const seatIndex = placeNumber - 1;
+      const { isSelected } = railcar.seats[seatIndex];
+
+      if (isSelected) {
+        const selectedSeatIndex = state.selectedSeats.findIndex(
+          ({ id, number }) => id === railcarId && number === placeNumber,
+        );
+        state.selectedSeats.splice(selectedSeatIndex, 1);
+      } else {
+        state.selectedSeats.push({ id: railcarId, number: placeNumber });
+      }
+
+      // ужас
+      state.seatsInfo[railcarClass][railcarIndex].seats[seatIndex].isSelected =
         !isSelected;
     },
   },
   extraReducers: {
     [getSeatsDetailAsync.fulfilled]: (state, { payload }) => {
-      state.seatsInfo = payload.reduce(
-        (acc, curr) => {
-          const type = curr.coach.class_type;
-          // if (!acc[type]) {
-          //   acc[type] = [];
-          // }
-          acc[type].push(curr);
-          return acc;
-        },
-        { ...defaultRailcarList },
-      );
-
-      if (!state.railcarSelection) {
-        state.railcarSelection = { ...defaultRailcarList };
-        for (const railcarClass in state.railcarSelection) {
-          state.railcarSelection[railcarClass] = state.seatsInfo[
-            railcarClass
-          ].reduce((acc, curr, i) => {
-            const { _id, name } = curr.coach;
-            acc.push({ _id, name, isSelected: i === 0 });
-            return acc;
-          }, []);
+      state.seatsInfo = payload.reduce((acc, { coach, seats }) => {
+        const type = coach.class_type;
+        let isSelected = false;
+        if (!acc[type]) {
+          acc[type] = [];
+          isSelected = true;
         }
-      }
+        acc[type].push({ coach: { isSelected, ...coach }, seats });
+        return acc;
+      }, {});
     },
   },
 });
@@ -78,8 +94,8 @@ export const seatsSlice = createSlice({
 export const {
   setTripInfo,
   changeSelectedRailcarType,
-  initRailcarSelectionList,
   changeRailcarSelection,
+  changeSeatSelection,
 } = seatsSlice.actions;
 
 export const seatsReducer = seatsSlice.reducer;

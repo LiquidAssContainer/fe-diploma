@@ -171,9 +171,10 @@ $width-border-railcar: 4px
   &_left-train-side
     flex: 1
 
-  &.unavailable
-    background: $color-bg-place-unavailable
-    color: white
-
   &.selected
     border-color: $color-border-place-selected
+
+  &:disabled
+    background: $color-bg-place-unavailable
+    color: white
+    cursor: auto

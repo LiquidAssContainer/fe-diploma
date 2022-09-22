@@ -10,12 +10,12 @@ import {
   ThirdClassPlacement,
 } from './PlaceItemPlacement';
 
-export const FirstClassPlaces = () => {
+export const FirstClassPlaces = ({ ...props }) => {
   return (
     <PlaceListContainer railcarClass="first">
       <PlaceItemList railcarClass="first">
         {[...Array(8)].map((_, i) => {
-          return <FirstClassPlacement firstNumber={i * 2 + 1} />;
+          return <FirstClassPlacement {...props} firstNumber={i * 2 + 1} />;
         })}
       </PlaceItemList>
       <PlaceItemListEmpty />
@@ -23,12 +23,14 @@ export const FirstClassPlaces = () => {
   );
 };
 
-export const SecondClassPlaces = () => {
+export const SecondClassPlaces = ({ ...props }) => {
   return (
     <PlaceListContainer railcarClass="second">
       <PlaceItemList railcarClass="second">
         {[...Array(8)].map((_, i) => {
-          return <SecondClassPlacement firstNumber={i * 4 + 1} />;
+          return (
+            <SecondClassPlacement key={i} firstNumber={i * 4 + 1} {...props} />
+          );
         })}
       </PlaceItemList>
       <PlaceItemListEmpty />
@@ -36,19 +38,29 @@ export const SecondClassPlaces = () => {
   );
 };
 
-export const ThirdClassPlaces = () => {
+export const ThirdClassPlaces = ({ ...props }) => {
   return (
     <PlaceListContainer railcarClass="third">
       <PlaceItemList railcarClass="third">
         {[...Array(8)].map((_, i) => {
-          return <ThirdClassPlacement firstNumber={i * 4 + 1} />;
+          return <ThirdClassPlacement {...props} firstNumber={i * 4 + 1} />;
         })}
       </PlaceItemList>
       <PlaceItemList railcarClass="third" isLeftSide={true}>
         {[...Array(8)].map((_, i) => (
           <li className="place__row_left-train-side">
-            <PlaceItem placeNumber={i * 2 + 33} isLeftSide={true} />
-            <PlaceItem placeNumber={i * 2 + 34} isLeftSide={true} />
+            <PlaceItem
+              {...props}
+              railcarClass="third"
+              placeNumber={i * 2 + 33}
+              isLeftSide={true}
+            />
+            <PlaceItem
+              {...props}
+              railcarClass="third"
+              placeNumber={i * 2 + 34}
+              isLeftSide={true}
+            />
           </li>
         ))}
       </PlaceItemList>
@@ -56,11 +68,11 @@ export const ThirdClassPlaces = () => {
   );
 };
 
-export const FourthClassPlaces = () => {
+export const FourthClassPlaces = ({ ...props }) => {
   return (
     <PlaceListContainer railcarClass="fourth">
-      <SittingPlaceItemList firstNumber={1} side="right" />
-      <SittingPlaceItemList firstNumber={33} side="left" />
+      <SittingPlaceItemList {...props} firstNumber={1} side="right" />
+      <SittingPlaceItemList {...props} firstNumber={33} side="left" />
     </PlaceListContainer>
   );
 };
@@ -92,17 +104,19 @@ const PlaceItemList = ({ railcarClass, children, isLeftSide }) => {
   );
 };
 
-const SittingPlaceItemList = ({ firstNumber, side }) => {
+const SittingPlaceItemList = ({ firstNumber, side, ...props }) => {
   return (
     <ul className={`place__list_fourth-class_${side}-side`}>
       {[...Array(16)].map((_, i) => {
         return (
           <PlaceItemRow railcarClass="fourth">
             <PlaceItem
+              {...props}
               placeNumber={i * 2 + firstNumber}
               railcarClass="fourth"
             />
             <PlaceItem
+              {...props}
               placeNumber={i * 2 + firstNumber + 1}
               railcarClass="fourth"
             />
@@ -116,7 +130,7 @@ const SittingPlaceItemList = ({ firstNumber, side }) => {
 const PlaceItemListEmpty = () => {
   return (
     <PlaceItemList isLeftSide={true}>
-      {[...Array(8)].map((_, i) => {
+      {[...Array(8)].map((_) => {
         return <div className="place__row_left-train-side place__row_empty" />;
       })}
     </PlaceItemList>

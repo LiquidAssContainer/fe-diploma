@@ -6,13 +6,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { PlaceSelectionMap } from './PlaceSelectionMap';
 import { PlacesTable } from './PlacesTable';
 import { changeRailcarSelection } from 'reducers/seats';
+import { formatNumber } from 'lib/helpers';
 
 export const PlaceSelection = ({ railcarClass }) => {
   const dispatch = useDispatch();
-  const { seatsInfo, railcarSelection } = useSelector((state) => state.seats);
+  const { seatsInfo, totalPrice } = useSelector((state) => state.seats);
 
   const railcarList = seatsInfo[railcarClass];
-  const railcarSelectionList = railcarSelection[railcarClass];
 
   const onRailcarClick = (id) => {
     dispatch(changeRailcarSelection({ id, railcarClass }));
@@ -24,7 +24,7 @@ export const PlaceSelection = ({ railcarClass }) => {
         <div className="places__choosing_railcars">
           <div className="railcar__text">Вагоны</div>
           <ul className="railcar__list">
-            {railcarSelectionList.map(({ name, _id, isSelected }) => {
+            {railcarList.map(({ coach: { name, _id, isSelected } }) => {
               return (
                 <button
                   className={cn('railcar__item', {
@@ -46,22 +46,19 @@ export const PlaceSelection = ({ railcarClass }) => {
         </div>
       </header>
       <ul>
-        {railcarSelectionList.map(({ _id: currentId, isSelected }) => {
-          if (!isSelected) {
-            return null;
-          }
-          const railcar = railcarList.find(
-            ({ coach: { _id } }) => _id === currentId,
-          );
+        {railcarList.map((railcar) => {
           return (
-            <PlacesChoosingRailcar {...railcar} railcarClass={railcarClass} />
+            railcar.coach.isSelected && (
+              <PlacesChoosingRailcar {...railcar} railcarClass={railcarClass} />
+            )
           );
         })}
       </ul>
 
       {/* todo */}
       <div className="places__price">
-        <span className="places__price_number">5 760</span> ₽
+        <span className="places__price_number">{formatNumber(totalPrice)}</span>{' '}
+        ₽
       </div>
     </div>
   );
@@ -82,7 +79,11 @@ const PlacesChoosingRailcar = ({ coach, seats, railcarClass }) => {
         {/* не приходит с бека ↓ */}
         13 человек выбирают места в этом поезде
       </div>
-      <PlaceSelectionMap seats={seats} railcarClass={railcarClass} />
+      <PlaceSelectionMap
+        seats={seats}
+        railcarId={coach._id}
+        railcarClass={railcarClass}
+      />
     </div>
   );
 };

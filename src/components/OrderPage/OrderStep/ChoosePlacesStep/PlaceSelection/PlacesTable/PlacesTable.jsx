@@ -6,6 +6,7 @@ import { ReactComponent as ConditionerIcon } from 'assets/icons/conditioner.svg'
 import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
 import { ReactComponent as BedclothesIcon } from 'assets/icons/bedclothes.svg';
 import { ReactComponent as DrinksIcon } from 'assets/icons/drinks.svg';
+import { formatNumber } from 'lib/helpers';
 
 const seatTypes = [
   { priceName: 'top_price', label: 'Верхние' },
@@ -75,7 +76,7 @@ export const PlacesTable = ({
           if (props[priceName]) {
             return (
               <PlacesTableCell type="price">
-                <span>{props[priceName]} </span>
+                <span>{formatNumber(props[priceName])} </span>
                 <PlacesTableCurrencySign />
               </PlacesTableCell>
             );

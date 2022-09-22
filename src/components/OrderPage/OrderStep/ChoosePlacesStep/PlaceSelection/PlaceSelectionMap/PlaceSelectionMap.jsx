@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import {
   FirstClassPlaces,
   FourthClassPlaces,
@@ -9,12 +8,7 @@ import {
 const railcarFrontImg = require('assets/railcar_front_side.png');
 const railcarBackImg = require('assets/railcar_back_side.png');
 
-export const PlaceSelectionMap = ({ seats, railcarClass }) => {
-  // const { seatsInfo, selectedRailcarClass } = useSelector(
-  //   (state) => state.seats,
-  // );
-  // const { seats } = seatsInfo[selectedRailcarClass];
-
+export const PlaceSelectionMap = ({ railcarClass, ...props }) => {
   return (
     <div className="places__selection-map">
       <div className="places__railcar-side">
@@ -25,13 +19,13 @@ export const PlaceSelectionMap = ({ seats, railcarClass }) => {
       {(() => {
         switch (railcarClass) {
           case 'fourth':
-            return <FourthClassPlaces />;
+            return <FourthClassPlaces {...props} />;
           case 'third':
-            return <ThirdClassPlaces />;
+            return <ThirdClassPlaces {...props} />;
           case 'second':
-            return <SecondClassPlaces />;
+            return <SecondClassPlaces {...props} />;
           case 'first':
-            return <FirstClassPlaces />;
+            return <FirstClassPlaces {...props} />;
         }
       })()}
       <div className="places__railcar-side">

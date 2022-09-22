@@ -39,7 +39,9 @@ export const ChoosePlaces = ({
   const { tripInfo, seatsInfo } = useSelector((state) => state.seats);
 
   useEffect(() => {
-    dispatch(getSeatsDetailAsync(id));
+    if (!seatsInfo) {
+      dispatch(getSeatsDetailAsync(id));
+    }
   }, []);
 
   return (
@@ -157,7 +159,7 @@ const ChoosePlacesBlock = ({
         <ul className="railcar-type__buttons">
           {railcarTypes.map((item) => (
             <RailcarTypeButton
-              disabled={!seatsInfo[item.name].length}
+              disabled={!seatsInfo || !seatsInfo[item.name]}
               isSelected={selectedRailcarClass === item.name}
               onClick={onRailcarTypeChange}
               {...item}
@@ -175,8 +177,8 @@ const ChoosePlacesBlock = ({
 const TicketAmountInput = ({ label }) => {
   return (
     <label className="ticket-amount__input_label">
-      <span className="ticket-amount__input_text">{label} — </span>
-      <input className="ticket-amount__input" placeholder="0" size="3" />
+      <div className="ticket-amount__input_text">{label} — </div>
+      <input className="ticket-amount__input" type="number" placeholder="0" />
     </label>
   );
 };
