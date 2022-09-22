@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import {
   FirstClassPlaces,
   FourthClassPlaces,
@@ -8,22 +9,28 @@ import {
 const railcarFrontImg = require('assets/railcar_front_side.png');
 const railcarBackImg = require('assets/railcar_back_side.png');
 
-export const PlaceSelectionMap = ({ railcarClass }) => {
+export const PlaceSelectionMap = ({ seats, railcarClass }) => {
+  // const { seatsInfo, selectedRailcarClass } = useSelector(
+  //   (state) => state.seats,
+  // );
+  // const { seats } = seatsInfo[selectedRailcarClass];
+
   return (
     <div className="places__selection-map">
       <div className="places__railcar-side">
-        <div className="places__railcar-side_number">22</div>
+        {/* нигде в данных не вижу номеров вагона в виде цифр */}
+        <div className="places__railcar-side_number">00</div>
         <img className="places__railcar-side_img" src={railcarFrontImg} />
       </div>
       {(() => {
         switch (railcarClass) {
-          case 'fourth_class':
+          case 'fourth':
             return <FourthClassPlaces />;
-          case 'third_class':
+          case 'third':
             return <ThirdClassPlaces />;
-          case 'second_class':
+          case 'second':
             return <SecondClassPlaces />;
-          case 'first_class':
+          case 'first':
             return <FirstClassPlaces />;
         }
       })()}

@@ -1,34 +1,46 @@
 import './style.sass';
 
 import cn from 'classnames';
-import { useDispatch } from 'react-redux';
-
-import { Header } from 'components/Header';
-import { Button } from 'components/Button';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ReactComponent as SecondClassIcon } from 'assets/icons/second_class.svg';
 import { ReactComponent as ThirdClassIcon } from 'assets/icons/third_class.svg';
 import { ReactComponent as FourthClassIcon } from 'assets/icons/fourth_class.svg';
 import { ReactComponent as FirstClassIcon } from 'assets/icons/first_class.svg';
 import { ReactComponent as ClockIcon } from 'assets/icons/clock.svg';
-
 import { ReactComponent as TrainIcon } from 'assets/icons/train.svg';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow.svg';
 import { ReactComponent as ArrowInRectangleLarge } from 'assets/icons/arrow_in_rectangle_large.svg';
+
+import { Header } from 'components/Header';
+import { Button } from 'components/Button';
 import { PlaceSelection } from './PlaceSelection';
 import { TripPoint } from 'components/Ticket';
 import { NextStepButton } from 'components/OrderPage/OrderPage';
+import { TicketDirection, TripCities } from 'components/Ticket/Ticket';
+
 import { setNextStep } from 'reducers/stepper';
+import { changeSelectedRailcarType, getSeatsDetailAsync } from 'reducers/seats';
 
 const railcarTypes = [
-  { label: 'Сидячий', Icon: FourthClassIcon },
-  { label: 'Плацкарт', Icon: ThirdClassIcon },
-  { label: 'Купе', Icon: SecondClassIcon },
-  { label: 'Люкс', Icon: FirstClassIcon },
+  { name: 'fourth', label: 'Сидячий', Icon: FourthClassIcon },
+  { name: 'third', label: 'Плацкарт', Icon: ThirdClassIcon },
+  { name: 'second', label: 'Купе', Icon: SecondClassIcon },
+  { name: 'first', label: 'Люкс', Icon: FirstClassIcon },
 ];
 
-export const ChoosePlaces = () => {
+export const ChoosePlaces = ({
+  match: {
+    params: { id },
+  },
+}) => {
   const dispatch = useDispatch();
+  const { tripInfo, seatsInfo } = useSelector((state) => state.seats);
+
+  useEffect(() => {
+    dispatch(getSeatsDetailAsync(id));
+  }, []);
 
   return (
     <>
@@ -36,8 +48,12 @@ export const ChoosePlaces = () => {
         Выбор мест
       </Header>
       <div className="places__block_list">
-        <ChoosePlacesBlock direction="forward" />
-        <ChoosePlacesBlock direction="return" />
+        <ChoosePlacesBlock
+          {...tripInfo}
+          seatsInfo={seatsInfo}
+          direction="forward"
+        />
+        {/* <ChoosePlacesBlock direction="return" /> */}
       </div>
       <NextStepButton onClick={() => dispatch(setNextStep())}>
         Далее
@@ -46,7 +62,25 @@ export const ChoosePlaces = () => {
   );
 };
 
-const ChoosePlacesBlock = ({ direction, time }) => {
+const ChoosePlacesBlock = ({
+  direction,
+  time,
+  from,
+  to,
+  train = { name: 'поровозик' },
+  price_info,
+  available_seats_info,
+  duration = 0,
+  seatsInfo,
+}) => {
+  const dispatch = useDispatch();
+
+  const { selectedRailcarClass } = useSelector((state) => state.seats);
+
+  const onRailcarTypeChange = (type) => {
+    dispatch(changeSelectedRailcarType(type));
+  };
+
   return (
     <div className="places__block">
       <div
@@ -70,30 +104,17 @@ const ChoosePlacesBlock = ({ direction, time }) => {
           </div>
           <div className="train-info__trip">
             <Header className="train-info__trip_header" size="xs">
-              116C
+              {train.name}
             </Header>
-            <div className="ticket__trip-points">
-              Адлер → Москва → Санкт-Петербург
-            </div>
+            <TripCities from={from} to={to} />
           </div>
         </div>
-        <div className="places__ticket-info_from-to">
-          <TripPoint
-            time="18:88"
-            city="Екатеринбург"
-            station="Московский вокзал"
-          />
-          <ArrowIcon
-            className={cn('trip__direction_icon', {
-              arrow_left: direction === 'return',
-            })}
-          />
-          <TripPoint
-            time="18:88"
-            city="Екатеринбург"
-            station="Московский вокзал"
-          />
-        </div>
+        <TicketDirection
+          duration={duration}
+          direction={direction}
+          from={from}
+          to={to}
+        />
         <div className="places__ticket-info_time">
           <div className="icon__wrapper">
             <ClockIcon className="clock__icon" />
@@ -109,7 +130,7 @@ const ChoosePlacesBlock = ({ direction, time }) => {
           Количество билетов
         </Header>
         <form className="ticket-amount__form">
-          <div className="ticket-amount__block Grey tmp">
+          <div className="ticket-amount__block">
             <TicketAmountInput label="Взрослых" />
             <div className="ticket-amount__block_description">
               Можно добавить еще 3 пассажиров
@@ -134,12 +155,19 @@ const ChoosePlacesBlock = ({ direction, time }) => {
           Тип вагона
         </Header>
         <ul className="railcar-type__buttons">
-          {railcarTypes.map((props) => (
-            <RailcarTypeButton {...props} />
+          {railcarTypes.map((item) => (
+            <RailcarTypeButton
+              disabled={!seatsInfo[item.name].length}
+              isSelected={selectedRailcarClass === item.name}
+              onClick={onRailcarTypeChange}
+              {...item}
+            />
           ))}
         </ul>
       </div>
-      <PlaceSelection railcarClass="fourth_class" />
+      {selectedRailcarClass && (
+        <PlaceSelection railcarClass={selectedRailcarClass} />
+      )}
     </div>
   );
 };
@@ -153,9 +181,25 @@ const TicketAmountInput = ({ label }) => {
   );
 };
 
-const RailcarTypeButton = ({ Icon, label, isChecked }) => {
+const RailcarTypeButton = ({
+  Icon,
+  label,
+  onClick,
+  isSelected,
+  disabled,
+  name,
+}) => {
+  const handleClick = () => {
+    onClick(name);
+  };
+
   return (
-    <button className={cn('railcar-type__button', { selected: isChecked })}>
+    <button
+      disabled={disabled}
+      className={cn('railcar-type__button', { selected: isSelected })}
+      onClick={handleClick}
+      type="button"
+    >
       <div className="railcar-type__icon_wrapper">
         <Icon className="railcar-type__icon" />
       </div>

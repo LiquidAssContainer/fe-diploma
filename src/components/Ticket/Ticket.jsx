@@ -12,8 +12,16 @@ import { ReactComponent as ArrowIcon } from 'assets/icons/arrow.svg';
 import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
 import { ReactComponent as ExpressIcon } from 'assets/icons/express.svg';
 import { formatDateToHM, formatNumber } from 'lib/helpers';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setTripInfo } from 'reducers/seats';
+import { nanoid } from 'nanoid';
 
-const features = [WiFiIcon, ExpressIcon, ExpressIcon];
+const features = [
+  { icon: WiFiIcon, label: 'Wi-Fi', id: nanoid() },
+  { icon: ExpressIcon, label: 'Экспресс', id: nanoid() },
+  { icon: ExpressIcon, label: 'Экспресс', id: nanoid() },
+];
 
 const classTitles = {
   fourth: 'Сидячий',
@@ -32,7 +40,10 @@ export const Ticket = ({
   price_info,
   available_seats_info,
   duration,
+  _id,
 }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const availableSeats = classOrder.reduce((acc, classType) => {
     const seatsCount = available_seats_info[classType];
     if (seatsCount) {
@@ -44,6 +55,22 @@ export const Ticket = ({
     }
     return acc;
   }, []);
+
+  const handleBtnClick = () => {
+    dispatch(
+      setTripInfo({
+        from,
+        to,
+        train,
+        price_info,
+        available_seats_info,
+        duration,
+      }),
+    );
+    history.push(`seats/${_id}`);
+  };
+
+  console.log(from, to);
 
   return (
     <div
@@ -58,13 +85,14 @@ export const Ticket = ({
             {train.name}
           </Header>
         </div>
-        <div className="ticket__trip-points">
+        <TripCities from={from} to={to} />
+        {/* <div className="ticket__trip-points">
           <div className="ticket__trip-points_item ticket__trip-points_item_train-start">
             Адлер →
           </div>
           <div className="ticket__trip-points_item">Москва →</div>
           <div className="ticket__trip-points_item">Санкт-Петербург</div>
-        </div>
+        </div> */}
       </div>
       <TicketDirections duration={duration} from={from} to={to} />
       <div className="ticket__places">
@@ -77,8 +105,8 @@ export const Ticket = ({
           <TicketPlacesItem /> */}
         </ul>
         <ul className="ticket__places_features">
-          {features.map((icon) => (
-            <TicketPlacesFeature icon={icon} />
+          {features.map(({ icon, id, label }) => (
+            <TicketPlacesFeature key={id} label={label} icon={icon} />
           ))}
         </ul>
         {isChecking ? (
@@ -86,7 +114,7 @@ export const Ticket = ({
             Изменить
           </Button>
         ) : (
-          <Button size="s" style="colored">
+          <Button size="s" style="colored" onClick={handleBtnClick}>
             Выбрать места
           </Button>
         )}
@@ -95,9 +123,26 @@ export const Ticket = ({
   );
 };
 
-const TicketPlacesFeature = ({ icon }) => {
+export const TripCities = ({ from, to }) => {
   return (
-    <div className="ticket__places_features_item">
+    <div className="ticket__trip-points">
+      {/* не вижу подобных данных на бэке ↓ */}
+      {/* <div className="ticket__trip-points_item ticket__trip-points_item_train-start">
+        Адлер →
+      </div> */}
+      <div className="ticket__trip-points_item">
+        {from?.city.name || 'Город 1'} →
+      </div>
+      <div className="ticket__trip-points_item">
+        {to?.city.name || 'Город 2'}
+      </div>
+    </div>
+  );
+};
+
+const TicketPlacesFeature = ({ icon, label }) => {
+  return (
+    <div className="ticket__places_features_item" title={label}>
       <Icon wrapperClassName="ticket__places_feature_icon" icon={icon} />
     </div>
   );
@@ -112,7 +157,7 @@ const TicketDirections = ({ ...props }) => {
   );
 };
 
-const TicketDirection = ({ duration, direction, from, to }) => {
+export const TicketDirection = ({ duration, direction, from, to }) => {
   return (
     <div
       className={cn('direction', {
@@ -137,7 +182,11 @@ const TicketDirection = ({ duration, direction, from, to }) => {
   );
 };
 
-export const TripPoint = ({ datetime, city, railway_station_name }) => {
+export const TripPoint = ({
+  datetime = 0,
+  city = { name: 'Какой-то город' },
+  railway_station_name = 'Какой-то',
+}) => {
   return (
     <div className="trip__point">
       <div className="trip__point_time">{formatDateToHM(datetime)}</div>

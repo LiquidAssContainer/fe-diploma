@@ -84,7 +84,7 @@ const LastTickets = () => {
       </Header>
       <ul className="last-tickets__list">
         {lastDirections.map(({ departure }) => (
-          <LastTicketItem {...departure} />
+          <LastTicketItem key={departure._id} {...departure} />
         ))}
       </ul>
     </div>

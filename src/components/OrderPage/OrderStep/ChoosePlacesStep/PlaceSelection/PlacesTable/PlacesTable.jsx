@@ -1,40 +1,94 @@
 import './style.sass';
 
+import { useSelector } from 'react-redux';
+
 import { ReactComponent as ConditionerIcon } from 'assets/icons/conditioner.svg';
 import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
 import { ReactComponent as BedclothesIcon } from 'assets/icons/bedclothes.svg';
 import { ReactComponent as DrinksIcon } from 'assets/icons/drinks.svg';
 
-export const PlacesTable = () => {
+const seatTypes = [
+  { priceName: 'top_price', label: 'Верхние' },
+  { priceName: 'bottom_price', label: 'Нижние' },
+  { priceName: 'side_price', label: 'Боковые' },
+];
+
+export const PlacesTable = ({
+  available_seats = 0,
+  // top_price = 0,
+  // bottom_price = 0,
+  // side_price = 0,
+  have_wifi = false,
+  have_air_conditioning = false,
+  linens_price = 76,
+  wifi_price = 226,
+  is_linens_included = true,
+  ...props
+}) => {
+  // const { seatsInfo, selectedRailcarClass } = useSelector(
+  //   (state) => state.seats,
+  // );
+  // const { coach } = seatsInfo[selectedRailcarClass];
+
   return (
     <div className="places__table">
       <PlacesTableCol>
         <PlacesTableCell type="header">
           <span>Места </span>
-          <PlacesTableQuantity>21</PlacesTableQuantity>
+          <PlacesTableQuantity>{available_seats}</PlacesTableQuantity>
         </PlacesTableCell>
-        <PlacesTableCell type="seat-type">
-          <span>Верхние </span>
-          <PlacesTableQuantity>3</PlacesTableQuantity>
-        </PlacesTableCell>
-        <PlacesTableCell type="seat-type">
-          <span>Нижние </span>
-          <PlacesTableQuantity>8</PlacesTableQuantity>
-        </PlacesTableCell>
+        {seatTypes.map(({ priceName, label }) => {
+          if (props[priceName]) {
+            return (
+              <PlacesTableCell type="seat-type">
+                <span>{label} </span>
+                <PlacesTableQuantity>3</PlacesTableQuantity>
+              </PlacesTableCell>
+            );
+          }
+        })}
+        {/* {top_price > 0 && (
+          <PlacesTableCell type="seat-type">
+            <span>Верхние </span>
+            <PlacesTableQuantity>3</PlacesTableQuantity>
+          </PlacesTableCell>
+        )}
+        {bottom_price > 0 && (
+          <PlacesTableCell type="seat-type">
+            <span>Нижние </span>
+            <PlacesTableQuantity>8</PlacesTableQuantity>
+          </PlacesTableCell>
+        )}
+        {side_price > 0 && (
+          <PlacesTableCell type="seat-type">
+            <span>Сбоку </span>
+            <PlacesTableQuantity>8</PlacesTableQuantity>
+          </PlacesTableCell>
+        )} */}
       </PlacesTableCol>
 
       <PlacesTableCol>
         <PlacesTableCell type="header">
           <span>Стоимость</span>
         </PlacesTableCell>
-        <PlacesTableCell type="price">
-          <span>2 920 </span>
+        {seatTypes.map(({ priceName }) => {
+          if (props[priceName]) {
+            return (
+              <PlacesTableCell type="price">
+                <span>{props[priceName]} </span>
+                <PlacesTableCurrencySign />
+              </PlacesTableCell>
+            );
+          }
+        })}
+        {/* <PlacesTableCell type="price">
+          <span>{top_price} </span>
           <PlacesTableCurrencySign />
         </PlacesTableCell>
         <PlacesTableCell type="price">
-          <span>3 530 </span>
+          <span>{bottom_price} </span>
           <PlacesTableCurrencySign />
-        </PlacesTableCell>
+        </PlacesTableCell> */}
       </PlacesTableCol>
 
       <PlacesTableCol>

@@ -73,6 +73,22 @@ $color-bg-train: $orange-1
     padding: 0
     flex: 1 1
 
+    &.selected
+      .railcar-type__icon
+        fill: #FFA800
+
+      .railcar-type__title
+        color: #FFA800
+
+    &:disabled
+      cursor: auto
+
+      .railcar-type__icon
+        fill: #E5E5E5
+
+      .railcar-type__title
+        color: #E5E5E5
+
   &__icon
     display: block
     height: 50px
@@ -149,8 +165,12 @@ $color-bg-train: $orange-1
     border: 1px solid transparent
     flex: 1
 
-    &:hover:not(.Grey)
+    &:hover:not(&:has(input:focus-visible))
       border-color: rgba(255, 168, 0, 0.79)
+
+    &:has(input:focus-visible)
+      background: #F7F6F6
+      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25)
 
     &_description
       margin-top: 22px
@@ -183,6 +203,6 @@ $color-bg-train: $orange-1
       font-size: 1.125rem // 18px
       color: #292929
 
-.Grey.tmp
-  background: #F7F6F6
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25)
+// .Grey.tmp
+//   background: #F7F6F6
+//   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25)
