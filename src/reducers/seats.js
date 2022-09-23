@@ -9,9 +9,11 @@ const initialState = {
   selectedRailcarClass: null,
   selectedSeats: [],
   passengersAmount: {
-    passengers: {},
-    limit: 5,
+    adult: { amount: 0, limit: 5 },
+    child: { amount: 0, limit: 0 },
+    baby: { amount: 0, limit: 0 },
   },
+  selectedAmount: 0,
   totalPrice: 0,
 };
 
@@ -47,32 +49,59 @@ export const seatsSlice = createSlice({
       state.seatsInfo[railcarClass][railcarIndex].coach.isSelected =
         !isSelected;
     },
+    changeTicketsAmount: (state, { payload: { type, number } }) => {
+      const limit = state.passengersAmount[type].limit;
+
+      switch (type) {
+        case 'adult':
+          if (number <= limit) {
+            state.passengersAmount.adult.amount = number;
+            state.passengersAmount.child.limit = number * 2;
+            state.passengersAmount.baby.limit = number;
+          }
+        case 'child':
+        case 'baby':
+          if (number <= limit) {
+            state.passengersAmount[type].amount = number;
+          }
+      }
+      for (const type of ['child', 'baby']) {
+        const { amount, limit } = state.passengersAmount[type];
+        if (amount > limit) {
+          state.passengersAmount[type].amount = limit;
+        }
+      }
+
+      const { adult, child } = current(state.passengersAmount);
+      state.selectedAmount = Number(adult.amount) + Number(child.amount);
+    },
     changeSeatSelection: (
       state,
-      { payload: { placeNumber, railcarId, railcarClass } },
+      { payload: { placeNumber, railcarId, railcarClass, value } },
     ) => {
+      if (value && state.selectedSeats.length === state.selectedAmount) {
+        return;
+      }
+
       const list = current(state.seatsInfo[railcarClass]);
 
       const railcarIndex = list.findIndex(
         ({ coach: { _id } }) => railcarId === _id,
       );
-      const railcar = list[railcarIndex];
 
-      const seatIndex = placeNumber - 1;
-      const { isSelected } = railcar.seats[seatIndex];
-
-      if (isSelected) {
+      if (value) {
+        state.selectedSeats.push({ id: railcarId, number: placeNumber });
+      } else {
         const selectedSeatIndex = state.selectedSeats.findIndex(
           ({ id, number }) => id === railcarId && number === placeNumber,
         );
         state.selectedSeats.splice(selectedSeatIndex, 1);
-      } else {
-        state.selectedSeats.push({ id: railcarId, number: placeNumber });
       }
 
+      const seatIndex = placeNumber - 1;
       // ужас
       state.seatsInfo[railcarClass][railcarIndex].seats[seatIndex].isSelected =
-        !isSelected;
+        value;
     },
   },
   extraReducers: {
@@ -96,6 +125,7 @@ export const {
   changeSelectedRailcarType,
   changeRailcarSelection,
   changeSeatSelection,
+  changeTicketsAmount,
 } = seatsSlice.actions;
 
 export const seatsReducer = seatsSlice.reducer;

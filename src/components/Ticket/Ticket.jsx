@@ -70,8 +70,6 @@ export const Ticket = ({
     history.push(`seats/${_id}`);
   };
 
-  console.log(from, to);
-
   return (
     <div
       className={cn('tickets__item', { tickets__item_checking: isChecking })}

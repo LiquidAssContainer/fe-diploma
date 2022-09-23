@@ -21,7 +21,11 @@ import { NextStepButton } from 'components/OrderPage/OrderPage';
 import { TicketDirection, TripCities } from 'components/Ticket/Ticket';
 
 import { setNextStep } from 'reducers/stepper';
-import { changeSelectedRailcarType, getSeatsDetailAsync } from 'reducers/seats';
+import {
+  changeSelectedRailcarType,
+  changeTicketsAmount,
+  getSeatsDetailAsync,
+} from 'reducers/seats';
 
 const railcarTypes = [
   { name: 'fourth', label: 'Сидячий', Icon: FourthClassIcon },
@@ -36,7 +40,15 @@ export const ChoosePlaces = ({
   },
 }) => {
   const dispatch = useDispatch();
-  const { tripInfo, seatsInfo } = useSelector((state) => state.seats);
+  const { tripInfo, seatsInfo, selectedAmount } = useSelector(
+    (state) => state.seats,
+  );
+
+  const handleNextStepClick = () => {
+    if (selectedAmount > 0) {
+      dispatch(setNextStep());
+    }
+  };
 
   useEffect(() => {
     if (!seatsInfo) {
@@ -57,9 +69,7 @@ export const ChoosePlaces = ({
         />
         {/* <ChoosePlacesBlock direction="return" /> */}
       </div>
-      <NextStepButton onClick={() => dispatch(setNextStep())}>
-        Далее
-      </NextStepButton>
+      <NextStepButton onClick={handleNextStepClick}>Далее</NextStepButton>
     </>
   );
 };
@@ -131,26 +141,7 @@ const ChoosePlacesBlock = ({
         <Header className="places__header" size="s">
           Количество билетов
         </Header>
-        <form className="ticket-amount__form">
-          <div className="ticket-amount__block">
-            <TicketAmountInput label="Взрослых" />
-            <div className="ticket-amount__block_description">
-              Можно добавить еще 3 пассажиров
-            </div>
-          </div>
-          <div className="ticket-amount__block">
-            <TicketAmountInput label="Взрослых" />
-            <div className="ticket-amount__block_description">
-              Можно добавить еще 3 пассажиров
-            </div>
-          </div>
-          <div className="ticket-amount__block">
-            <TicketAmountInput label="Взрослых" />
-            <div className="ticket-amount__block_description">
-              Можно добавить еще 3 пассажиров
-            </div>
-          </div>
-        </form>
+        <TicketAmountForm />
       </div>
       <div className="places__railcar-type">
         <Header className="places__header" size="s">
@@ -174,11 +165,85 @@ const ChoosePlacesBlock = ({
   );
 };
 
-const TicketAmountInput = ({ label }) => {
+const TicketAmountForm = () => {
+  const dispatch = useDispatch();
+
+  const {
+    passengersAmount: { adult, child, baby },
+  } = useSelector((state) => state.seats);
+
+  const onInputChange = (type, number) => {
+    dispatch(changeTicketsAmount({ type, number }));
+  };
+
+  return (
+    <form className="ticket-amount__form">
+      <TicketAmountBlock
+        name="adult"
+        label="Взрослых"
+        value={adult.amount}
+        onInputChange={onInputChange}
+        {...adult}
+      />
+      <TicketAmountBlock
+        name="child"
+        label="Детских"
+        value={child.amount}
+        onInputChange={onInputChange}
+        {...child}
+      />
+      <TicketAmountBlock
+        name="baby"
+        label="Детских «без места»"
+        value={baby.amount}
+        onInputChange={onInputChange}
+        {...baby}
+      />
+    </form>
+  );
+};
+
+const TicketAmountBlock = ({ name, limit, amount, ...props }) => {
+  return (
+    <div className="ticket-amount__block">
+      <TicketAmountInput name={name} max={limit} {...props} />
+      <div className="ticket-amount__block_description">
+        {(() => {
+          switch (name) {
+            case 'adult':
+              return `Можно добавить еще ${limit - amount} пассажиров`;
+            case 'child':
+              return `Можно добавить еще ${
+                limit - amount
+              } детей до 10 лет. Свое место в вагоне, как у взрослых, но дешевле 
+                в среднем на 50-65%`;
+            case 'baby':
+              return `Можно добавить еще ${limit - amount} детей без места`;
+          }
+        })()}
+      </div>
+    </div>
+  );
+};
+
+const TicketAmountInput = ({ label, max, name, onInputChange, ...props }) => {
+  const handleInputChange = ({ target: { value } }) => {
+    onInputChange(name, value);
+  };
+
   return (
     <label className="ticket-amount__input_label">
       <div className="ticket-amount__input_text">{label} — </div>
-      <input className="ticket-amount__input" type="number" placeholder="0" />
+      <input
+        className="ticket-amount__input"
+        name={name}
+        min={0}
+        max={max}
+        type="number"
+        placeholder="0"
+        onChange={handleInputChange}
+        {...props}
+      />
     </label>
   );
 };

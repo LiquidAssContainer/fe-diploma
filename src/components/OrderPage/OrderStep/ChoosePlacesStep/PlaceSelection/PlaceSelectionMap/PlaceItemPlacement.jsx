@@ -100,7 +100,14 @@ export const PlaceItem = ({
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(changeSeatSelection({ railcarId, railcarClass, placeNumber }));
+    dispatch(
+      changeSeatSelection({
+        railcarId,
+        railcarClass,
+        placeNumber,
+        value: !seat.isSelected,
+      }),
+    );
   };
 
   return (
