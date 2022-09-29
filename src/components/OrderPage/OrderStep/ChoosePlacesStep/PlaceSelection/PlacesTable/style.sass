@@ -69,18 +69,29 @@ $color-typo-grey-light: $grey-1
     cursor: pointer
     transition: 0.1s
 
-    &_icon
-      fill: #292929
-
     &:hover
-      background: #ffbb36
-      border-color: #ffbb36
-
-      & > .places__table_feature_icon
-        fill: #F4F2F6
+      background: #FFA800
 
       & > .places__table_feature_title
         visibility: visible
+
+    &:not(:hover)
+      &.selected
+        background: #ffbb36
+        border-color: #ffbb36
+
+        & > .places__table_feature_icon
+          fill: #F4F2F6
+
+      &.included
+        background: #FCDC9D
+        border-color: #FCDC9D
+
+        & > .places__table_feature_icon
+          fill: #928F94
+
+    &_icon
+      fill: #292929
 
     &_title
       visibility: hidden

@@ -7,13 +7,14 @@ const initialState = {
   tripInfo: {},
   seatsInfo: null,
   selectedRailcarClass: null,
-  selectedSeats: [],
   passengersAmount: {
     adult: { amount: 0, limit: 5 },
     child: { amount: 0, limit: 0 },
     baby: { amount: 0, limit: 0 },
   },
   selectedAmount: 0,
+  selectedSeats: [],
+  selectedFeatures: {},
   totalPrice: 0,
 };
 
@@ -49,6 +50,23 @@ export const seatsSlice = createSlice({
       state.seatsInfo[railcarClass][railcarIndex].coach.isSelected =
         !isSelected;
     },
+    changeFeatureSelection: (state, { payload: { id, feature, value } }) => {
+      const railcar = state.selectedFeatures[id];
+      if (!railcar) {
+        state.selectedFeatures[id] = {};
+      }
+      state.selectedFeatures[id][feature] = value;
+    },
+    changePrice: (state, { payload }) => {
+      // const { amount: adultAmount } = state.passengersAmount.adult;
+      // const { amount: childAmount } = state.passengersAmount.child;
+
+      // const isChildPrice = state.selectedSeats.length > adultAmount;
+      // const priceDiff = isChildPrice ? payload / 2 : payload;
+      // state.totalPrice = state.totalPrice + priceDiff;
+
+      state.totalPrice = state.totalPrice + payload;
+    },
     changeTicketsAmount: (state, { payload: { type, number } }) => {
       const limit = state.passengersAmount[type].limit;
 
@@ -77,12 +95,8 @@ export const seatsSlice = createSlice({
     },
     changeSeatSelection: (
       state,
-      { payload: { placeNumber, railcarId, railcarClass, value } },
+      { payload: { placeNumber, railcarId, railcarClass, value, priceDiff } },
     ) => {
-      if (value && state.selectedSeats.length === state.selectedAmount) {
-        return;
-      }
-
       const list = current(state.seatsInfo[railcarClass]);
 
       const railcarIndex = list.findIndex(
@@ -126,6 +140,8 @@ export const {
   changeRailcarSelection,
   changeSeatSelection,
   changeTicketsAmount,
+  changePrice,
+  changeFeatureSelection,
 } = seatsSlice.actions;
 
 export const seatsReducer = seatsSlice.reducer;

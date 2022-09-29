@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { PlaceSelectionMap } from './PlaceSelectionMap';
 import { PlacesTable } from './PlacesTable';
 import { changeRailcarSelection } from 'reducers/seats';
-import { formatNumber } from 'lib/helpers';
+import { formatNumber, getPlural, pluralWords } from 'lib/helpers';
 
 export const PlaceSelection = ({ railcarClass }) => {
   const dispatch = useDispatch();
@@ -65,6 +65,19 @@ export const PlaceSelection = ({ railcarClass }) => {
 };
 
 const PlacesChoosingRailcar = ({ coach, seats, railcarClass }) => {
+  const {
+    selectedSeats: { length: selectedSeats },
+    selectedAmount,
+  } = useSelector((state) => state.seats);
+
+  const { top_price, bottom_price, side_price } = coach;
+  const prices = { top_price, bottom_price, side_price };
+  // const prices = Object.assign(
+  //   {},
+  //   { top_price, bottom_price, side_price, ...coach },
+  // );
+  // console.log('coach is', coach);
+
   return (
     <div className="places__choosing_railcar">
       <div className="places__choosing_info">
@@ -75,14 +88,22 @@ const PlacesChoosingRailcar = ({ coach, seats, railcarClass }) => {
         </div>
         <PlacesTable {...coach} />
       </div>
-      <div className="places__choosing_selecting-people">
-        {/* не приходит с бека ↓ */}
+      {/* количество выбирающих, как на макете, не приходит с бека */}
+      {/* <div className="places__choosing_selecting-people">
         13 человек выбирают места в этом поезде
+      </div> */}
+      <div className="places__choosing_selected-count">
+        Во всех вагонах выбрано {getPlural(selectedSeats, pluralWords.seats)} из{' '}
+        {selectedAmount}
       </div>
       <PlaceSelectionMap
         seats={seats}
         railcarId={coach._id}
         railcarClass={railcarClass}
+        {...prices}
+        // top_price={top_price}
+        // bottom_price={bottom_price}
+        // side_price={side_price}
       />
     </div>
   );

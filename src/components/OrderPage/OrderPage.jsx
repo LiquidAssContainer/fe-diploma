@@ -20,6 +20,7 @@ import { ChoosePlaces } from './OrderStep/ChoosePlacesStep';
 import { Button } from 'components/Button';
 import { getLastDirectionsAsync } from 'reducers/search';
 import { formatNumber } from 'lib/helpers';
+import { TicketFeatures } from 'components/Ticket/Ticket';
 
 export const OrderPage = () => {
   const dispatch = useDispatch();
@@ -91,14 +92,7 @@ const LastTickets = () => {
   );
 };
 
-const LastTicketItem = ({
-  min_price,
-  from,
-  to,
-  is_express,
-  have_air_conditioning,
-  have_wifi,
-}) => {
+const LastTicketItem = ({ min_price, from, to, ...props }) => {
   return (
     <div className="last-tickets__item">
       <div className="last-ticket__stations">
@@ -106,8 +100,7 @@ const LastTicketItem = ({
         <LastTicketDirection {...to} direction="to" />
       </div>
       <div className="last-ticket__info">
-        {/* TODO */}
-        <div className="last-ticket__icons"></div>
+        <TicketFeatures {...props} />
         <div className="last-ticket__price">
           <span className="last-ticket__price_from">от</span>
           <span className="last-ticket__price_amount">

@@ -11,17 +11,19 @@ import { ReactComponent as TrainIcon } from 'assets/icons/train.svg';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow.svg';
 import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
 import { ReactComponent as ExpressIcon } from 'assets/icons/express.svg';
+import { ReactComponent as FeedIcon } from 'assets/icons/drinks.svg';
+
 import { formatDateToHM, formatNumber } from 'lib/helpers';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setTripInfo } from 'reducers/seats';
 import { nanoid } from 'nanoid';
 
-const features = [
-  { icon: WiFiIcon, label: 'Wi-Fi', id: nanoid() },
-  { icon: ExpressIcon, label: 'Экспресс', id: nanoid() },
-  { icon: ExpressIcon, label: 'Экспресс', id: nanoid() },
-];
+const features = {
+  have_wifi: { icon: WiFiIcon, label: 'Wi-Fi', id: nanoid() },
+  is_express: { icon: ExpressIcon, label: 'Экспресс', id: nanoid() },
+  have_feed: { icon: FeedIcon, label: 'Питание', id: nanoid() },
+};
 
 const classTitles = {
   fourth: 'Сидячий',
@@ -41,6 +43,7 @@ export const Ticket = ({
   available_seats_info,
   duration,
   _id,
+  ...props
 }) => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -102,11 +105,7 @@ export const Ticket = ({
           <TicketPlacesItem />
           <TicketPlacesItem /> */}
         </ul>
-        <ul className="ticket__places_features">
-          {features.map(({ icon, id, label }) => (
-            <TicketPlacesFeature key={id} label={label} icon={icon} />
-          ))}
-        </ul>
+        <TicketFeatures {...props} />
         {isChecking ? (
           <Button size="s" style="transparent-dark">
             Изменить
@@ -118,6 +117,29 @@ export const Ticket = ({
         )}
       </div>
     </div>
+  );
+};
+
+export const TicketFeatures = ({
+  have_wifi = true,
+  is_express = true,
+  have_feed = true,
+}) => {
+  return (
+    <ul className="ticket__places_features">
+      {have_wifi && <TicketPlacesFeature {...features.have_wifi} />}
+      {/* экспрессов вообще не видел на бэке, пусть будет always true */}
+      {is_express || (true && <TicketPlacesFeature {...features.is_express} />)}
+      {have_feed && <TicketPlacesFeature {...features.have_feed} />}
+    </ul>
+  );
+};
+
+const TicketPlacesFeature = ({ icon, label, id }) => {
+  return (
+    <li className="ticket__places_features_item" key={id} title={label}>
+      <Icon wrapperClassName="ticket__places_feature_icon" icon={icon} />
+    </li>
   );
 };
 
@@ -138,14 +160,6 @@ export const TripCities = ({ from, to }) => {
   );
 };
 
-const TicketPlacesFeature = ({ icon, label }) => {
-  return (
-    <div className="ticket__places_features_item" title={label}>
-      <Icon wrapperClassName="ticket__places_feature_icon" icon={icon} />
-    </div>
-  );
-};
-
 const TicketDirections = ({ ...props }) => {
   return (
     <div className="ticket__directions">
@@ -155,7 +169,13 @@ const TicketDirections = ({ ...props }) => {
   );
 };
 
-export const TicketDirection = ({ duration, direction, from, to }) => {
+export const TicketDirection = ({
+  duration,
+  direction,
+  from,
+  to,
+  noDuration,
+}) => {
   return (
     <div
       className={cn('direction', {
@@ -164,9 +184,11 @@ export const TicketDirection = ({ duration, direction, from, to }) => {
     >
       <TripPoint {...from} />
       <div className="trip__duration_container">
-        <div className="trip__duration">
-          {getHours(duration)} : {getMinutes(duration)}
-        </div>
+        {!noDuration && (
+          <div className="trip__duration">
+            {getHours(duration)} : {getMinutes(duration)}
+          </div>
+        )}
         <div className="trip__direction trip__direction_right">
           {direction === 'forward' ? (
             <ArrowIcon className="trip__direction_icon" />

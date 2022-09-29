@@ -1,21 +1,32 @@
 import './style.sass';
 
 import cn from 'classnames';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { changeSeatSelection } from 'reducers/seats';
+import { changePrice, changeSeatSelection } from 'reducers/seats';
 
-export const FirstClassPlacement = ({ firstNumber, ...props }) => {
+export const FirstClassPlacement = ({
+  firstNumber,
+  top_price,
+  bottom_price,
+  ...props
+}) => {
   return (
     <PlaceItemPlacement>
       <PlaceItemRow railcarClass="first">
-        <PlaceItem {...props} placeNumber={firstNumber} railcarClass="first" />
+        <PlaceItem
+          {...props}
+          placeNumber={firstNumber}
+          railcarClass="first"
+          price={top_price}
+        />
       </PlaceItemRow>
       <PlaceItemRow railcarClass="first">
         <PlaceItem
           {...props}
           placeNumber={firstNumber + 1}
           railcarClass="first"
+          price={bottom_price}
         />
       </PlaceItemRow>
     </PlaceItemPlacement>
@@ -45,6 +56,8 @@ export const ThirdClassPlacement = ({ firstNumber, ...props }) => {
 const SecondAndThirdClassPlacement = ({
   railcarClass,
   firstNumber,
+  top_price,
+  bottom_price,
   ...props
 }) => {
   return (
@@ -54,11 +67,13 @@ const SecondAndThirdClassPlacement = ({
           {...props}
           placeNumber={firstNumber}
           railcarClass={railcarClass}
+          price={bottom_price}
         />
         <PlaceItem
           {...props}
           placeNumber={firstNumber + 1}
           railcarClass={railcarClass}
+          price={top_price}
         />
       </PlaceItemRow>
       <PlaceItemRow railcarClass={railcarClass}>
@@ -66,11 +81,13 @@ const SecondAndThirdClassPlacement = ({
           {...props}
           placeNumber={firstNumber + 2}
           railcarClass={railcarClass}
+          price={bottom_price}
         />
         <PlaceItem
           {...props}
           placeNumber={firstNumber + 3}
           railcarClass={railcarClass}
+          price={top_price}
         />
       </PlaceItemRow>
     </PlaceItemPlacement>
@@ -95,17 +112,29 @@ export const PlaceItem = ({
   isLeftSide,
   railcarId,
   seats,
+  price = 0,
 }) => {
+  const { selectedSeats, selectedAmount } = useSelector((state) => state.seats);
+
   const seat = seats[placeNumber - 1];
   const dispatch = useDispatch();
 
   const handleClick = () => {
+    const value = !seat.isSelected;
+
+    if (value && selectedSeats.length === selectedAmount) {
+      return;
+    }
+
+    const priceDiff = seat.isSelected ? -price : price;
+    dispatch(changePrice(priceDiff));
+
     dispatch(
       changeSeatSelection({
         railcarId,
         railcarClass,
         placeNumber,
-        value: !seat.isSelected,
+        value,
       }),
     );
   };

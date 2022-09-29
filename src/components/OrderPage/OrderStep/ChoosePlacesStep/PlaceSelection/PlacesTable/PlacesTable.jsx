@@ -1,12 +1,15 @@
 import './style.sass';
 
-import { useSelector } from 'react-redux';
+import cn from 'classnames';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { ReactComponent as ConditionerIcon } from 'assets/icons/conditioner.svg';
 import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
 import { ReactComponent as BedclothesIcon } from 'assets/icons/bedclothes.svg';
-import { ReactComponent as DrinksIcon } from 'assets/icons/drinks.svg';
+// import { ReactComponent as DrinksIcon } from 'assets/icons/drinks.svg';
+
 import { formatNumber } from 'lib/helpers';
+import { changeFeatureSelection, changePrice } from 'reducers/seats';
 
 const seatTypes = [
   { priceName: 'top_price', label: 'Верхние' },
@@ -16,21 +19,13 @@ const seatTypes = [
 
 export const PlacesTable = ({
   available_seats = 0,
-  // top_price = 0,
-  // bottom_price = 0,
-  // side_price = 0,
   have_wifi = false,
   have_air_conditioning = false,
-  linens_price = 76,
-  wifi_price = 226,
-  is_linens_included = true,
+  linens_price,
+  wifi_price,
+  is_linens_included = false,
   ...props
 }) => {
-  // const { seatsInfo, selectedRailcarClass } = useSelector(
-  //   (state) => state.seats,
-  // );
-  // const { coach } = seatsInfo[selectedRailcarClass];
-
   return (
     <div className="places__table">
       <PlacesTableCol>
@@ -48,24 +43,6 @@ export const PlacesTable = ({
             );
           }
         })}
-        {/* {top_price > 0 && (
-          <PlacesTableCell type="seat-type">
-            <span>Верхние </span>
-            <PlacesTableQuantity>3</PlacesTableQuantity>
-          </PlacesTableCell>
-        )}
-        {bottom_price > 0 && (
-          <PlacesTableCell type="seat-type">
-            <span>Нижние </span>
-            <PlacesTableQuantity>8</PlacesTableQuantity>
-          </PlacesTableCell>
-        )}
-        {side_price > 0 && (
-          <PlacesTableCell type="seat-type">
-            <span>Сбоку </span>
-            <PlacesTableQuantity>8</PlacesTableQuantity>
-          </PlacesTableCell>
-        )} */}
       </PlacesTableCol>
 
       <PlacesTableCol>
@@ -82,14 +59,6 @@ export const PlacesTable = ({
             );
           }
         })}
-        {/* <PlacesTableCell type="price">
-          <span>{top_price} </span>
-          <PlacesTableCurrencySign />
-        </PlacesTableCell>
-        <PlacesTableCell type="price">
-          <span>{bottom_price} </span>
-          <PlacesTableCurrencySign />
-        </PlacesTableCell> */}
       </PlacesTableCol>
 
       <PlacesTableCol>
@@ -98,10 +67,36 @@ export const PlacesTable = ({
           <span className="places__table_fpc">ФПК</span>
         </PlacesTableCell>
         <PlacesTableCell type="features">
-          <PlacesTableFeature Icon={ConditionerIcon} title="кондиционер" />
-          <PlacesTableFeature Icon={WiFiIcon} title="wi-fi" />
-          <PlacesTableFeature Icon={BedclothesIcon} title="постельное бельё" />
-          <PlacesTableFeature Icon={DrinksIcon} title="напитки" />
+          {have_air_conditioning && (
+            <PlacesTableFeature
+              name="air_conditioning"
+              icon={ConditionerIcon}
+              title="кондиционер"
+              isIncluded
+              railcarId={props._id}
+            />
+          )}
+          {have_wifi && (
+            <PlacesTableFeature
+              name="wifi"
+              icon={WiFiIcon}
+              title="Wi-Fi"
+              price={wifi_price}
+              railcarId={props._id}
+            />
+          )}
+          {is_linens_included || linens_price ? (
+            <PlacesTableFeature
+              name="linens"
+              icon={BedclothesIcon}
+              title="бельё"
+              isIncluded={is_linens_included}
+              price={!is_linens_included && linens_price}
+              railcarId={props._id}
+            />
+          ) : null}
+
+          {/* <PlacesTableFeature icon={DrinksIcon} title="питание" /> */}
         </PlacesTableCell>
       </PlacesTableCol>
     </div>
@@ -124,11 +119,49 @@ const PlacesTableCurrencySign = () => {
   return <span className="places__table_currency">₽</span>;
 };
 
-const PlacesTableFeature = ({ Icon, title }) => {
+const PlacesTableFeature = ({
+  name,
+  icon: Icon,
+  title,
+  isIncluded,
+  price = 0,
+  railcarId,
+}) => {
+  const dispatch = useDispatch();
+  const { selectedFeatures } = useSelector((state) => state.seats);
+
+  const railcarFeatures = selectedFeatures[railcarId];
+  const isSelected = railcarFeatures?.[name];
+
+  const handleClick = () => {
+    if (isIncluded) {
+      return;
+    }
+
+    const priceDiff = isSelected ? -price : price;
+    dispatch(changePrice(priceDiff));
+
+    dispatch(
+      changeFeatureSelection({
+        id: railcarId,
+        feature: name,
+        value: !isSelected,
+      }),
+    );
+  };
+
   return (
-    <div className="places__table_feature">
+    <button
+      className={cn('places__table_feature', {
+        included: isIncluded,
+        selected: isSelected,
+      })}
+      onClick={handleClick}
+    >
       <Icon className="places__table_feature_icon" />
-      <div className="places__table_feature_title">{title}</div>
-    </div>
+      <div className="places__table_feature_title">
+        {title} ({price ? `+${price} ₽` : 'включено в стоимость'})
+      </div>
+    </button>
   );
 };

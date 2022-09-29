@@ -38,7 +38,7 @@ export const SecondClassPlaces = ({ ...props }) => {
   );
 };
 
-export const ThirdClassPlaces = ({ ...props }) => {
+export const ThirdClassPlaces = ({ side_price, ...props }) => {
   return (
     <PlaceListContainer railcarClass="third">
       <PlaceItemList railcarClass="third">
@@ -54,12 +54,14 @@ export const ThirdClassPlaces = ({ ...props }) => {
               railcarClass="third"
               placeNumber={i * 2 + 33}
               isLeftSide={true}
+              price={side_price}
             />
             <PlaceItem
               {...props}
               railcarClass="third"
               placeNumber={i * 2 + 34}
               isLeftSide={true}
+              price={side_price}
             />
           </li>
         ))}
@@ -104,7 +106,7 @@ const PlaceItemList = ({ railcarClass, children, isLeftSide }) => {
   );
 };
 
-const SittingPlaceItemList = ({ firstNumber, side, ...props }) => {
+const SittingPlaceItemList = ({ firstNumber, side, top_price, ...props }) => {
   return (
     <ul className={`place__list_fourth-class_${side}-side`}>
       {[...Array(16)].map((_, i) => {
@@ -114,11 +116,13 @@ const SittingPlaceItemList = ({ firstNumber, side, ...props }) => {
               {...props}
               placeNumber={i * 2 + firstNumber}
               railcarClass="fourth"
+              price={top_price}
             />
             <PlaceItem
               {...props}
               placeNumber={i * 2 + firstNumber + 1}
               railcarClass="fourth"
+              price={top_price}
             />
           </PlaceItemRow>
         );
