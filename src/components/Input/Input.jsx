@@ -19,12 +19,19 @@ export const Input = ({
   type,
   value,
   isChecked,
+  required,
+  minLength,
+  maxLength,
+  min,
+  max,
+  pattern,
   ...props
 }) => {
   const { control } = useFormContext();
   const { field } = useController({
     name,
     control,
+    rules: { required, minLength, maxLength, min, max, pattern },
   });
 
   const handleChange = (event) => {
@@ -113,7 +120,7 @@ export const DateInput = ({
 export const LocationInput = ({ size, ...props }) => {
   return (
     <InputContainer size={size}>
-      <Input {...props} type="text" autocomplete="off" />
+      <Input {...props} type="text" autoComplete="off" />
       <button className="input__btn input__btn_pick-location" type="button">
         <LocationIcon className="input__btn_icon" />
       </button>

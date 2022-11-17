@@ -123,12 +123,8 @@ export const TicketDetailsFilter = () => {
         <TicketDetailsSection isExpandable={false}>
           <ul className="form__switch_list">
             {switchList.map((props) => (
-              <li className="form__switch_item">
-                <CheckboxLabel
-                  {...props}
-                  onChange={onFieldChange}
-                  key={props.name}
-                />
+              <li className="form__switch_item" key={props.name}>
+                <CheckboxLabel {...props} onChange={onFieldChange} />
               </li>
             ))}
           </ul>

@@ -8,16 +8,18 @@ export const Button = ({
   style,
   classname,
   onClick,
-  isDisabled = false,
+  type = 'button',
+  disabled = false,
 }) => {
   return (
     <button
       className={cn('form__button', classname, {
         [`form__button_size_${size}`]: size,
         [`form__button_style_${style}`]: style,
-        form__button_disabled: isDisabled,
+        form__button_disabled: disabled,
       })}
-      type="button"
+      disabled={disabled}
+      type={type}
       onClick={onClick}
     >
       {children}

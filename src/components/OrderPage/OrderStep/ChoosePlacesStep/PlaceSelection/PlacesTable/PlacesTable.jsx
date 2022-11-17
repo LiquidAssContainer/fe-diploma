@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ReactComponent as ConditionerIcon } from 'assets/icons/conditioner.svg';
 import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
 import { ReactComponent as BedclothesIcon } from 'assets/icons/bedclothes.svg';
-// import { ReactComponent as DrinksIcon } from 'assets/icons/drinks.svg';
+import { ReactComponent as DrinksIcon } from 'assets/icons/drinks.svg';
 
 import { formatNumber } from 'lib/helpers';
 import { changeFeatureSelection, changePrice } from 'reducers/seats';
@@ -76,6 +76,7 @@ export const PlacesTable = ({
               railcarId={props._id}
             />
           )}
+
           {have_wifi && (
             <PlacesTableFeature
               name="wifi"
@@ -85,6 +86,7 @@ export const PlacesTable = ({
               railcarId={props._id}
             />
           )}
+
           {is_linens_included || linens_price ? (
             <PlacesTableFeature
               name="linens"
@@ -96,7 +98,13 @@ export const PlacesTable = ({
             />
           ) : null}
 
-          {/* <PlacesTableFeature icon={DrinksIcon} title="питание" /> */}
+          <PlacesTableFeature
+            name="feed"
+            icon={DrinksIcon}
+            title="питание"
+            price={90}
+            railcarId={props._id}
+          />
         </PlacesTableCell>
       </PlacesTableCol>
     </div>

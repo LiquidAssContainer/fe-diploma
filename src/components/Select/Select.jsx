@@ -88,6 +88,7 @@ export const Select = ({ className, optionsList, selected, onSelect }) => {
       >
         {optionsList.map((option, index) => (
           <li
+            key={option.value}
             className="select__options_item"
             id={option.value}
             role="option"

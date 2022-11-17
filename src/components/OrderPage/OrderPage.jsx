@@ -2,25 +2,25 @@ import './style.sass';
 
 import cn from 'classnames';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  HashRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom';
 
 import { PageHeader } from '../PageHeader';
 import { SearchTicketsForm } from '../SearchTicketsForm';
 import { TicketDetailsFilter, TicketDetailsInfo } from './TicketDetails';
 import { Header } from 'components/Header';
-import {
-  CheckStep,
-  PassengersStep,
-  PaymentStep,
-  SearchTickets,
-} from './OrderStep';
+import { CheckStep, PaymentStep, SearchTickets } from './OrderStep';
 import { ChoosePlaces } from './OrderStep/ChoosePlacesStep';
 import { Button } from 'components/Button';
 import { getLastDirectionsAsync } from 'reducers/search';
 import { formatNumber } from 'lib/helpers';
 import { TicketFeatures } from 'components/Ticket/Ticket';
+import { PassengersStep } from './OrderStep/PassengersStep';
 
 export const OrderPage = () => {
   const dispatch = useDispatch();
@@ -49,25 +49,30 @@ export const OrderPage = () => {
             )}
           </aside>
           <main className="order-page__main">
-            {(() => {
-              switch (step) {
-                case 1:
-                  return (
-                    <Router>
-                      <Switch>
-                        <Route path="/search" component={SearchTickets} />
-                        <Route path="/seats/:id" component={ChoosePlaces} />
-                      </Switch>
-                    </Router>
-                  );
-                case 2:
-                  return <PassengersStep />;
-                case 3:
-                  return <PaymentStep />;
-                case 4:
-                  return <CheckStep />;
-              }
-            })()}
+            <Router>
+              <Switch>
+                <Route path="/search" component={SearchTickets} />
+                <Route path="/seats/:id/order" component={PassengersStep}>
+                  {() => {
+                    switch (step) {
+                      case 1:
+                      // return (
+                      //   <Switch>
+                      //     <Redirect from="/seats/:id/order" to="/seats/:id" />
+                      //   </Switch>
+                      // );
+                      case 2:
+                        return <PassengersStep />;
+                      case 3:
+                        return <PaymentStep />;
+                      case 4:
+                        return <CheckStep />;
+                    }
+                  }}
+                </Route>
+                <Route path="/seats/:id" component={ChoosePlaces} />
+              </Switch>
+            </Router>
           </main>
         </div>
       </section>
@@ -165,12 +170,13 @@ const Step = ({ label, isColored, i }) => {
   );
 };
 
-export const NextStepButton = ({ children, onClick }) => (
+export const NextStepButton = ({ children, onClick, ...props }) => (
   <Button
     classname="button__next-step"
     onClick={onClick}
     size="l"
     style="colored"
+    {...props}
   >
     {children}
   </Button>

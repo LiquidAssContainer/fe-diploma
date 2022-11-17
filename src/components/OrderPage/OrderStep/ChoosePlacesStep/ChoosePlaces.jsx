@@ -21,6 +21,7 @@ import { TicketDirection, TripCities } from 'components/Ticket/Ticket';
 import { setNextStep } from 'reducers/stepper';
 import { changeSelectedRailcarType, getSeatsDetailAsync } from 'reducers/seats';
 import { TicketAmountForm } from './TicketAmountForm';
+import { useHistory } from 'react-router-dom';
 
 const railcarTypes = [
   { name: 'fourth', label: 'Сидячий', Icon: FourthClassIcon },
@@ -35,6 +36,7 @@ export const ChoosePlaces = ({
   },
 }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { tripInfo, seatsInfo, selectedAmount } = useSelector(
     (state) => state.seats,
   );
@@ -42,6 +44,7 @@ export const ChoosePlaces = ({
   const handleNextStepClick = () => {
     if (selectedAmount > 0) {
       dispatch(setNextStep());
+      history.push(`/seats/${id}/order`);
     }
   };
 
