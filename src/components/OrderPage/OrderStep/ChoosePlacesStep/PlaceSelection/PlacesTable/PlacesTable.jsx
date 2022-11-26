@@ -36,7 +36,7 @@ export const PlacesTable = ({
         {seatTypes.map(({ priceName, label }) => {
           if (props[priceName]) {
             return (
-              <PlacesTableCell type="seat-type">
+              <PlacesTableCell key={priceName} type="seat-type">
                 <span>{label} </span>
                 <PlacesTableQuantity>3</PlacesTableQuantity>
               </PlacesTableCell>
@@ -52,7 +52,7 @@ export const PlacesTable = ({
         {seatTypes.map(({ priceName }) => {
           if (props[priceName]) {
             return (
-              <PlacesTableCell type="price">
+              <PlacesTableCell key={priceName} type="price">
                 <span>{formatNumber(props[priceName])} </span>
                 <PlacesTableCurrencySign />
               </PlacesTableCell>

@@ -23,7 +23,7 @@ $height-stepper: 95px
   background: #3E3C41
   display: flex
   align-items: center
-  padding-block: 20px
+  padding-block: 21px
   padding-inline: 15px
   flex: 1 1
 
@@ -55,14 +55,14 @@ $height-stepper: 95px
     content: ''
     position: absolute
 
-    border-block: calc(95px / 2) solid
-    border-left: 40px solid transparent
+    border-block: calc(98px / 2) solid
+    border-left: 37px solid transparent
 
   &:not(:last-child)
     &::after
       right: 0
       border-block-color: #E5E5E5
-      border-right: 3px solid #E5E5E5
+      border-right: 2px solid #E5E5E5
 
   &:not(:first-child)
     padding-left: 30px
@@ -86,8 +86,8 @@ $height-stepper: 95px
   color: #fff
   border: 3px solid #FFFFFF
   border-radius: 50%
-  width: 55px
-  height: 55px
+  width: 56px
+  height: 56px
   display: flex
   justify-content: center
   align-items: center
@@ -197,11 +197,18 @@ $height-stepper: 95px
       font-weight: 400
       color: #928F94
 
-.button__next-step
-  display: block
-  // max-width: 220px
-  max-width: 320px
+.step-buttons__container
+  display: flex
   margin-top: 100px
-  margin-left: auto
+
+.button__prev-step, .button__next-step
+  display: block
+  max-width: 320px
 
   text-transform: uppercase
+
+.button__prev-step
+  margin-right: auto
+
+.button__next-step
+  margin-left: auto

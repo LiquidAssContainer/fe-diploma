@@ -52,7 +52,7 @@ export const Input = ({
   );
 };
 
-export const EmailInput = (size, ...props) => {
+export const EmailInput = ({ size, ...props }) => {
   return (
     <InputContainer size={size}>
       <Input {...props} type="email" />

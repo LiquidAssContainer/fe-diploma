@@ -1,13 +1,14 @@
 import './style.sass';
 
 import cn from 'classnames';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   HashRouter as Router,
   Redirect,
   Route,
   Switch,
+  useLocation,
 } from 'react-router-dom';
 
 import { PageHeader } from '../PageHeader';
@@ -17,24 +18,40 @@ import { Header } from 'components/Header';
 import { CheckStep, PaymentStep, SearchTickets } from './OrderStep';
 import { ChoosePlaces } from './OrderStep/ChoosePlacesStep';
 import { Button } from 'components/Button';
-import { getLastDirectionsAsync } from 'reducers/search';
-import { formatNumber } from 'lib/helpers';
 import { TicketFeatures } from 'components/Ticket/Ticket';
 import { PassengersStep } from './OrderStep/PassengersStep';
 
+import { getLastDirectionsAsync } from 'reducers/search';
+import { setNextStep, setPrevStep } from 'reducers/stepper';
+import { formatNumber } from 'lib/helpers';
+
 export const OrderPage = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const { step } = useSelector((state) => state.stepper);
+
+  const stepperRef = useRef(null);
+
   useEffect(() => {
     dispatch(getLastDirectionsAsync());
   }, []);
-  const { step } = useSelector((state) => state.stepper);
+
+  useEffect(() => {
+    // const { pathname } = location;
+    // console.log(pathname);
+    // console.log('step changed');
+    // stepperRef.current?.scrollIntoView({
+    //   behavior: 'smooth',
+    //   block: 'nearest',
+    // });
+  }, [step]);
 
   return (
     <>
       <section className="order-page__hero">
         <PageHeader />
         <SearchTicketsForm />
-        <Stepper activeStep={step} />
+        <Stepper innerRef={stepperRef} activeStep={step} />
       </section>
       <section className="order-page__content_wrapper">
         <div className="order-page__content">
@@ -52,15 +69,15 @@ export const OrderPage = () => {
             <Router>
               <Switch>
                 <Route path="/search" component={SearchTickets} />
-                <Route path="/seats/:id/order" component={PassengersStep}>
+                <Route path="/seats/:id/order">
                   {() => {
                     switch (step) {
                       case 1:
-                      // return (
-                      //   <Switch>
-                      //     <Redirect from="/seats/:id/order" to="/seats/:id" />
-                      //   </Switch>
-                      // );
+                        return (
+                          <Switch>
+                            <Redirect from="/seats/:id/order" to="/seats/:id" />
+                          </Switch>
+                        );
                       case 2:
                         return <PassengersStep />;
                       case 3:
@@ -138,7 +155,7 @@ const LastTicketDirection = ({
   );
 };
 
-const Stepper = ({ activeStep }) => {
+const Stepper = ({ activeStep, innerRef }) => {
   const steps = [
     { number: 1, name: 'tickets', label: 'Билеты' },
     { number: 2, name: 'passengers', label: 'Пассажиры' },
@@ -149,7 +166,7 @@ const Stepper = ({ activeStep }) => {
   const activeStepIndex = steps.findIndex((step) => step.number === activeStep);
 
   return (
-    <div className="steps__list_wrapper">
+    <div ref={innerRef} className="steps__list_wrapper">
       <ul className="steps__list">
         {steps.map((step, i) => {
           return (
@@ -170,14 +187,46 @@ const Step = ({ label, isColored, i }) => {
   );
 };
 
-export const NextStepButton = ({ children, onClick, ...props }) => (
-  <Button
-    classname="button__next-step"
-    onClick={onClick}
-    size="l"
-    style="colored"
-    {...props}
-  >
-    {children}
-  </Button>
+export const StepButtonsContainer = ({ children }) => (
+  <div className="step-buttons__container">{children}</div>
 );
+
+export const PrevStepButton = ({ ...props }) => (
+  <ChangeStepButton type="prev" {...props} />
+);
+
+export const NextStepButton = ({ ...props }) => (
+  <ChangeStepButton type="next" {...props} />
+);
+
+export const ChangeStepButton = ({
+  children,
+  onClick,
+  type = 'next',
+  ...props
+}) => {
+  const dispatch = useDispatch();
+
+  const changeStep = () => {
+    // if () {
+    dispatch(type === 'next' ? setNextStep() : setPrevStep());
+    // } else {
+    //   dispatch(setPrevStep());
+    // }
+  };
+
+  return (
+    <Button
+      classname={`button__${type}-step`}
+      onClick={() => {
+        changeStep();
+        onClick?.();
+      }}
+      size="l"
+      style="colored"
+      {...props}
+    >
+      {children}
+    </Button>
+  );
+};

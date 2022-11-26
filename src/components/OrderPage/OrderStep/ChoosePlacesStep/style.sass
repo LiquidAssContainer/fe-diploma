@@ -33,6 +33,9 @@ $color-bg-train: $orange-1
     &_list
       margin-bottom: 100px
 
+    & .trip__duration_container
+      justify-content: center
+
   &__change-train
     display: flex
     gap: 10px
@@ -116,7 +119,7 @@ $color-bg-train: $orange-1
 .trip__duration_container
   display: flex
   flex-direction: column
-  justify-content: center
+  flex-shrink: 0
 
 .train-info__train-icon
   margin: auto
@@ -149,6 +152,7 @@ $color-bg-train: $orange-1
     gap: 25px
     flex: 1
 
+    min-width: 25%
     padding: 15px 35px
 
   &_time
@@ -156,6 +160,9 @@ $color-bg-train: $orange-1
     display: flex
     align-items: center
     padding-inline: 35px
+
+  & .ticket__trip-points
+    padding-inline: 0
 
 .icon__wrapper
   margin-right: 10px

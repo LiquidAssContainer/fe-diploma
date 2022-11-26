@@ -35,28 +35,7 @@ import {
   PassengerFormIconButton,
   PassengerFormSelect,
 } from './PassengersStepComponents';
-
-const patternValues = {
-  onlyCyrillic: /^[а-яё]+$/i,
-  birthCertificate: /^[ivx]{1,4}[\s-]?[а-я]{2}[\s-]?[\d]{6}$/i,
-};
-
-const errorMessages = {
-  required: (field) => `Поле «${field}» обязательно для заполнения`,
-  onlyCyrillic: (field, gender) => {
-    return `${field} ${(() => {
-      switch (gender) {
-        case 'male':
-          return 'должен';
-        case 'female':
-          return 'должна';
-        case 'neuter':
-          return 'должно';
-      }
-    })()} содержать только буквы русского алфавита`;
-  },
-  // pattern: (field) => `Поле ${field} обязательно для заполнения`,
-};
+import { errorMessages, patternValues } from '../helpers';
 
 const ticketTypeOptions = [
   { label: 'Взрослый', value: 'adult' },
@@ -74,51 +53,55 @@ export const PassengerForm = ({
   formIndex,
   passengers,
   onNextPassengerClick,
+  onRemovePassenger,
   isExpandedProp = false,
   innerRef,
+  isLast,
   ...props
 }) => {
   const { passengerForms } = useSelector((state) => state.order);
   const form = useForm({
     defaultValues: {
       ticket_type: 'adult',
-      document_type: 'passport',
       last_name: '',
       first_name: '',
       patronymic: '',
-      birthday: '',
       gender: 'male',
+      birthday: '',
       limited_mobility: false,
+      document_type: 'passport',
+      passport_series: '',
+      passport_number: '',
+      birth_certificate_number: '',
     },
     mode: 'onChange',
   });
 
   const {
-    formState: { errors, isSubmitSuccessful, isValid, isValidating },
+    formState: { errors, isValid },
   } = form;
 
+  console.log(errors);
+
   const [isExpanded, setIsExpanded] = useState(isExpandedProp);
-  const [hasErrors, setHasErrors] = useState(false);
-  // const [isValid, setIsValid] = useState(false);
-  // const [validationState, setValidationState] = useState(false);
 
   const { setValue, getValues, watch } = form;
 
-  const watchForm = watch();
   const document_type = watch('document_type');
 
-  const handleSubmit = (data) => {
-    onNextPassengerClick(formIndex);
-    // if (!Object.keys(errors).length) {
-    //   setHasErrors(false);
-    // } else {
-    //   // setIsValid(false);
-    //   setHasErrors(true);
-    // }
+  const handleSubmit = () => {
+    if (isValid) {
+      onNextPassengerClick(formIndex);
+    }
   };
 
   const handleChange = () => {
-    onFormChange(formIndex, isValid);
+    console.log(getValues());
+    onFormChange(getValues(), formIndex, isValid);
+  };
+
+  const handleRemovePassenger = () => {
+    onRemovePassenger(formIndex);
   };
 
   useEffect(() => {
@@ -135,18 +118,8 @@ export const PassengerForm = ({
   }, [isExpandedProp]);
 
   useEffect(() => {
-    onFormChange(formIndex, isValid);
+    onFormChange(getValues(), formIndex, isValid);
   }, [isValid]);
-
-  // useEffect(() => {
-  //   console.log('valid', isValid);
-  //   // if (!Object.keys(errors).length) {
-  //   //   setHasErrors(false);
-  //   // } else {
-  //   //   // setIsValid(false);
-  //   //   setHasErrors(true);
-  //   // }
-  // }, [isValid]);
 
   return (
     <OrderBlockContainer {...props}>
@@ -162,13 +135,13 @@ export const PassengerForm = ({
                   icon={isExpanded ? MinusIcon : PlusIcon}
                 />
                 <OrderBlockHeaderTitle title={`Пассажир ${number}`} />
-                {isExpanded && (
-                  <PassengerFormIconButton
-                    type="remove"
-                    onClick={() => passengers.splice(number - 1, 1)}
-                    icon={CloseIcon}
-                  />
-                )}
+                {/* {isExpanded && ( */}
+                <PassengerFormIconButton
+                  type="remove"
+                  onClick={handleRemovePassenger}
+                  icon={CloseIcon}
+                />
+                {/* )} */}
               </PassengerFormHeaderContent>
             </OrderBlockHeader>
 
@@ -215,6 +188,7 @@ export const PassengerForm = ({
                       }}
                     />
                     <OrderInput
+                      className={errors.patronymic && 'invalid'}
                       label="Отчество"
                       type="text"
                       placeholder="Иванович"
@@ -238,7 +212,8 @@ export const PassengerForm = ({
                       type="date"
                       placeholder="Иванович"
                       name="birthday"
-                      // required={errorMessages.required('Дата рождения')}
+                      size="s"
+                      required={errorMessages.required('Дата рождения')}
                     />
                   </OrderBlockSectionRow>
 
@@ -254,6 +229,7 @@ export const PassengerForm = ({
                 <OrderBlockSection>
                   <OrderBlockSectionRow>
                     <PassengerFormSelect
+                      className="document-type"
                       options={documentTypeOptions}
                       // onSelect={(value) => onSelect('document_type', value)}
                       name="document_type"
@@ -263,14 +239,16 @@ export const PassengerForm = ({
                     {document_type === 'passport' ? (
                       <>
                         <OrderInput
-                          className={errors.series && 'invalid'}
-                          name="series"
+                          className={cn('letter-spacing', {
+                            invalid: errors.series,
+                          })}
+                          name="passport_series"
                           label="Серия"
                           type="number"
                           placeholder="____"
                           required={errorMessages.required('Серия паспорта')}
                           minLength={{
-                            value: 1,
+                            value: 4,
                             message: 'Серия паспорта должна состоять из 4 цифр',
                           }}
                           maxLength={{
@@ -279,14 +257,16 @@ export const PassengerForm = ({
                           }}
                         />
                         <OrderInput
-                          className={errors.number && 'invalid'}
-                          name="number"
+                          className={cn('letter-spacing', {
+                            invalid: errors.number,
+                          })}
+                          name="passport_number"
                           label="Номер"
                           type="number"
                           placeholder="______"
-                          required={errorMessages.required('Номер паспорта')}
+                          // required={errorMessages.required('Номер паспорта')}
                           minLength={{
-                            value: 1,
+                            value: 6,
                             message: 'Номер паспорта должен состоять из 6 цифр',
                           }}
                           maxLength={{
@@ -333,33 +313,37 @@ export const PassengerForm = ({
                             </div>
                           </>
                         )}
+                        {!!Object.keys(errors).length && (
+                          <>
+                            <Icon
+                              wrapperClassName="form__footer_validation-info_icon invalid"
+                              icon={CloseIcon}
+                            />
+                            <ul className="form__footer_validation-info_text">
+                              {Object.values(errors).map(({ message }, i) => {
+                                return (
+                                  <li
+                                    key={i}
+                                    className="form__footer_error-message"
+                                  >
+                                    {message}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </>
+                        )}
                       </div>
-                      {!!Object.keys(errors).length && (
-                        <>
-                          <Icon
-                            wrapperClassName="form__footer_validation-info_icon invalid"
-                            icon={CloseIcon}
-                          />
-                          <div className="form__footer_validation-info_text">
-                            {Object.values(errors).map(({ message }) => {
-                              return (
-                                <div className="form__footer_error-message">
-                                  {message}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </>
+                      {!Object.keys(errors).length && !isLast && (
+                        <Button
+                          style="transparent-dark"
+                          size="m"
+                          type="submit"
+                          onClick={handleSubmit}
+                        >
+                          Следующий пассажир
+                        </Button>
                       )}
-                      <Button
-                        style="transparent-dark"
-                        size="m"
-                        type="submit"
-                        onClick={handleSubmit}
-                        // disabled={!isValid}
-                      >
-                        Следующий пассажир
-                      </Button>
                     </div>
                   </OrderBlockSection>
                 </div>

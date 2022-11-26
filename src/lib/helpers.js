@@ -4,6 +4,8 @@ export const pluralWords = {
   seats: ['место', 'места', 'мест'],
   passengers: ['пассажира', 'пассажиров', 'пассажиров'],
   children: ['ребёнка', 'детей', 'детей'],
+  adultPassengers: ['Взрослый', 'Взрослых', 'Взрослых'],
+  childPassengers: ['Ребёнок', 'Ребёнка', 'Детей'],
 };
 
 export const formatDateToHM = (date) => {

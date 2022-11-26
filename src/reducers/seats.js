@@ -4,7 +4,51 @@ import { apiService } from 'services/apiService';
 // const defaultRailcarList = { first: [], second: [], third: [], fourth: [] };
 
 const initialState = {
-  tripInfo: {},
+  // ↓ заглушка, потому что нельзя запросом добыть инфу для конкретного направления
+  tripInfo: {
+    direction: 'forward',
+    from: {
+      railway_station_name: 'Заглушечный',
+      city: {
+        name: 'Заглушка-Сити',
+      },
+      datetime: 1643457170,
+    },
+    to: {
+      railway_station_name: 'Славы Альянсу',
+      city: {
+        name: 'Сити-17',
+      },
+      datetime: 1643754350,
+    },
+    train: { name: 'Поровозик-12' },
+    price_info: {
+      first: {
+        top_price: 581,
+        bottom_price: 618,
+      },
+      second: {
+        top_price: 581,
+        bottom_price: 618,
+      },
+      third: {
+        top_price: 581,
+        bottom_price: 618,
+      },
+      fourth: {
+        top_price: 581,
+        bottom_price: 618,
+      },
+    },
+    available_seats_info: {
+      first: 11,
+      second: 22,
+      third: 33,
+      fourth: 44,
+    },
+    duration: 0,
+  },
+
   seatsInfo: null,
   selectedRailcarClass: null,
   passengersAmount: {

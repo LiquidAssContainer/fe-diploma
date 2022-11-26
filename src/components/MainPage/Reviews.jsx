@@ -20,8 +20,8 @@ export const Reviews = () => {
     <section className="reviews" id="reviews">
       <Header size="m">Отзывы</Header>
       <ul className="reviews__list">
-        {zahlushka.map((review) => (
-          <ReviewItem {...review} />
+        {zahlushka.map((review, i) => (
+          <ReviewItem key={i} {...review} />
         ))}
       </ul>
       <div className="reviews__carousel">КАРУСЕЛЬ</div>

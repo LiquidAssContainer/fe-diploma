@@ -6,27 +6,46 @@ import { ReactComponent as Facebook } from '../../assets/icons/facebook.svg';
 
 import { EmailInput } from 'components/Input';
 import { Button } from 'components/Button';
+import { Form } from 'lib/Form';
+import { useForm } from 'react-hook-form';
+
+const socialNetworks = [
+  { icon: Youtube, link: 'https://youtube.com' },
+  { icon: Linkedin, link: 'https://ru.linkedin.com/' },
+  { icon: Googleplus, link: 'https://google.com' },
+  { icon: Twitter, link: 'https://twitter.com' },
+  { icon: Facebook, link: 'https://facebook.com' },
+];
+
+const handleSubmit = () => {
+  // if (isValid) {
+  //   onNextPassengerClick(formIndex);
+  // }
+};
 
 export const FooterSubscription = () => {
-  const socialNetworks = [
-    { icon: Youtube, link: 'https://youtube.com' },
-    { icon: Linkedin, link: 'https://ru.linkedin.com/' },
-    { icon: Googleplus, link: 'https://google.com' },
-    { icon: Twitter, link: 'https://twitter.com' },
-    { icon: Facebook, link: 'https://facebook.com' },
-  ];
+  const form = useForm({ defaultValues: { email: '' } });
 
   return (
     <div className="subscription">
       <div className="subscription__form_container">
         <h4 className="footer__header header_size_s">Подписка</h4>
         <div className="subscription__text">Будьте в курсе событий</div>
-        <form className="subscription__form">
-          {/* <EmailInput size="l" placeholder="e-mail" /> */}
-          <Button classname="footer__button" style="transparent-light" size="l">
+        <Form
+          className="subscription__form"
+          form={form}
+          onSubmit={handleSubmit}
+        >
+          <EmailInput name="email" size="l" placeholder="e-mail" />
+          <Button
+            classname="footer__button"
+            type="submit"
+            style="transparent-light"
+            size="l"
+          >
             Отправить
           </Button>
-        </form>
+        </Form>
       </div>
       <div className="socials">
         <h4 className="footer__header header_size_s">Подписывайтесь на нас</h4>

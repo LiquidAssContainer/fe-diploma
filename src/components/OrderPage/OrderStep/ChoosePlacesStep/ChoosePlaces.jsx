@@ -15,13 +15,17 @@ import { ReactComponent as ArrowInRectangleLarge } from 'assets/icons/arrow_in_r
 import { Header } from 'components/Header';
 import { Button } from 'components/Button';
 import { PlaceSelection } from './PlaceSelection';
-import { NextStepButton } from 'components/OrderPage/OrderPage';
+import {
+  ChangeStepButton,
+  NextStepButton,
+} from 'components/OrderPage/OrderPage';
 import { TicketDirection, TripCities } from 'components/Ticket/Ticket';
 
 import { setNextStep } from 'reducers/stepper';
 import { changeSelectedRailcarType, getSeatsDetailAsync } from 'reducers/seats';
 import { TicketAmountForm } from './TicketAmountForm';
 import { useHistory } from 'react-router-dom';
+import { setDirectionId } from 'reducers/order';
 
 const railcarTypes = [
   { name: 'fourth', label: 'Сидячий', Icon: FourthClassIcon },
@@ -37,18 +41,23 @@ export const ChoosePlaces = ({
 }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { tripInfo, seatsInfo, selectedAmount } = useSelector(
-    (state) => state.seats,
-  );
+  const {
+    tripInfo,
+    seatsInfo,
+    selectedAmount,
+    selectedSeats: { length: selectedSeats },
+  } = useSelector((state) => state.seats);
 
   const handleNextStepClick = () => {
-    if (selectedAmount > 0) {
-      dispatch(setNextStep());
-      history.push(`/seats/${id}/order`);
-    }
+    // if (selectedAmount > 0) {
+    //   dispatch(setNextStep());
+    history.push(`/seats/${id}/order`);
+    // }
   };
 
   useEffect(() => {
+    dispatch(setDirectionId(id));
+
     if (!seatsInfo) {
       dispatch(getSeatsDetailAsync(id));
     }
@@ -67,7 +76,12 @@ export const ChoosePlaces = ({
         />
         {/* <ChoosePlacesBlock direction="return" /> */}
       </div>
-      <NextStepButton onClick={handleNextStepClick}>Далее</NextStepButton>
+      <NextStepButton
+        disabled={!selectedAmount || selectedSeats !== selectedAmount}
+        onClick={handleNextStepClick}
+      >
+        Далее
+      </NextStepButton>
     </>
   );
 };
@@ -151,6 +165,7 @@ const ChoosePlacesBlock = ({
         <ul className="railcar-type__buttons">
           {railcarTypes.map((item) => (
             <RailcarTypeButton
+              key={item.name}
               disabled={!seatsInfo || !seatsInfo[item.name]}
               isSelected={selectedRailcarClass === item.name}
               onClick={onRailcarTypeChange}

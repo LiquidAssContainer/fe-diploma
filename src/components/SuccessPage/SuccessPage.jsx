@@ -8,23 +8,41 @@ import { ReactComponent as StarIcon } from 'assets/icons/star.svg';
 import { PageHeader } from 'components/PageHeader';
 import { Button } from 'components/Button';
 import { Header } from 'components/Header';
+import { useEffect, useState } from 'react';
+import cn from 'classnames';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const ticketInstructions = [
   {
-    Icon: TicketsEmailIcon,
+    icon: TicketsEmailIcon,
     text: 'билеты будут отправлены на ваш <b>e-mail</b>',
   },
   {
-    Icon: TicketsIcon,
+    icon: TicketsIcon,
     text: 'распечатайте и сохраняйте билеты до даты поездки',
   },
   {
-    Icon: ControlerIcon,
+    icon: ControlerIcon,
     text: 'предьявите распечатанные билеты при посадке',
   },
 ];
 
 export const SuccessPage = () => {
+  const history = useHistory();
+
+  const {
+    userData: { last_name, first_name, patronymic },
+  } = useSelector((state) => state.order);
+
+  const handleHomeClick = () => {
+    history.push('/');
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="success-page__container">
       <section className="success-page__header">
@@ -43,13 +61,13 @@ export const SuccessPage = () => {
           </header>
           <div className="order-information">
             <ul className="ticket-steps__list">
-              {ticketInstructions.map((props) => (
-                <TicketInstructionItem {...props} />
+              {ticketInstructions.map((props, i) => (
+                <TicketInstructionItem key={i} {...props} />
               ))}
             </ul>
             <div className="success-page__text">
               <Header size="m" className="order-information__title">
-                Ирина Эдуардовна!
+                {first_name} {patronymic || last_name}!
               </Header>
               <p className="success-page__paragraph">
                 Ваш заказ успешно оформлен.
@@ -63,17 +81,12 @@ export const SuccessPage = () => {
             </div>
           </div>
           <footer className="order-footer">
-            <div className="rate-service">
-              <div className="rate-service__label">Оценить сервис</div>
-              <ul className="rate-service__stars">
-                {[...Array(5)].map(() => (
-                  <div className="star__wrapper">
-                    <StarIcon className="star" />
-                  </div>
-                ))}
-              </ul>
-            </div>
-            <Button classname="success-page__button" size="l">
+            <RateService />
+            <Button
+              classname="success-page__button"
+              size="l"
+              onClick={handleHomeClick}
+            >
               Вернуться на главную
             </Button>
           </footer>
@@ -83,7 +96,32 @@ export const SuccessPage = () => {
   );
 };
 
-const TicketInstructionItem = ({ Icon, text }) => {
+const RateService = () => {
+  const [rating, setRating] = useState(0);
+
+  const handleClick = (rating) => {
+    setRating(rating);
+  };
+
+  return (
+    <div className="rate-service">
+      <div className="rate-service__label">Оценить сервис</div>
+      <ul className="rate-service__stars">
+        {[...Array(5)].map((_, i) => (
+          <button
+            key={i}
+            className="star__wrapper"
+            onClick={() => handleClick(i + 1)}
+          >
+            <StarIcon className={cn('star', { filled: rating > i })} />
+          </button>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const TicketInstructionItem = ({ icon: Icon, text }) => {
   return (
     <li className="ticket-steps__item">
       <div className="ticket-step__icon_wrapper">

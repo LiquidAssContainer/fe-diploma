@@ -27,6 +27,7 @@ export const PlaceSelection = ({ railcarClass }) => {
             {railcarList.map(({ coach: { name, _id, isSelected } }) => {
               return (
                 <button
+                  key={_id}
                   className={cn('railcar__item', {
                     selected: isSelected,
                   })}
@@ -49,7 +50,11 @@ export const PlaceSelection = ({ railcarClass }) => {
         {railcarList.map((railcar) => {
           return (
             railcar.coach.isSelected && (
-              <PlacesChoosingRailcar {...railcar} railcarClass={railcarClass} />
+              <PlacesChoosingRailcar
+                key={railcar.coach._id}
+                {...railcar}
+                railcarClass={railcarClass}
+              />
             )
           );
         })}

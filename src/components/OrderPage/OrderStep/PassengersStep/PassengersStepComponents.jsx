@@ -12,13 +12,21 @@ import { Input } from 'components/Input';
 
 import { ReactComponent as PlusIcon } from 'assets/icons/plus_icon.svg';
 
-export const PassengerFormAdd = () => {
+export const PassengerFormAdd = ({ onAddPassenger }) => {
+  // const handleAddPassenger = () = {
+
+  // }
+
   return (
     <OrderBlockContainer>
       <OrderBlockHeader>
         <PassengerFormHeaderContent>
           <OrderBlockHeaderTitle title="Добавить пассажира" />
-          <PassengerFormIconButton type="add" icon={PlusIcon} />
+          <PassengerFormIconButton
+            type="add"
+            icon={PlusIcon}
+            onClick={onAddPassenger}
+          />
         </PassengerFormHeaderContent>
       </OrderBlockHeader>
     </OrderBlockContainer>
@@ -98,7 +106,13 @@ export const PassengerFormGenderRadioInput = ({
   );
 };
 
-export const PassengerFormSelect = ({ options, label, selected, name }) => {
+export const PassengerFormSelect = ({
+  className,
+  options,
+  label,
+  selected,
+  name,
+}) => {
   const { control, setValue } = useFormContext();
   const { field } = useController({
     name,
@@ -106,11 +120,12 @@ export const PassengerFormSelect = ({ options, label, selected, name }) => {
   });
 
   const onSelect = (value) => {
-    setValue(name, value);
+    field.onChange();
+    setValue(name, value, { shouldTouch: true });
   };
 
   return (
-    <div className="order__input_container">
+    <div className={`order__input_container ${className}`}>
       {label && <label className="order__input_label">{label}</label>}
       <Select
         className="passenger-form__select"

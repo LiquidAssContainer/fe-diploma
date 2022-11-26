@@ -4,6 +4,7 @@ import { Icon } from '../TicketDetails/TicketDetails';
 import { ReactComponent as CheckedIcon } from 'assets/icons/checked.svg';
 import { Input } from 'components/Input';
 import cn from 'classnames';
+import { useController, useFormContext } from 'react-hook-form';
 
 export const OrderInput = ({
   className,
@@ -11,6 +12,9 @@ export const OrderInput = ({
   type,
   placeholder,
   name,
+  size,
+  isValid = true,
+  width,
   ...props
 }) => {
   return (
@@ -21,7 +25,10 @@ export const OrderInput = ({
         </label>
       )}
       <Input
-        className={cn('order__input', className)}
+        className={cn('order__input', className, {
+          invalid: !isValid,
+          [`order__input_size_${size}`]: size,
+        })}
         type={type}
         name={name}
         id={name}
@@ -59,5 +66,29 @@ export const OrderCheckboxInput = ({
         {label}
       </div>
     </label>
+  );
+};
+
+export const OrderRadioInput = ({ value, name, onChange, ...props }) => {
+  const { control } = useFormContext();
+  const { field } = useController({
+    name,
+    control,
+  });
+
+  const handleChange = (e) => {
+    field.onChange(e);
+    onChange?.(e);
+  };
+
+  return (
+    <OrderCheckboxInput
+      type="radio"
+      value={value}
+      name={name}
+      onChange={handleChange}
+      isChecked={field.value === value}
+      {...props}
+    />
   );
 };

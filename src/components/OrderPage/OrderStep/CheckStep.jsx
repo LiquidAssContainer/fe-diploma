@@ -3,15 +3,72 @@ import { Icon } from '../TicketDetails/TicketDetails';
 import { ReactComponent as PersonIcon } from 'assets/icons/person.svg';
 import { Button } from 'components/Button';
 import { Ticket } from 'components/Ticket';
-import { NextStepButton } from '../OrderPage';
+import {
+  ChangeStepButton,
+  NextStepButton,
+  PrevStepButton,
+  StepButtonsContainer,
+} from '../OrderPage';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { useEffect } from 'react';
+import { format } from 'date-fns';
+import { parse } from 'date-fns/esm';
+import { createOrder } from 'reducers/order';
+
+const formatBirthday = (string = new Date()) => {
+  const parsed = parse(string, 'yyyy-MM-dd', new Date());
+  return format(parsed, 'dd.MM.yyyy');
+};
+
+const paymentMethods = {
+  online: 'Онлайн',
+  cash: 'Наличными',
+};
+
+const genders = {
+  male: 'мужской',
+  female: 'женский',
+};
+
+const ticketTypes = {
+  adult: 'Взрослый',
+  child: 'Детский',
+};
+
+const documentTypes = {
+  passport: 'Паспорт РФ',
+  birth_certificate: 'Свидетельство о рождении',
+};
 
 export const CheckStep = () => {
+  const {
+    // tripInfo,
+    passengerForms,
+    userData: { payment_method },
+  } = useSelector((state) => state.order);
+
+  const { tripInfo } = useSelector((state) => state.seats);
+
+  const dispatch = useDispatch();
+
+  const history = useHistory();
+
+  const handleConfirmation = () => {
+    dispatch(createOrder());
+    history.push('/success');
+  };
+
+  // useEffect(() => {
+
+  // }, [])
+
   return (
     <>
       <div>
         <OrderBlockContainer>
           <CheckStepHeader title="Поезд" />
-          <Ticket isChecking />
+          <Ticket {...tripInfo} isChecking />
         </OrderBlockContainer>
 
         <OrderBlockContainer>
@@ -19,9 +76,9 @@ export const CheckStep = () => {
           <CheckStepSection>
             <CheckStepSectionMain>
               <ul className="check-step__passenger_list">
-                {[1, 2, 3].map(() => (
-                  <CheckStepSectionRow>
-                    <CheckStepPassenger />
+                {passengerForms.map((props, i) => (
+                  <CheckStepSectionRow key={i}>
+                    <CheckStepPassenger {...props} />
                   </CheckStepSectionRow>
                 ))}
               </ul>
@@ -44,7 +101,9 @@ export const CheckStep = () => {
           <CheckStepSection>
             <CheckStepSectionMain>
               <CheckStepSectionRow>
-                <div className="check-step__payment-method">Наличными</div>
+                <div className="check-step__payment-method">
+                  {paymentMethods[payment_method]}
+                </div>
               </CheckStepSectionRow>
             </CheckStepSectionMain>
             <CheckStepSectionAside>
@@ -56,7 +115,14 @@ export const CheckStep = () => {
         </OrderBlockContainer>
       </div>
 
-      <NextStepButton>Подтвердить</NextStepButton>
+      <StepButtonsContainer>
+        <PrevStepButton>Назад</PrevStepButton>
+        <NextStepButton onClick={handleConfirmation}>
+          Подтвердить
+        </NextStepButton>
+      </StepButtonsContainer>
+
+      {/* <ChangeStepButton>Подтвердить</ChangeStepButton> */}
     </>
   );
 };
@@ -84,29 +150,40 @@ const CheckStepSectionAside = ({ children }) => (
 );
 
 const CheckStepPassenger = ({
-  ticketType,
-  documentType,
+  ticket_type,
+  document_type,
   birthday,
-  fullName,
+  last_name,
+  first_name,
+  patronymic,
   documentValue,
   gender,
+  passport_series,
+  passport_number,
+  birth_certificate_number,
 }) => {
   return (
     <div className="check-step__passenger_item">
       <div className="passenger__type_container">
         <Icon wrapperClassName="passenger__icon" icon={PersonIcon} />
-        <div className="passenger__type">Взрослый</div>
+        <div className="passenger__type">{ticketTypes[ticket_type]}</div>
       </div>
       <div className="passenger__info">
         <div className="passenger__info_full-name">
-          Мартынюк Ирина Эдуардовна
+          {last_name} {first_name}
+          {patronymic && ` ${patronymic}`}
         </div>
-        <CheckStepPassengerInfoUnit>Пол женский</CheckStepPassengerInfoUnit>
         <CheckStepPassengerInfoUnit>
-          Дата рождения 17.02.1985
+          Пол {genders[gender]}
         </CheckStepPassengerInfoUnit>
         <CheckStepPassengerInfoUnit>
-          Паспорт РФ 4204 380694
+          Дата рождения {formatBirthday(birthday)}
+        </CheckStepPassengerInfoUnit>
+        <CheckStepPassengerInfoUnit>
+          {documentTypes[document_type]}{' '}
+          {document_type === 'passport'
+            ? `${passport_series} ${passport_number}`
+            : birth_certificate_number}
         </CheckStepPassengerInfoUnit>
       </div>
     </div>

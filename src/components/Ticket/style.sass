@@ -54,7 +54,8 @@
   gap: 40px
 
   &:not(:last-child)
-    margin-bottom: 65px
+    // margin-bottom: 65px
+    margin-bottom: 45px
 
   &_reversed
     flex-direction: row-reverse
@@ -81,22 +82,25 @@
 
   fill: #FFA800
 
-.trip__point_time
-  margin-bottom: 3px
+.trip__point
+  flex: 1 0
 
-  font-weight: 700
-  font-size: 1.5rem
-  color: #000000
+  &_time
+    margin-bottom: 3px
 
-.trip__point_city
-  margin-bottom: 3px
-  font-size: 1.125rem
-  color: #292929
-  text-transform: capitalize
+    font-weight: 700
+    font-size: 1.5rem
+    color: #000000
 
-.trip__point_station
-  font-size: 1rem
-  color: #928F94
+  &_city
+    margin-bottom: 3px
+    font-size: 1.125rem
+    color: #292929
+    text-transform: capitalize
+
+  &_station
+    font-size: 1rem
+    color: #928F94
 
 .ticket__trip-points
   padding-inline: 25px

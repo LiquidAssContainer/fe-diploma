@@ -15,8 +15,16 @@ import {
   Icon,
   TicketDetailsSectionContent,
 } from './TicketDetails';
+import { useSelector } from 'react-redux';
+import { formatNumber, getPlural, pluralWords } from 'lib/helpers';
 
 export const TicketDetailsInfo = () => {
+  const {
+    tripInfo,
+    totalPrice,
+    passengersAmount: { adult, child },
+  } = useSelector((state) => state.seats);
+
   return (
     <TicketDetails>
       <TicketDetailsSection>
@@ -36,12 +44,12 @@ export const TicketDetailsInfo = () => {
                 icon={ArrowInRectangleIcon}
               />
             }
-            asideSlot={<TicketDetailsDate date="31.08.2018" />}
+            asideSlot={<TicketDetailsDate date="22.10.2022" />}
           />
         }
       >
         <TicketDetailsSectionContent>
-          <TicketDetailsTripInfo />
+          <TicketDetailsTripInfo {...tripInfo} />
         </TicketDetailsSectionContent>
       </TicketDetailsSection>
 
@@ -57,12 +65,12 @@ export const TicketDetailsInfo = () => {
                 icon={ArrowInRectangleIcon}
               />
             }
-            asideSlot={<TicketDetailsDate date="31.08.2018" />}
+            asideSlot={<TicketDetailsDate date="23.10.2022" />}
           />
         }
       >
         <TicketDetailsSectionContent>
-          <TicketDetailsTripInfo isReturn />
+          <TicketDetailsTripInfo {...tripInfo} isReturn />
         </TicketDetailsSectionContent>
       </TicketDetailsSection>
 
@@ -78,8 +86,12 @@ export const TicketDetailsInfo = () => {
         }
       >
         <TicketDetailsSectionContent>
-          <TicketDetailsTicketSum />
-          <TicketDetailsTicketSum />
+          {!!adult.amount && (
+            <TicketDetailsTicketSum type="adult" amount={adult.amount} />
+          )}
+          {!!child.amount && (
+            <TicketDetailsTicketSum type="child" amount={child.amount} />
+          )}
         </TicketDetailsSectionContent>
       </TicketDetailsSection>
 
@@ -87,7 +99,7 @@ export const TicketDetailsInfo = () => {
         <TicketDetailsRow>
           <div className="ticket-details__info_total">Итог</div>
           <div className="ticket-details__info_price">
-            <span>7 700 </span>
+            <span>{formatNumber(totalPrice)} </span>
             <span className="ticket-details__info_currency">₽</span>
           </div>
         </TicketDetailsRow>
@@ -96,17 +108,17 @@ export const TicketDetailsInfo = () => {
   );
 };
 
-const TicketDetailsTripInfo = ({ isReturn }) => {
+const TicketDetailsTripInfo = ({ from, to, train, isReturn }) => {
   return (
     <>
       <TicketDetailsRow>
         <TicketDetailsRowLabel value="№ Поезда" />
-        <TicketDetailsRowValue value="116C" />
+        <TicketDetailsRowValue value={train.name} />
       </TicketDetailsRow>
 
       <TicketDetailsRow>
         <TicketDetailsRowLabel value="Название" />
-        <TicketDetailsFromTo from="Адлер" to="Санкт-Петербург" />
+        <TicketDetailsFromTo from={from.city.name} to={to.city.name} />
       </TicketDetailsRow>
 
       <div className="ticket-details__arrival-dates">
@@ -128,18 +140,24 @@ const TicketDetailsTripInfo = ({ isReturn }) => {
         <TicketDetailsRow>
           <TicketDetailsDate
             className="ticket-details__date_grey"
-            date="22.08.2022"
+            date="22.10.2022"
           />
           <TicketDetailsDate
             className="ticket-details__date_grey"
-            date="23.08.2022"
+            date="23.10.2022"
           />
         </TicketDetailsRow>
       </div>
 
       <TicketDetailsRow>
-        <TicketDetailsStation city="Москва" station="Ладожский вокзал" />
-        <TicketDetailsStation city="Москва" station="Ладожский вокзал" />
+        <TicketDetailsStation
+          city={from.city.name}
+          station={from.railway_station_name}
+        />
+        <TicketDetailsStation
+          city={to.city.name}
+          station={to.railway_station_name}
+        />
       </TicketDetailsRow>
     </>
   );
@@ -178,15 +196,17 @@ const TicketDetailsStation = ({ city, station }) => {
   return (
     <div className="ticket-details__station">
       <div className="ticket-details__station_city">{city}</div>
-      <div className="ticket-details__station_name">{station}</div>
+      <div className="ticket-details__station_name">{station} вокзал</div>
     </div>
   );
 };
 
-const TicketDetailsTicketSum = ({ count, type, sum }) => {
+const TicketDetailsTicketSum = ({ amount, type, sum }) => {
+  const plural = getPlural(amount, pluralWords.adultPassengers);
+
   return (
     <TicketDetailsRow>
-      <TicketDetailsRowLabel value="2 Взрослых" />
+      <TicketDetailsRowLabel value={`${plural}`} />
       <TicketDetailsRowValue>
         <span>5 560</span>
         <span className="ticket-details__tickets-summary_currency">₽</span>

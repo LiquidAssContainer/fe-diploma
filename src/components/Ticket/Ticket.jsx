@@ -87,23 +87,13 @@ export const Ticket = ({
           </Header>
         </div>
         <TripCities from={from} to={to} />
-        {/* <div className="ticket__trip-points">
-          <div className="ticket__trip-points_item ticket__trip-points_item_train-start">
-            Адлер →
-          </div>
-          <div className="ticket__trip-points_item">Москва →</div>
-          <div className="ticket__trip-points_item">Санкт-Петербург</div>
-        </div> */}
       </div>
       <TicketDirections duration={duration} from={from} to={to} />
       <div className="ticket__places">
         <ul className="ticket__places_list">
           {availableSeats.map((seats) => (
-            <TicketPlacesItem {...seats} />
+            <TicketPlacesItem key={seats.classTitle} {...seats} />
           ))}
-          {/* <TicketPlacesItem />
-          <TicketPlacesItem />
-          <TicketPlacesItem /> */}
         </ul>
         <TicketFeatures {...props} />
         {isChecking ? (
