@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { formatNumber } from 'lib/helpers';
 
 const ticketInstructions = [
   {
@@ -35,6 +36,8 @@ export const SuccessPage = () => {
     userData: { last_name, first_name, patronymic },
   } = useSelector((state) => state.order);
 
+  const { totalPrice } = useSelector((state) => state.seats);
+
   const handleHomeClick = () => {
     history.push('/');
   };
@@ -56,7 +59,11 @@ export const SuccessPage = () => {
           <header className="order-header">
             <div className="order-header__number">№ заказа 285АА</div>
             <div className="order-header__sum">
-              сумма <span className="order-header__digits">7 760</span> ₽
+              сумма{' '}
+              <span className="order-header__digits">
+                {formatNumber(totalPrice)}
+              </span>{' '}
+              ₽
             </div>
           </header>
           <div className="order-information">

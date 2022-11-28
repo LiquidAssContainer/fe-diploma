@@ -1,6 +1,7 @@
 import './style.sass';
 
 import cn from 'classnames';
+import { useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Button } from 'components/Button';
@@ -8,13 +9,12 @@ import { Icon } from 'components/OrderPage/TicketDetails/TicketDetails';
 import { ReactComponent as InfoIcon } from 'assets/icons/info_icon.svg';
 import { ReactComponent as WarningIcon } from 'assets/icons/warning_icon.svg';
 
-import { useRef } from 'react';
 import { useDisableBodyScroll } from 'hooks/useDisableBodyScroll';
 import { useOnClickOutside } from 'hooks/useOnClickOutside';
 import { useOnKeyDown } from 'hooks/useOnKeyDown';
 
 export const Modal = ({
-  handleClose,
+  onClose,
   isOpen,
   type = 'info',
   message,
@@ -22,13 +22,13 @@ export const Modal = ({
 }) => {
   const ref = useRef();
 
-  const onClose = () => {
-    handleClose();
+  const handleClose = () => {
+    onClose();
   };
 
   useDisableBodyScroll(isOpen);
-  useOnClickOutside(ref, onClose);
-  useOnKeyDown('Escape', onClose);
+  useOnClickOutside(ref, handleClose);
+  useOnKeyDown('Escape', handleClose);
 
   return isOpen
     ? createPortal(
@@ -41,22 +41,17 @@ export const Modal = ({
               />
             </div>
             <div className="modal__content">
-              <p className="modal__content_message">
-                Таким образом консультация с широким активом в значительной
-                степени обуславливает создание модели развития.
-              </p>
-              <p className="modal__content_description">
-                Повседневная практика показывает, что сложившаяся структура
-                организации играет важную роль в формировании существенных
-                финансовых и административных.
-              </p>
+              <p className="modal__content_message">{message}</p>
+              {description && (
+                <p className="modal__content_description">{description}</p>
+              )}
             </div>
             <div className="modal__footer">
               <Button
                 classname="modal__button"
                 size="m"
                 style="transparent-dark"
-                onClick={onClose}
+                onClick={handleClose}
               >
                 Понятно
               </Button>

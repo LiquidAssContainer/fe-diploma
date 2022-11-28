@@ -35,6 +35,7 @@ export const SearchTicketsForm = ({ isSquare }) => {
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
+
   const { setValue, getValues, watch } = form;
 
   const dateStart = watch('date_start');

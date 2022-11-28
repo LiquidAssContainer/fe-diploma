@@ -1,14 +1,17 @@
-import { Modal } from 'components/Modal/Modal';
-import { SuccessPage } from 'components/SuccessPage';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { Footer } from './components/Footer';
-import { MainPage } from './components/MainPage';
-import { OrderPage } from './components/OrderPage';
+import { MainPage } from 'components/MainPage';
+import { SuccessPage } from 'components/SuccessPage';
+import { OrderPage } from 'components/OrderPage';
+import { Footer } from 'components/Footer';
+import { Modal } from 'components/Modal';
+
+import { hideModal } from 'reducers/app';
 
 export const App = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { modal } = useSelector((state) => state.app);
 
   return (
     <>
@@ -20,8 +23,7 @@ export const App = () => {
         </Switch>
       </Router>
       <Footer />
-      <Modal isOpen={isOpen} handleClose={() => setIsOpen(false)} />
-      {/* <Modal isOpen={isOpen} type="error" handleClose={() => setIsOpen(false)} /> */}
+      <Modal onClose={() => dispatch(hideModal())} {...modal} />
     </>
   );
 };

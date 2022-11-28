@@ -17,6 +17,7 @@
 
   &:disabled
     background: $grey-2
+    border-color: $grey-2
     cursor: auto
 
   &:hover:not(:disabled)
@@ -41,18 +42,19 @@
       color: $white
       background-color: transparent
 
-      &:hover
-        border-color: $orange-pale-3
-        background-color: $orange-pale-3
-        color: $grey-dark-2
-      &:active
-        background-color: $white
-        color: #2D2B2F
+      &:not(:disabled)
+        &:hover
+          border-color: $orange-pale-3
+          background-color: $orange-pale-3
+          color: $grey-dark-2
+        &:active
+          background-color: $white
+          color: #2D2B2F
 
     &_transparent-dark
       border: 1px solid #292929
       color: #292929
-      &:hover
+      &:hover:not(:disabled)
         color: #FFA800
       &:active
         background: #FFA800

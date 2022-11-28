@@ -8,6 +8,9 @@ import { EmailInput } from 'components/Input';
 import { Button } from 'components/Button';
 import { Form } from 'lib/Form';
 import { useForm } from 'react-hook-form';
+import { patternValues } from 'components/OrderPage/OrderStep/helpers';
+import { useDispatch } from 'react-redux';
+import { subscribeAsync } from 'reducers/app';
 
 const socialNetworks = [
   { icon: Youtube, link: 'https://youtube.com' },
@@ -17,14 +20,17 @@ const socialNetworks = [
   { icon: Facebook, link: 'https://facebook.com' },
 ];
 
-const handleSubmit = () => {
-  // if (isValid) {
-  //   onNextPassengerClick(formIndex);
-  // }
-};
-
 export const FooterSubscription = () => {
-  const form = useForm({ defaultValues: { email: '' } });
+  const dispatch = useDispatch();
+  const form = useForm({ defaultValues: { email: '' }, mode: 'onChange' });
+
+  const {
+    formState: { isValid },
+  } = form;
+
+  const handleSubmit = ({ email }) => {
+    dispatch(subscribeAsync(email));
+  };
 
   return (
     <div className="subscription">
@@ -36,12 +42,21 @@ export const FooterSubscription = () => {
           form={form}
           onSubmit={handleSubmit}
         >
-          <EmailInput name="email" size="l" placeholder="e-mail" />
+          <EmailInput
+            name="email"
+            size="l"
+            placeholder="e-mail"
+            required
+            pattern={{
+              value: patternValues.email,
+            }}
+          />
           <Button
             classname="footer__button"
             type="submit"
             style="transparent-light"
             size="l"
+            disabled={!isValid}
           >
             Отправить
           </Button>
