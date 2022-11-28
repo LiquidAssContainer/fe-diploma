@@ -191,6 +191,8 @@
 .reviews__item
   display: flex
   align-items: center
+  width: 50%
+  text-align: left
 
 .reviews
   // padding-block: 150px 120px
@@ -203,6 +205,7 @@
     border-radius: 50%
 
     &_wrapper
+      flex-shrink: 0
       margin-right: 35px
 
   &__header
@@ -233,3 +236,15 @@
     &::after
       content: '\201D' // ”
       bottom: -20px
+
+.carousel .control-dots .dot.dot
+  width: 19px
+  height: 19px
+  margin-inline: 5px
+
+  background: #E5E5E5
+  opacity: 1
+  box-shadow: none
+
+  &.selected
+    background: #C4C4C4

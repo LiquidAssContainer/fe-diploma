@@ -3,7 +3,6 @@ import { apiService } from 'services/apiService';
 
 const initialState = {
   modal: { isOpen: false, type: 'info', message: '' },
-  subscription: { email: '' },
 };
 
 export const subscribeAsync = createAsyncThunk(

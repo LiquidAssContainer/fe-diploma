@@ -1,11 +1,10 @@
 import './style.sass';
 
+import { PageHeader } from 'components/PageHeader';
+import { SearchTicketsForm } from 'components/SearchTicketsForm';
+import { Header } from 'components/Header';
 import { Features } from './Features';
 import { Reviews } from './Reviews';
-import { PageHeader } from '../PageHeader';
-import { SearchTicketsForm } from '../SearchTicketsForm';
-import { Header } from 'components/Header';
-import { DatePicker } from 'components/DatePicker';
 
 export const MainPage = () => {
   return (
@@ -25,8 +24,8 @@ export const MainPage = () => {
         </Header>
         <div className="about__content">
           <p>
-            Мы рады видеть вас! Мы рботаем для Вас с 2003 года. 14 лет мы
-            наблюдаем, как с каждым днем все больше людей заказывают жд билеты
+            Мы рады вас видеть! Мы работаем для вас с 2003-го года. 14 лет мы
+            наблюдаем, как с каждым днем всё больше людей заказывают ж/д билеты
             через интернет.
           </p>
 
@@ -37,7 +36,7 @@ export const MainPage = () => {
           </p>
 
           <p className="text_accent">
-            Покупать жд билеты дешево можно за 90 суток до отправления поезда.
+            Покупать ж/д билеты дёшево можно за 90 суток до отправления поезда.
             Благодаря динамическому ценообразованию цена на билеты в это время
             самая низкая.
           </p>

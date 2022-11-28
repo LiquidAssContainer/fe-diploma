@@ -1,30 +1,31 @@
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Carousel } from 'react-responsive-carousel';
 import { Header } from 'components/Header';
+import { reviews } from './constants';
 
-const zahlushka = [
-  {
-    title: 'Екатерина Вальнова',
-    content:
-      'Доброжелательные подсказки на всех этапах помогут правильно заполнить поля и без затруднений купить авиа или ж/д билет, даже если вы заказываете онлайн билет впервые.',
-    img: require('assets/person1.jpg'),
-  },
-  {
-    title: 'Евгений Стрыкало',
-    content:
-      'СМС-сопровождение до посадки Сразу после оплаты ж/д билетов и за 3 часа до отправления мы пришлем вам СМС-напоминание о поездке.',
-    img: require('assets/person2.jpg'),
-  },
-];
+const reviewList = reviews.reduce((acc, curr, i) => {
+  if (!(i % 2)) {
+    acc.push([curr]);
+  } else {
+    const lastIndex = acc.length - 1;
+    acc[lastIndex].push(curr);
+  }
+  return acc;
+}, []);
 
 export const Reviews = () => {
   return (
     <section className="reviews" id="reviews">
       <Header size="m">Отзывы</Header>
-      <ul className="reviews__list">
-        {zahlushka.map((review, i) => (
-          <ReviewItem key={i} {...review} />
+      <Carousel showStatus={false} showArrows={false} showThumbs={false}>
+        {reviewList.map((reviews, i) => (
+          <ul key={i} className="reviews__list">
+            {reviews.map((review, j) => (
+              <ReviewItem key={j} {...review} />
+            ))}
+          </ul>
         ))}
-      </ul>
-      <div className="reviews__carousel">КАРУСЕЛЬ</div>
+      </Carousel>
     </section>
   );
 };
