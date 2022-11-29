@@ -1,15 +1,17 @@
 import './style.sass';
-
-import { useMenuLinks } from '../../hooks/useMenuLinks';
 import { HashLink as Link } from 'react-router-hash-link';
+import { Logo } from 'components/Logo';
+import { useMenuLinks } from '../../hooks/useMenuLinks';
 
 export const PageHeader = () => {
   const links = useMenuLinks();
   return (
     <header>
-      <div className="logo_wrapper">
-        <div className="logo_container">
-          <div className="logo">Лого</div>
+      <div className="logo__wrapper">
+        <div className="logo__container">
+          <Link to="/" className="logo__link">
+            <Logo />
+          </Link>
         </div>
       </div>
       <div className="menu-links">

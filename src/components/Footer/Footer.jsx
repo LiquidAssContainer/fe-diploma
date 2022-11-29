@@ -1,11 +1,15 @@
 import './style.sass';
 
-import { ReactComponent as UpArrowIcon } from '../../assets/icons/up_arrow.svg';
-
 import { FooterContacts } from './FooterContacts';
 import { FooterSubscription } from './FooterSubscription';
+import { Logo } from 'components/Logo';
+import { ReactComponent as UpArrowIcon } from 'assets/icons/up_arrow.svg';
 
 export const Footer = () => {
+  const handleScrollUpBtn = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  };
+
   return (
     <footer className="footer" id="contacts">
       <div className="footer__contacts">
@@ -14,12 +18,9 @@ export const Footer = () => {
       </div>
       <div className="footer__logo_section_wrapper">
         <div className="footer__logo_section">
-          <div className="logo">Лого</div>
-          <button className="button_scroll-up">
+          <Logo />
+          <button className="button_scroll-up" onClick={handleScrollUpBtn}>
             <UpArrowIcon />
-            {
-              //todo
-            }
           </button>
           <div className="footer__copyright">© 2022 WEB</div>
         </div>

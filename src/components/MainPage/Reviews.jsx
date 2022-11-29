@@ -17,7 +17,14 @@ export const Reviews = () => {
   return (
     <section className="reviews" id="reviews">
       <Header size="m">Отзывы</Header>
-      <Carousel showStatus={false} showArrows={false} showThumbs={false}>
+      <Carousel
+        autoPlay
+        interval={5000}
+        infiniteLoop
+        showStatus={false}
+        showArrows={false}
+        showThumbs={false}
+      >
         {reviewList.map((reviews, i) => (
           <ul key={i} className="reviews__list">
             {reviews.map((review, j) => (

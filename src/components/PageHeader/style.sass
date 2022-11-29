@@ -1,5 +1,23 @@
 @import 'styles/mixins'
 
+.logo
+  font-weight: 900
+  font-size: 36px
+  line-height: 42px
+
+  color: #e5e5e5
+
+  &__wrapper
+    background-color: rgba(0, 0, 0, 0.6)
+
+  &__container
+    @include section-width
+    display: flex
+    padding-block: 15px
+
+  &__link
+    display: flex
+
 .menu-links
   background-color: #292929
 
@@ -19,7 +37,7 @@
     cursor: pointer
 
     &:hover .menu-link
-      color: #ffa800
+      color: #FFCA62
 
 .menu-link
   color: #ffffff
