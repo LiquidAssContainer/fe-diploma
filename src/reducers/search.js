@@ -9,7 +9,7 @@ const stringifyQuery = (params) =>
   });
 
 const initialState = {
-  cityList: { from_city: [], to_city: [] },
+  cityList: { from_city: null, to_city: null },
   resultsCount: 0,
   resultItems: [],
   lastDirections: [],
@@ -76,7 +76,7 @@ export const searchSlice = createSlice({
       state[payload.fieldName] = payload.searchString;
     },
     clearCitiesList: (state, { payload }) => {
-      state.cityList[payload] = [];
+      state.cityList[payload] = null;
     },
     // changeSearchParameter: (state, { payload: { name, value } }) => {
     //   state[name] = value;

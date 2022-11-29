@@ -195,26 +195,37 @@ const CitySelectInput = ({ name, placeholder, onChange, cityList }) => {
   );
 };
 
-const CitySelect = ({ cityList, onClick, isOpen }) => {
-  return isOpen ? (
+const CitySelect = ({ cityList, onClick, isOpen }) =>
+  isOpen ? (
     <ul className="city-select__list">
-      {cityList.map(({ name: city }) => (
-        <CitySelectItem key={city} city={city} onClick={() => onClick(city)} />
-      ))}
+      {!cityList ? (
+        <CitySelectNoItems text="Введите название города" />
+      ) : cityList.length ? (
+        cityList.map(({ name: city }) => (
+          <CitySelectItem
+            key={city}
+            city={city}
+            onClick={() => onClick(city)}
+          />
+        ))
+      ) : (
+        <CitySelectNoItems text="Ничего не найдено" />
+      )}
     </ul>
   ) : null;
-};
 
-const CitySelectItem = ({ city, onClick }) => {
-  return (
-    <li className="city-select__item">
-      <button
-        className="city-select__item_button"
-        onClick={onClick}
-        type="button"
-      >
-        {city}
-      </button>
-    </li>
-  );
-};
+const CitySelectNoItems = ({ text }) => (
+  <div className="city-select__no-items">{text}</div>
+);
+
+const CitySelectItem = ({ city, onClick }) => (
+  <li className="city-select__item">
+    <button
+      className="city-select__item_button"
+      onClick={onClick}
+      type="button"
+    >
+      {city}
+    </button>
+  </li>
+);
