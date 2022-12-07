@@ -1,5 +1,7 @@
 import './style.sass';
 
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
 import { Header } from 'components/Header';
@@ -10,17 +12,14 @@ import {
   OrderBlockSection,
   OrderBlockSectionRow,
 } from '../OrderBlock';
-import { OrderInput, OrderCheckboxInput } from '../OrderInput';
-import { ChangeStepButton, NextStepButton, PrevStepButton } from '../OrderPage';
+import { OrderInput } from '../OrderInput';
+import { NextStepButton, PrevStepButton } from '../OrderPage';
 import { Form } from 'lib/Form';
 import { FullnameInputBlock } from './FullnameInputBlock';
-import { errorMessages, patternValues } from './helpers';
-import { setPrevStep } from 'reducers/stepper';
-import { useDispatch } from 'react-redux';
 import { OrderRadioInput } from '../OrderInput/OrderInput';
+
+import { errorMessages, patternValues } from './helpers';
 import { setUserData } from 'reducers/order';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
 
 export const PaymentStep = () => {
   const { userData } = useSelector((state) => state.order);
@@ -41,12 +40,15 @@ export const PaymentStep = () => {
   const {
     formState: { errors, isValid },
     getValues,
+    // watch,
     setValue,
   } = form;
 
+  // const payment_method = watch('payment_method');
+
   const dispatch = useDispatch();
 
-  const handleNextStepClick = () => {
+  const handleChangeStepClick = () => {
     const formData = getValues();
     dispatch(setUserData(formData));
   };
@@ -63,8 +65,7 @@ export const PaymentStep = () => {
   return (
     <>
       <OrderBlockContainer>
-        {/* <Form form={form} onSubmit={handleSubmit} onChange={handleChange}> */}
-        <Form form={form} onChange={() => console.log(getValues())}>
+        <Form form={form}>
           <OrderBlockItem>
             <OrderBlockHeader>
               <Header size="s">Персональные данные</Header>
@@ -116,13 +117,10 @@ export const PaymentStep = () => {
                 name="payment_method"
                 value="online"
                 id="online"
-                // value={value}
-                // isChecked={isChecked}
-                // onChange={onChange}
               />
               <fieldset
                 className="online-payment-methods"
-                disabled={getValues('payment_method') !== 'online'}
+                // disabled={payment_method !== 'online'}
               >
                 <OnlinePaymentRadioItem
                   label="Банковской картой"
@@ -146,8 +144,10 @@ export const PaymentStep = () => {
       </OrderBlockContainer>
 
       <div className="step-buttons__container">
-        <PrevStepButton type="prev">Назад</PrevStepButton>
-        <NextStepButton onClick={handleNextStepClick} disabled={!isValid}>
+        <PrevStepButton type="prev" onClick={handleChangeStepClick}>
+          Назад
+        </PrevStepButton>
+        <NextStepButton onClick={handleChangeStepClick} disabled={!isValid}>
           Купить билеты
         </NextStepButton>
       </div>

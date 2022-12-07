@@ -156,6 +156,11 @@ $width-border-railcar: 4px
   cursor: pointer
   user-select: none
 
+  &_container
+    display: flex
+    justify-content: center
+    flex: 1 1
+
   &_first-class, &_second-class, &_third-class
     flex: 1
     width: 26px
@@ -178,3 +183,41 @@ $width-border-railcar: 4px
     background: $color-bg-place-unavailable
     color: white
     cursor: auto
+
+.place__item_popup
+  position: absolute
+  display: block
+  // display: none
+  border: 2px solid #a1a1a1
+  padding: 5px
+  background: white
+  margin-top: 29px
+  z-index: 1
+
+  &::before, &::after
+    content: ''
+    position: absolute
+    left: calc(50% - 5px)
+    // border-bottom: 5px solid #a1a1a1
+    border-inline: 5px solid transparent
+
+  &::before
+    bottom: calc(100% - -2px)
+    border-bottom: 5px solid #a1a1a1
+    // border-inline: 5px solid transparent
+
+  &::after
+    bottom: 100%
+    border-bottom: 5px solid #fff
+    // border-inline: 5px solid transparent
+
+  &_button
+    display: block
+    color: #FFA800
+    font-size: 1.125rem
+
+    &:not(:last-child)
+      margin-bottom: 5px
+
+    &:hover
+      text-decoration: underline

@@ -14,9 +14,12 @@ export const stepperSlice = createSlice({
     setNextStep: (state) => {
       state.step = state.step + 1;
     },
+    setStep: (state, { payload }) => {
+      state.step = payload;
+    },
   },
 });
 
-export const { setNextStep, setPrevStep } = stepperSlice.actions;
+export const { setPrevStep, setNextStep, setStep } = stepperSlice.actions;
 
 export const stepperReducer = stepperSlice.reducer;

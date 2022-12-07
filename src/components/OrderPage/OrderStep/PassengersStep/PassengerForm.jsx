@@ -48,7 +48,7 @@ const documentTypeOptions = [
 ];
 
 export const PassengerForm = ({
-  number,
+  // number,
   onFormChange,
   formIndex,
   passengers,
@@ -81,8 +81,6 @@ export const PassengerForm = ({
     formState: { errors, isValid },
   } = form;
 
-  console.log(errors);
-
   const [isExpanded, setIsExpanded] = useState(isExpandedProp);
 
   const { setValue, getValues, watch } = form;
@@ -96,7 +94,6 @@ export const PassengerForm = ({
   };
 
   const handleChange = () => {
-    console.log(getValues());
     onFormChange(getValues(), formIndex, isValid);
   };
 
@@ -134,14 +131,12 @@ export const PassengerForm = ({
                   onClick={() => setIsExpanded(!isExpanded)}
                   icon={isExpanded ? MinusIcon : PlusIcon}
                 />
-                <OrderBlockHeaderTitle title={`Пассажир ${number}`} />
-                {/* {isExpanded && ( */}
+                <OrderBlockHeaderTitle title={`Пассажир ${formIndex + 1}`} />
                 <PassengerFormIconButton
                   type="remove"
                   onClick={handleRemovePassenger}
                   icon={CloseIcon}
                 />
-                {/* )} */}
               </PassengerFormHeaderContent>
             </OrderBlockHeader>
 
@@ -151,10 +146,20 @@ export const PassengerForm = ({
                   <OrderBlockSectionRow>
                     <PassengerFormSelect
                       options={ticketTypeOptions}
-                      // onSelect={(value) => onSelect('ticket_type', value)}
                       name="ticket_type"
-                      // selected={ticket_type}
                     />
+                    {/* <PassengerFormSelect
+                      // className="document-type"
+                      options={ticketTypeOptions}
+                      name="railcar"
+                      label="Вагон"
+                    />
+                    <PassengerFormSelect
+                      // className="document-type"
+                      options={ticketTypeOptions}
+                      name="seat_number"
+                      label="Место"
+                    /> */}
                   </OrderBlockSectionRow>
 
                   <OrderBlockSectionRow>
@@ -184,7 +189,7 @@ export const PassengerForm = ({
                       required={errorMessages.required('Имя')}
                       pattern={{
                         value: patternValues.onlyCyrillic,
-                        message: errorMessages.onlyCyrillic('Имя', 'female'),
+                        message: errorMessages.onlyCyrillic('Имя', 'neuter'),
                       }}
                     />
                     <OrderInput
@@ -231,10 +236,8 @@ export const PassengerForm = ({
                     <PassengerFormSelect
                       className="document-type"
                       options={documentTypeOptions}
-                      // onSelect={(value) => onSelect('document_type', value)}
                       name="document_type"
                       label="Тип документа"
-                      // selected={document_type}
                     />
                     {document_type === 'passport' ? (
                       <>

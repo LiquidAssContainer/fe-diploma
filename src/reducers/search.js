@@ -1,6 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import qs from 'qs';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
 import { apiService } from 'services/apiService';
+import { openModal } from './app';
 
 const stringifyQuery = (params) =>
   qs.stringify(params, {
@@ -41,7 +43,7 @@ export const getCitiesAsync = createAsyncThunk(
 
 export const getDirectionsAsync = createAsyncThunk(
   'search/fetchDirections',
-  async (_, { rejectWithValue, getState }) => {
+  async (_, { rejectWithValue, getState, dispatch }) => {
     try {
       const {
         search: { queryString },
@@ -49,9 +51,14 @@ export const getDirectionsAsync = createAsyncThunk(
 
       const queryParsed = qs.parse(queryString, { ignoreQueryPrefix: true });
       const response = await apiService.routes.routesList(queryParsed);
-      return await response.json();
-    } catch (e) {
-      return rejectWithValue('Что-то пошло не так :(');
+      const parsed = await response.json();
+      if (parsed.error) {
+        throw new Error(parsed.error);
+      }
+      return parsed;
+    } catch ({ message }) {
+      dispatch(openModal({ type: 'error', message }));
+      return rejectWithValue();
     }
   },
 );
@@ -125,6 +132,10 @@ export const searchSlice = createSlice({
     ) => {
       state.resultsCount = total_count;
       state.resultItems = items;
+    },
+    [getDirectionsAsync.rejected]: (state) => {
+      state.resultsCount = 0;
+      state.resultItems = [];
     },
     [getLastDirectionsAsync.fulfilled]: (state, { payload }) => {
       state.lastDirections = payload;

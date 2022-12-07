@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  isRejectedWithValue,
+} from '@reduxjs/toolkit';
 import { apiService } from 'services/apiService';
 
 const initialState = {
@@ -7,7 +11,7 @@ const initialState = {
 
 export const subscribeAsync = createAsyncThunk(
   'app/subscribe',
-  async (email, { dispatch }) => {
+  async (email, { dispatch, rejectWithValue }) => {
     try {
       const response = await apiService.subscribe.subscribeCreate({ email });
       if (response.status) {
@@ -21,6 +25,7 @@ export const subscribeAsync = createAsyncThunk(
       }
     } catch ({ message }) {
       dispatch(openModal({ type: 'error', message }));
+      return rejectWithValue();
     }
   },
 );

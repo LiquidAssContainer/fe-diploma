@@ -8,7 +8,7 @@ import {
   Redirect,
   Route,
   Switch,
-  useLocation,
+  // useLocation,
 } from 'react-router-dom';
 
 import { PageHeader } from '../PageHeader';
@@ -27,7 +27,7 @@ import { formatNumber } from 'lib/helpers';
 
 export const OrderPage = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
+  // const location = useLocation();
   const { step } = useSelector((state) => state.stepper);
 
   const stepperRef = useRef(null);
@@ -38,8 +38,6 @@ export const OrderPage = () => {
 
   useEffect(() => {
     // const { pathname } = location;
-    // console.log(pathname);
-    // console.log('step changed');
     // stepperRef.current?.scrollIntoView({
     //   behavior: 'smooth',
     //   block: 'nearest',

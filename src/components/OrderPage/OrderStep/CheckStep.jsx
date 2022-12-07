@@ -4,7 +4,6 @@ import { ReactComponent as PersonIcon } from 'assets/icons/person.svg';
 import { Button } from 'components/Button';
 import { Ticket } from 'components/Ticket';
 import {
-  ChangeStepButton,
   NextStepButton,
   PrevStepButton,
   StepButtonsContainer,
@@ -15,6 +14,8 @@ import { useEffect } from 'react';
 import { format } from 'date-fns';
 import { parse } from 'date-fns/esm';
 import { createOrder } from 'reducers/order';
+import { setStep } from 'reducers/stepper';
+import { formatNumber } from 'lib/helpers';
 
 const formatBirthday = (string = new Date()) => {
   const parsed = parse(string, 'yyyy-MM-dd', new Date());
@@ -48,13 +49,14 @@ export const CheckStep = () => {
     userData: { payment_method },
   } = useSelector((state) => state.order);
 
-  const { tripInfo } = useSelector((state) => state.seats);
+  const { tripInfo, totalPrice } = useSelector((state) => state.seats);
 
   const dispatch = useDispatch();
 
   const history = useHistory();
 
   const handleConfirmation = () => {
+    // dispatch(setStep(1));
     dispatch(createOrder());
     history.push('/success');
   };
@@ -86,10 +88,16 @@ export const CheckStep = () => {
             <CheckStepSectionAside>
               <div className="check-step__sum">
                 <span>Всего</span>
-                <span className="check-step__sum_number">7 760</span>
+                <span className="check-step__sum_number">
+                  {formatNumber(totalPrice)}
+                </span>
                 <span className="check-step__sum_currency">₽</span>
               </div>
-              <Button size="s" style="transparent-dark">
+              <Button
+                size="s"
+                style="transparent-dark"
+                onClick={() => dispatch(setStep(2))}
+              >
                 Изменить
               </Button>
             </CheckStepSectionAside>
@@ -107,7 +115,11 @@ export const CheckStep = () => {
               </CheckStepSectionRow>
             </CheckStepSectionMain>
             <CheckStepSectionAside>
-              <Button size="s" style="transparent-dark">
+              <Button
+                size="s"
+                style="transparent-dark"
+                onClick={() => dispatch(setStep(3))}
+              >
                 Изменить
               </Button>
             </CheckStepSectionAside>
@@ -121,8 +133,6 @@ export const CheckStep = () => {
           Подтвердить
         </NextStepButton>
       </StepButtonsContainer>
-
-      {/* <ChangeStepButton>Подтвердить</ChangeStepButton> */}
     </>
   );
 };
@@ -156,7 +166,6 @@ const CheckStepPassenger = ({
   last_name,
   first_name,
   patronymic,
-  documentValue,
   gender,
   passport_series,
   passport_number,

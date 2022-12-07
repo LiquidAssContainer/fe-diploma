@@ -24,6 +24,11 @@
   padding-inline: 50px
   margin: 0 auto
 
+  @include to(desktop)
+    flex-wrap: wrap
+    justify-content: center
+    gap: 50px
+
 .hero_content_text
   font-weight: 100
   font-size: 4.5rem
@@ -150,11 +155,19 @@
   display: flex
   gap: 85px
 
+  @include to(desktop)
+    flex-wrap: wrap
+    justify-content: center
+    gap: 40px
+
 .reviews__item
   display: flex
   align-items: center
   width: 50%
   text-align: left
+
+  @include to(desktop)
+  width: 100%
 
 .reviews
   padding-block: 8% 6.25%

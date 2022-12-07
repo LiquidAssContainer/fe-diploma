@@ -1,52 +1,74 @@
 import './style.sass';
 
+import cn from 'classnames';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { HashLink as Link } from 'react-router-hash-link';
+import {
+  HashRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+  // useLocation,
+} from 'react-router-dom';
+
+import { PageHeader } from 'components/PageHeader';
+import { Header } from 'components/Header';
+import { Button } from 'components/Button';
 import { ReactComponent as TicketsEmailIcon } from 'assets/icons/tickets_email.svg';
 import { ReactComponent as TicketsIcon } from 'assets/icons/tickets.svg';
 import { ReactComponent as ControlerIcon } from 'assets/icons/controler.svg';
 import { ReactComponent as StarIcon } from 'assets/icons/star.svg';
 
-import { PageHeader } from 'components/PageHeader';
-import { Button } from 'components/Button';
-import { Header } from 'components/Header';
-import { useEffect, useState } from 'react';
-import cn from 'classnames';
-import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { formatNumber } from 'lib/helpers';
+import { useDispatch } from 'react-redux';
+import { setStep } from 'reducers/stepper';
 
 const ticketInstructions = [
   {
     icon: TicketsEmailIcon,
-    text: 'билеты будут отправлены на ваш <b>e-mail</b>',
+    text: (
+      <>
+        билеты будут отправлены на ваш <b>e-mail</b>
+      </>
+    ),
   },
   {
     icon: TicketsIcon,
-    text: 'распечатайте и сохраняйте билеты до даты поездки',
+    text: (
+      <>
+        <b>распечатайте</b> и сохраняйте билеты до даты поездки
+      </>
+    ),
   },
   {
     icon: ControlerIcon,
-    text: 'предьявите распечатанные билеты при посадке',
+    text: (
+      <>
+        <b>предьявите</b> распечатанные билеты при посадке
+      </>
+    ),
   },
 ];
 
 export const SuccessPage = () => {
-  const history = useHistory();
-
+  const dispatch = useDispatch();
+  const { step } = useSelector((state) => state.stepper);
   const {
     userData: { last_name, first_name, patronymic },
   } = useSelector((state) => state.order);
 
   const { totalPrice } = useSelector((state) => state.seats);
 
-  const handleHomeClick = () => {
-    history.push('/');
-  };
-
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    return () => dispatch(setStep(1));
   }, []);
 
-  return (
+  return step !== 5 ? (
+    <Redirect to="/" />
+  ) : (
     <div className="success-page__container">
       <section className="success-page__header">
         <PageHeader />
@@ -89,13 +111,11 @@ export const SuccessPage = () => {
           </div>
           <footer className="order-footer">
             <RateService />
-            <Button
-              classname="success-page__button"
-              size="l"
-              onClick={handleHomeClick}
-            >
-              Вернуться на главную
-            </Button>
+            <Link to="/">
+              <Button classname="success-page__button" size="l">
+                Вернуться на главную
+              </Button>
+            </Link>
           </footer>
         </div>
       </section>

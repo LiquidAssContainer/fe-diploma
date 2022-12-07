@@ -52,7 +52,7 @@ export const ThirdClassPlaces = ({ side_price, ...props }) => {
       </PlaceItemList>
       <PlaceItemList railcarClass="third" isLeftSide={true}>
         {[...Array(8)].map((_, i) => (
-          <li className="place__row_left-train-side">
+          <li key={i} className="place__row_left-train-side">
             <PlaceItem
               {...props}
               railcarClass="third"

@@ -20,6 +20,7 @@ import { Header } from 'components/Header';
 import { Form } from 'lib/Form';
 import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
 import { useWatchQueryParams } from 'hooks/useWatchQueryParams';
+import { Button } from 'components/Button';
 
 export const SearchTicketsForm = ({ isSquare }) => {
   const form = useForm({
@@ -105,7 +106,7 @@ export const SearchTicketsForm = ({ isSquare }) => {
           <Header className="tickets__form_header" size="s">
             Направление
           </Header>
-          <div className="tickets__form_inputs_group without-gap">
+          <div className="tickets__form_inputs_group">
             <CitySelectInput
               name="from_city"
               placeholder="Откуда"
@@ -150,9 +151,17 @@ export const SearchTicketsForm = ({ isSquare }) => {
           </div>
         </div>
       </div>
-      <button className="tickets__form_button_submit" type="submit">
+      <Button
+        classname="tickets__form_button_submit"
+        size="l"
+        style="colored"
+        type="submit"
+      >
         Найти билеты
-      </button>
+      </Button>
+      {/* <button className="tickets__form_button_submit" type="submit">
+        Найти билеты
+      </button> */}
     </Form>
   );
 };

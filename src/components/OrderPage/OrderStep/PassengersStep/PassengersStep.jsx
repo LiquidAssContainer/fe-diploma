@@ -3,21 +3,14 @@ import './style.sass';
 import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { PassengerFormAdd } from './PassengersStepComponents';
 import { PassengerForm } from './PassengerForm';
-import {
-  ChangeStepButton,
-  NextStepButton,
-  PrevStepButton,
-} from '../../OrderPage';
+import { PassengerFormAdd } from './PassengersStepComponents';
+import { NextStepButton, PrevStepButton } from 'components/OrderPage';
 
-import { setNextStep } from 'reducers/stepper';
-import { setDirectionId, setPassengerForms } from 'reducers/order';
-import { useEffect } from 'react';
+import { setPassengerForms } from 'reducers/order';
 
 export const PassengersStep = () => {
   const { selectedAmount } = useSelector((state) => state.seats);
-  // const selectedAmount = 2;
 
   const refArray = useRef([]);
 
@@ -27,13 +20,10 @@ export const PassengersStep = () => {
     isExpanded: !i,
   }));
 
-  // const passengers = Object.values(formObjects);
-
   const dispatch = useDispatch();
 
   const [forms, setForms] = useState(initialForms);
   const [areFormsValid, setAreFormsValid] = useState(false);
-  // const history = useHistory();
 
   const onNextPassengerClick = (i) => {
     const nextForm = refArray.current[i + 1];
@@ -46,7 +36,9 @@ export const PassengersStep = () => {
   };
 
   const onRemovePassenger = (index) => {
-    setForms(forms.splice(index - 1, 1));
+    const splicedForm = [...forms];
+    splicedForm.splice(index, 1);
+    setForms(splicedForm);
   };
 
   const onAddPassenger = () => {
@@ -73,7 +65,6 @@ export const PassengersStep = () => {
 
   const onFormChange = (data, index, isValid) => {
     const formsState = [...forms];
-    console.log(data, index, isValid);
     formsState[index].data = data;
     formsState[index].isValid = isValid;
     setForms(formsState);
@@ -88,7 +79,7 @@ export const PassengersStep = () => {
         <PassengerForm
           key={i}
           onFormChange={onFormChange}
-          number={i + 1}
+          // number={i + 1}
           passengers={forms}
           isExpandedProp={isExpanded}
           formIndex={i}

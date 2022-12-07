@@ -229,14 +229,12 @@ export const CheckboxLabel = ({ name, label, icon: Icon, ...props }) => {
   );
 };
 
-export const CheckboxInput = ({ isChecked, ...props }) => {
-  console.log(isChecked);
+export const CheckboxInput = ({ ...props }) => {
   return (
     <div className="input_checkbox_wrapper">
       <Input
         {...props}
         className="input_checkbox"
-        isChecked={Boolean(isChecked)}
         type="checkbox"
         name={props.name}
       />

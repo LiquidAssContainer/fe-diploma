@@ -14,10 +14,11 @@ import { ReactComponent as ExpressIcon } from 'assets/icons/express.svg';
 import { ReactComponent as FeedIcon } from 'assets/icons/drinks.svg';
 
 import { formatDateToHM, formatNumber } from 'lib/helpers';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setTripInfo } from 'reducers/seats';
 import { nanoid } from 'nanoid';
+import { setStep } from 'reducers/stepper';
 
 const features = {
   have_wifi: { icon: WiFiIcon, label: 'Wi-Fi', id: nanoid() },
@@ -59,7 +60,11 @@ export const Ticket = ({
     return acc;
   }, []);
 
-  const handleBtnClick = () => {
+  const handleChangePlaces = () => {
+    dispatch(setStep(1));
+  };
+
+  const handleChoosePlaces = () => {
     dispatch(
       setTripInfo({
         from,
@@ -70,7 +75,6 @@ export const Ticket = ({
         duration,
       }),
     );
-    history.push(`seats/${_id}`);
   };
 
   return (
@@ -97,13 +101,19 @@ export const Ticket = ({
         </ul>
         <TicketFeatures {...props} />
         {isChecking ? (
-          <Button size="s" style="transparent-dark">
+          <Button
+            size="s"
+            style="transparent-dark"
+            onClick={handleChangePlaces}
+          >
             Изменить
           </Button>
         ) : (
-          <Button size="s" style="colored" onClick={handleBtnClick}>
-            Выбрать места
-          </Button>
+          <Link to={`/seats/${_id}`}>
+            <Button size="s" style="colored" onClick={handleChoosePlaces}>
+              Выбрать места
+            </Button>
+          </Link>
         )}
       </div>
     </div>

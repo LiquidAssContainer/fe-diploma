@@ -37,12 +37,10 @@ h4.tickets__form_header
   color: #FFFFFF
 
 .tickets__form_inputs_group
+  position: relative
   display: flex
   align-items: center
   gap: 40px
-
-  &.without-gap
-    gap: 0
 
 .city-select__container
   position: relative
@@ -72,18 +70,15 @@ h4.tickets__form_header
 
   &_button
     font-size: 18px
-    /* line-height: 21px; */
-    /* font-variant: small-caps; */
     color: #292929
     text-transform: uppercase
     cursor: pointer
     display: block
 
 .form__button_inverse
-  // padding: 0
-  // width: 24px
-  // height: 24px
-  padding: 0 8px
+  position: absolute
+  left: calc(50% - 20px)
+
   width: 40px
   height: 24px
 
@@ -91,20 +86,10 @@ h4.tickets__form_header
     width: 24px
     height: 24px
 
-.tickets__form_button_submit
+button.tickets__form_button_submit
   display: block
-  min-width: 321px
-  border: 1px solid $orange-1
-  padding: 15px 15px
-  border-radius: 5px
-
+  max-width: 320px
   margin-left: auto
 
-  background-color: $orange-1
-
-  font-weight: 700
-  font-size: 24px
-  text-align: center
   text-transform: uppercase
-
   color: #292929

@@ -1,1 +1,6 @@
-export { OrderPage } from './OrderPage';
+export {
+  OrderPage,
+  NextStepButton,
+  PrevStepButton,
+  StepButtonsContainer,
+} from './OrderPage';

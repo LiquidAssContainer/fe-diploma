@@ -4,6 +4,8 @@ import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { changePrice, changeSeatSelection } from 'reducers/seats';
+import { useRef, useState } from 'react';
+import { useOnClickOutside } from 'hooks/useOnClickOutside';
 
 export const FirstClassPlacement = ({
   firstNumber,
@@ -119,7 +121,14 @@ export const PlaceItem = ({
   const seat = seats[placeNumber - 1];
   const dispatch = useDispatch();
 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const onPopupClose = () => {
+    setIsPopupOpen(false);
+  };
+
   const handleClick = () => {
+    // setIsPopupOpen(true);
     const value = !seat.isSelected;
 
     if (value && selectedSeats.length === selectedAmount) {
@@ -139,17 +148,57 @@ export const PlaceItem = ({
     );
   };
 
+  const onTicketTypeClick = (type) => {
+    console.log(type);
+    setIsPopupOpen(false);
+  };
+
   return (
-    <button
-      className={cn('place__item', {
-        [`place__item_${railcarClass}-class`]: railcarClass,
-        'place__item_left-train-side': isLeftSide,
-        selected: seat?.isSelected,
-      })}
-      disabled={!seat?.available}
-      onClick={handleClick}
-    >
-      {placeNumber}
-    </button>
+    <div className="place__item_container">
+      <button
+        className={cn('place__item', {
+          [`place__item_${railcarClass}-class`]: railcarClass,
+          'place__item_left-train-side': isLeftSide,
+          selected: seat?.isSelected,
+        })}
+        disabled={!seat?.available}
+        onClick={handleClick}
+      >
+        {placeNumber}
+      </button>
+      {isPopupOpen && (
+        <PlaceItemPopup
+          isOpen={isPopupOpen}
+          onClose={onPopupClose}
+          onBtnClick={onTicketTypeClick}
+        />
+      )}
+    </div>
+  );
+};
+
+const PlaceItemPopup = ({ onClose, onBtnClick }) => {
+  // const [isModalOpen, setIsModalOpen] = useState(isOpen)
+  const ref = useRef();
+
+  useOnClickOutside(ref, onClose);
+
+  const handleBtnClick = () => {};
+
+  return (
+    <div ref={ref} className="place__item_popup">
+      <button
+        className="place__item_popup_button"
+        onClick={() => onBtnClick('adult')}
+      >
+        Взрослый
+      </button>
+      <button
+        className="place__item_popup_button"
+        onClick={() => onBtnClick('child')}
+      >
+        Детский
+      </button>
+    </div>
   );
 };

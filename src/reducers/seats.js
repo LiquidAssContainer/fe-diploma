@@ -4,7 +4,7 @@ import { apiService } from 'services/apiService';
 // const defaultRailcarList = { first: [], second: [], third: [], fourth: [] };
 
 const initialState = {
-  // ↓ заглушка, потому что нельзя запросом добыть инфу для конкретного направления
+  // ↓ заглушка, потому что нельзя запросом добыть эту инфу для конкретного направления
   tripInfo: {
     direction: 'forward',
     from: {
