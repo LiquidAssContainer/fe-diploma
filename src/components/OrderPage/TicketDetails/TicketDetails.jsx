@@ -10,11 +10,16 @@ export const TicketDetails = ({ children }) => {
   return <div className="ticket-details__container">{children}</div>;
 };
 
-export const TicketDetailsHeader = ({ title, asideSlot, iconSlot }) => {
+export const TicketDetailsHeader = ({
+  title,
+  asideSlot,
+  iconSlot,
+  className,
+}) => {
   return (
     <header className="ticket-details__section_header">
       {iconSlot}
-      <h4 className="header_size_s">
+      <h4 className={cn('header_size_s', className)}>
         {title} {asideSlot}
       </h4>
     </header>

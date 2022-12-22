@@ -117,7 +117,7 @@ $height-stepper: 95px
 
 .order-page__aside
   width: 360px
-  // margin-right: 85px
+  flex-shrink: 0
 
 .order-page__main
   flex: 1
@@ -212,3 +212,20 @@ $height-stepper: 95px
 
 .button__next-step
   margin-left: auto
+
+.search-loader
+  &__container
+    min-height: 300px
+    padding-block: 10% 20%
+
+    background-image: url('/assets/search-loader.gif')
+    background-repeat: no-repeat
+    background-position: center
+    background-color: #3E3C41
+  &__text
+    font-weight: 700
+    font-size: 1.5rem
+    text-align: center
+    text-transform: uppercase
+
+    color: #928F94

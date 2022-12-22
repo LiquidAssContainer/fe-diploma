@@ -16,7 +16,13 @@ import {
   TicketDetailsSectionContent,
 } from './TicketDetails';
 import { useSelector } from 'react-redux';
-import { formatNumber, getPlural, pluralWords } from 'lib/helpers';
+import {
+  formatNumber,
+  getPlural,
+  getTwoDigitNumber,
+  pluralWords,
+} from 'lib/helpers';
+import { getHours, getMinutes } from 'date-fns';
 
 export const TicketDetailsInfo = () => {
   const {
@@ -108,7 +114,7 @@ export const TicketDetailsInfo = () => {
   );
 };
 
-const TicketDetailsTripInfo = ({ from, to, train, isReturn }) => {
+const TicketDetailsTripInfo = ({ from, to, duration, train, isReturn }) => {
   return (
     <>
       <TicketDetailsRow>
@@ -125,7 +131,7 @@ const TicketDetailsTripInfo = ({ from, to, train, isReturn }) => {
         <TicketDetailsRow className="ticket-details__arrival-time">
           <TicketDetailsRowValue value="00:10" />
           <div>
-            <TicketDetailsTripDuration value="9 : 42" />
+            <TicketDetailsTripDuration duration={duration} />
             <Icon
               wrapperClassName={cn('ticket-details__icon_arrow', {
                 arrow_left: isReturn,
@@ -188,8 +194,15 @@ const TicketDetailsFromTo = ({ from, to }) => {
   );
 };
 
-const TicketDetailsTripDuration = ({ value }) => {
-  return <div className="ticket-details__trip-duration">{value}</div>;
+const TicketDetailsTripDuration = ({ duration }) => {
+  const hours = getHours(duration);
+  const minutes = getTwoDigitNumber(getMinutes(duration));
+
+  return (
+    <div className="ticket-details__trip-duration">
+      {hours} : {minutes}
+    </div>
+  );
 };
 
 const TicketDetailsStation = ({ city, station }) => {

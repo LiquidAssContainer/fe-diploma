@@ -26,6 +26,7 @@ const options = [
 export const SearchTickets = () => {
   const dispatch = useDispatch();
   const {
+    isLoading,
     resultsCount,
     resultItems,
     queryParams: { limit, offset },
@@ -78,18 +79,23 @@ export const SearchTickets = () => {
           </div>
         </div>
       </Form>
-      <ul className="tickets__list">
-        {resultItems.map(({ departure }) => (
-          // НО МБ ЭТО КАК KEY НЕ ПОДХОДИТ???? // TODO
-          <Ticket key={departure._id} {...departure} />
-        ))}
-      </ul>
-      <Pagination
-        perPage={currentLimit}
-        total={resultsCount}
-        currentPage={page}
-        onPageChange={handlePaginate}
-      />
+      {isLoading ? (
+        <SpinnerLoader />
+      ) : (
+        <>
+          <ul className="tickets__list">
+            {resultItems.map(({ departure }) => (
+              <Ticket key={departure._id} {...departure} />
+            ))}
+          </ul>
+          <Pagination
+            perPage={currentLimit}
+            total={resultsCount}
+            currentPage={page}
+            onPageChange={handlePaginate}
+          />
+        </>
+      )}
     </>
   );
 };
@@ -155,3 +161,9 @@ const SortBySelect = ({ options, label, name, selected }) => {
     </div>
   );
 };
+
+const SpinnerLoader = () => (
+  <div className="spinner-loader__wrapper">
+    <div className="spinner-loader" />
+  </div>
+);

@@ -13,7 +13,7 @@ import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
 import { ReactComponent as ExpressIcon } from 'assets/icons/express.svg';
 import { ReactComponent as FeedIcon } from 'assets/icons/drinks.svg';
 
-import { formatDateToHM, formatNumber } from 'lib/helpers';
+import { formatDateToHM, formatNumber, getTwoDigitNumber } from 'lib/helpers';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setTripInfo } from 'reducers/seats';
@@ -176,6 +176,9 @@ export const TicketDirection = ({
   to,
   noDuration,
 }) => {
+  const hours = getHours(duration);
+  const minutes = getTwoDigitNumber(getMinutes(duration));
+
   return (
     <div
       className={cn('direction', {
@@ -186,7 +189,7 @@ export const TicketDirection = ({
       <div className="trip__duration_container">
         {!noDuration && (
           <div className="trip__duration">
-            {getHours(duration)} : {getMinutes(duration)}
+            {hours} : {minutes}
           </div>
         )}
         <div className="trip__direction trip__direction_right">

@@ -4,6 +4,8 @@ import './style.sass';
 import { DayPicker, useNavigation } from 'react-day-picker';
 import { format, addMonths } from 'date-fns';
 import ru from 'date-fns/locale/ru';
+import { useOnClickOutside } from 'hooks/useOnClickOutside';
+import { useRef } from 'react';
 
 const locale = ru;
 
@@ -31,25 +33,36 @@ const DatePickerCaption = ({ displayMonth, locale }) => {
   );
 };
 
-export const DatePicker = ({ onSelect, startDate, endDate, selected }) => {
+export const DatePicker = ({
+  onSelect,
+  startDate,
+  endDate,
+  selected,
+  setIsOpen,
+}) => {
+  const ref = useRef(null);
+  useOnClickOutside(ref, () => setIsOpen(false));
+
   return (
-    <DayPicker
-      mode="single"
-      selected={selected}
-      showOutsideDays
-      hideHead
-      locale={locale}
-      onSelect={onSelect}
-      disabled={[
-        { before: startDate || new Date() },
-        { after: endDate || addMonths(new Date(), 11) },
-      ]}
-      defaultMonth={selected || startDate || endDate}
-      fromMonth={new Date()}
-      toMonth={addMonths(new Date(), 11)}
-      components={{
-        Caption: (props) => <DatePickerCaption {...props} locale={locale} />,
-      }}
-    />
+    <div className="date-picker__wrapper" ref={ref}>
+      <DayPicker
+        mode="single"
+        selected={selected}
+        showOutsideDays
+        hideHead
+        locale={locale}
+        onSelect={onSelect}
+        disabled={[
+          { before: startDate || new Date() },
+          { after: endDate || addMonths(new Date(), 11) },
+        ]}
+        defaultMonth={selected || startDate || endDate}
+        fromMonth={new Date()}
+        toMonth={addMonths(new Date(), 11)}
+        components={{
+          Caption: (props) => <DatePickerCaption {...props} locale={locale} />,
+        }}
+      />
+    </div>
   );
 };

@@ -1,19 +1,11 @@
 import './style.sass';
 
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { DateInput, Input } from '../../Input';
 import { HoursRangeSlider, RangeSlider } from './RangeSlider';
 
-import { ReactComponent as SecondClassIcon } from 'assets/icons/second_class.svg';
-import { ReactComponent as ThirdClassIcon } from 'assets/icons/third_class.svg';
-import { ReactComponent as FourthClassIcon } from 'assets/icons/fourth_class.svg';
-import { ReactComponent as FirstClassIcon } from 'assets/icons/first_class.svg';
-import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
-
-import { ReactComponent as ArrowInRectangleIcon } from 'assets/icons/arrow_in_rectangle.svg';
 import {
   Icon,
   TicketDetails,
@@ -21,9 +13,16 @@ import {
   TicketDetailsSection,
 } from './TicketDetails';
 import { Form } from 'lib/Form';
+
+import { ReactComponent as SecondClassIcon } from 'assets/icons/second_class.svg';
+import { ReactComponent as ThirdClassIcon } from 'assets/icons/third_class.svg';
+import { ReactComponent as FourthClassIcon } from 'assets/icons/fourth_class.svg';
+import { ReactComponent as FirstClassIcon } from 'assets/icons/first_class.svg';
+import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
+import { ReactComponent as ArrowInRectangleIcon } from 'assets/icons/arrow_in_rectangle.svg';
+
 import { updateQueryParams } from 'reducers/search';
 import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
-import { useSelector } from 'react-redux';
 
 const switchList = [
   { name: 'have_second_class', icon: SecondClassIcon, label: 'Купе' },
@@ -131,7 +130,9 @@ export const TicketDetailsFilter = () => {
         </TicketDetailsSection>
 
         <TicketDetailsSection isExpandable={false}>
-          <h4 className="header_size_s text_light">Стоимость</h4>
+          <h4 className="header_size_s text_light ticket-filter__form_title">
+            Стоимость
+          </h4>
           <div className="range-slider__container">
             <RangeSlider
               names={['price_from', 'price_to']}
@@ -151,6 +152,7 @@ export const TicketDetailsFilter = () => {
           headerSlot={
             <TicketDetailsHeader
               title="Туда"
+              className="ticket-filter__form_title"
               iconSlot={
                 <Icon
                   wrapperClassName="ticket-details__icon"
@@ -174,6 +176,7 @@ export const TicketDetailsFilter = () => {
           headerSlot={
             <TicketDetailsHeader
               title="Обратно"
+              className="ticket-filter__form_title"
               iconSlot={
                 <Icon
                   wrapperClassName="ticket-details__icon arrow_left"

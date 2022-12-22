@@ -10,6 +10,7 @@ import {
   Switch,
   // useLocation,
 } from 'react-router-dom';
+import { formatNumber } from 'lib/helpers';
 
 import { PageHeader } from '../PageHeader';
 import { SearchTicketsForm } from '../SearchTicketsForm';
@@ -23,12 +24,14 @@ import { PassengersStep } from './OrderStep/PassengersStep';
 
 import { getLastDirectionsAsync } from 'reducers/search';
 import { setNextStep, setPrevStep } from 'reducers/stepper';
-import { formatNumber } from 'lib/helpers';
 
 export const OrderPage = () => {
   const dispatch = useDispatch();
   // const location = useLocation();
   const { step } = useSelector((state) => state.stepper);
+  const { isLoading, loadingFromSearchForm } = useSelector(
+    (state) => state.search,
+  );
 
   const stepperRef = useRef(null);
 
@@ -36,61 +39,70 @@ export const OrderPage = () => {
     dispatch(getLastDirectionsAsync());
   }, []);
 
-  useEffect(() => {
-    // const { pathname } = location;
-    // stepperRef.current?.scrollIntoView({
-    //   behavior: 'smooth',
-    //   block: 'nearest',
-    // });
-  }, [step]);
+  // useEffect(() => {
+  //   const { pathname } = location;
+  //   stepperRef.current?.scrollIntoView({
+  //     behavior: 'smooth',
+  //     block: 'nearest',
+  //   });
+  // }, [step]);
 
   return (
     <>
       <section className="order-page__hero">
         <PageHeader />
         <SearchTicketsForm />
-        <Stepper innerRef={stepperRef} activeStep={step} />
+        {!loadingFromSearchForm && (
+          <Stepper innerRef={stepperRef} activeStep={step} />
+        )}
       </section>
-      <section className="order-page__content_wrapper">
-        <div className="order-page__content">
-          <aside className="order-page__aside">
-            {step === 1 ? (
-              <>
-                <TicketDetailsFilter />
-                <LastTickets />
-              </>
-            ) : (
-              <TicketDetailsInfo />
-            )}
-          </aside>
-          <main className="order-page__main">
-            <Router>
-              <Switch>
-                <Route path="/search" component={SearchTickets} />
-                <Route path="/seats/:id/order">
-                  {() => {
-                    switch (step) {
-                      case 1:
-                        return (
-                          <Switch>
-                            <Redirect from="/seats/:id/order" to="/seats/:id" />
-                          </Switch>
-                        );
-                      case 2:
-                        return <PassengersStep />;
-                      case 3:
-                        return <PaymentStep />;
-                      case 4:
-                        return <CheckStep />;
-                    }
-                  }}
-                </Route>
-                <Route path="/seats/:id" component={ChoosePlaces} />
-              </Switch>
-            </Router>
-          </main>
-        </div>
-      </section>
+      {isLoading && loadingFromSearchForm ? (
+        <SearchLoader />
+      ) : (
+        <section className="order-page__content_wrapper">
+          <div className="order-page__content">
+            <aside className="order-page__aside">
+              {step === 1 ? (
+                <>
+                  <TicketDetailsFilter />
+                  <LastTickets />
+                </>
+              ) : (
+                <TicketDetailsInfo />
+              )}
+            </aside>
+            <main className="order-page__main">
+              <Router>
+                <Switch>
+                  <Route path="/search" component={SearchTickets} />
+                  <Route path="/seats/:id/order">
+                    {() => {
+                      switch (step) {
+                        case 1:
+                          return (
+                            <Switch>
+                              <Redirect
+                                from="/seats/:id/order"
+                                to="/seats/:id"
+                              />
+                            </Switch>
+                          );
+                        case 2:
+                          return <PassengersStep />;
+                        case 3:
+                          return <PaymentStep />;
+                        case 4:
+                          return <CheckStep />;
+                      }
+                    }}
+                  </Route>
+                  <Route path="/seats/:id" component={ChoosePlaces} />
+                </Switch>
+              </Router>
+            </main>
+          </div>
+        </section>
+      )}
     </>
   );
 };
@@ -104,9 +116,10 @@ const LastTickets = () => {
         Последние билеты
       </Header>
       <ul className="last-tickets__list">
-        {lastDirections.map(({ departure }) => (
-          <LastTicketItem key={departure._id} {...departure} />
-        ))}
+        {lastDirections.map(
+          ({ departure }, i) =>
+            i < 3 && <LastTicketItem key={departure._id} {...departure} />,
+        )}
       </ul>
     </div>
   );
@@ -228,3 +241,9 @@ export const ChangeStepButton = ({
     </Button>
   );
 };
+
+const SearchLoader = () => (
+  <div className="search-loader__container">
+    <div className="search-loader__text">Идёт поиск</div>
+  </div>
+);

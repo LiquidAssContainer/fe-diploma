@@ -111,6 +111,7 @@ export const DateInput = ({
           selected={parseDate(selected)}
           startDate={parseDate(startDate)}
           endDate={parseDate(endDate)}
+          setIsOpen={setIsPickerOpen}
         />
       )}
     </div>

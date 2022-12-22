@@ -78,7 +78,7 @@ export const PassengerForm = ({
   });
 
   const {
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty },
   } = form;
 
   const [isExpanded, setIsExpanded] = useState(isExpandedProp);
@@ -105,7 +105,9 @@ export const PassengerForm = ({
     if (passengerForms[formIndex]) {
       const fields = getValues();
       for (const field in fields) {
-        setValue(field, passengerForms[formIndex][field]);
+        setValue(field, passengerForms[formIndex][field], {
+          shouldDirty: true,
+        });
       }
     }
   }, []);
@@ -115,8 +117,13 @@ export const PassengerForm = ({
   }, [isExpandedProp]);
 
   useEffect(() => {
+    if (!isDirty) {
+      return;
+    }
     onFormChange(getValues(), formIndex, isValid);
   }, [isValid]);
+
+  console.log(document_type);
 
   return (
     <OrderBlockContainer {...props}>
@@ -218,7 +225,7 @@ export const PassengerForm = ({
                       placeholder="Иванович"
                       name="birthday"
                       size="s"
-                      required={errorMessages.required('Дата рождения')}
+                      // required={errorMessages.required('Дата рождения')}
                     />
                   </OrderBlockSectionRow>
 
@@ -249,7 +256,10 @@ export const PassengerForm = ({
                           label="Серия"
                           type="number"
                           placeholder="____"
-                          required={errorMessages.required('Серия паспорта')}
+                          required={
+                            // document_type === 'passport' &&
+                            errorMessages.required('Серия паспорта')
+                          }
                           minLength={{
                             value: 4,
                             message: 'Серия паспорта должна состоять из 4 цифр',

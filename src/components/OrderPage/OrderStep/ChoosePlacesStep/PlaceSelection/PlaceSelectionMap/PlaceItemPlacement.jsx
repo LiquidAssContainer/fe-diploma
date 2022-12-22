@@ -3,7 +3,7 @@ import './style.sass';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { changePrice, changeSeatSelection } from 'reducers/seats';
+import { changeSeatSelection } from 'reducers/seats';
 import { useRef, useState } from 'react';
 import { useOnClickOutside } from 'hooks/useOnClickOutside';
 
@@ -116,7 +116,14 @@ export const PlaceItem = ({
   seats,
   price = 0,
 }) => {
-  const { selectedSeats, selectedAmount } = useSelector((state) => state.seats);
+  const {
+    selectedSeats,
+    selectedAmount,
+    passengersAmount: {
+      adult: { amount: adultAmount, selected: adultSelected },
+      child: { amount: childAmount, selected: childSelected },
+    },
+  } = useSelector((state) => state.seats);
 
   const seat = seats[placeNumber - 1];
   const dispatch = useDispatch();
@@ -128,29 +135,51 @@ export const PlaceItem = ({
   };
 
   const handleClick = () => {
-    // setIsPopupOpen(true);
-    const value = !seat.isSelected;
+    const newValue = !seat.isSelected;
 
-    if (value && selectedSeats.length === selectedAmount) {
-      return;
+    let type;
+
+    if (newValue) {
+      if (selectedSeats.length === selectedAmount) {
+        return;
+      }
+
+      if (childSelected < childAmount) {
+        if (adultSelected < adultAmount) {
+          setIsPopupOpen(true);
+          return;
+        } else {
+          type = 'child';
+        }
+      } else {
+        type = 'adult';
+      }
     }
-
-    const priceDiff = seat.isSelected ? -price : price;
-    dispatch(changePrice(priceDiff));
 
     dispatch(
       changeSeatSelection({
         railcarId,
         railcarClass,
         placeNumber,
-        value,
+        value: newValue,
+        price,
+        type,
       }),
     );
   };
 
   const onTicketTypeClick = (type) => {
-    console.log(type);
     setIsPopupOpen(false);
+    dispatch(
+      changeSeatSelection({
+        railcarId,
+        railcarClass,
+        placeNumber,
+        value: true,
+        price,
+        type,
+      }),
+    );
   };
 
   return (
@@ -178,12 +207,9 @@ export const PlaceItem = ({
 };
 
 const PlaceItemPopup = ({ onClose, onBtnClick }) => {
-  // const [isModalOpen, setIsModalOpen] = useState(isOpen)
   const ref = useRef();
 
   useOnClickOutside(ref, onClose);
-
-  const handleBtnClick = () => {};
 
   return (
     <div ref={ref} className="place__item_popup">

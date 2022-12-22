@@ -3,6 +3,16 @@ import './style.sass';
 import cn from 'classnames';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { getHours, getMinutes } from 'date-fns';
+import { getPlural, pluralWords } from 'lib/helpers';
+
+import { Header } from 'components/Header';
+import { Button } from 'components/Button';
+import { PlaceSelection } from './PlaceSelection';
+import { TicketAmountForm } from './TicketAmountForm';
+import { NextStepButton } from 'components/OrderPage/OrderPage';
+import { TicketDirection, TripCities } from 'components/Ticket/Ticket';
 
 import { ReactComponent as SecondClassIcon } from 'assets/icons/second_class.svg';
 import { ReactComponent as ThirdClassIcon } from 'assets/icons/third_class.svg';
@@ -12,19 +22,7 @@ import { ReactComponent as ClockIcon } from 'assets/icons/clock.svg';
 import { ReactComponent as TrainIcon } from 'assets/icons/train.svg';
 import { ReactComponent as ArrowInRectangleLarge } from 'assets/icons/arrow_in_rectangle_large.svg';
 
-import { Header } from 'components/Header';
-import { Button } from 'components/Button';
-import { PlaceSelection } from './PlaceSelection';
-import {
-  ChangeStepButton,
-  NextStepButton,
-} from 'components/OrderPage/OrderPage';
-import { TicketDirection, TripCities } from 'components/Ticket/Ticket';
-
-import { setNextStep } from 'reducers/stepper';
 import { changeSelectedRailcarType, getSeatsDetailAsync } from 'reducers/seats';
-import { TicketAmountForm } from './TicketAmountForm';
-import { useHistory } from 'react-router-dom';
 import { setDirectionId } from 'reducers/order';
 
 const railcarTypes = [
@@ -49,10 +47,7 @@ export const ChoosePlaces = ({
   } = useSelector((state) => state.seats);
 
   const handleNextStepClick = () => {
-    // if (selectedAmount > 0) {
-    //   dispatch(setNextStep());
     history.push(`/seats/${id}/order`);
-    // }
   };
 
   useEffect(() => {
@@ -88,12 +83,9 @@ export const ChoosePlaces = ({
 
 const ChoosePlacesBlock = ({
   direction,
-  time,
   from,
   to,
   train = { name: 'поровозик' },
-  price_info,
-  available_seats_info,
   duration = 0,
   seatsInfo,
 }) => {
@@ -146,10 +138,7 @@ const ChoosePlacesBlock = ({
           <div className="icon__wrapper">
             <ClockIcon className="clock__icon" />
           </div>
-          <div className="time__text">
-            <div className="time__row">9 часов</div>
-            <div className="time__row">42 минуты</div>
-          </div>
+          <DurationTimeText duration={duration} />
         </div>
       </div>
       <div className="places__ticket-amount">
@@ -177,6 +166,18 @@ const ChoosePlacesBlock = ({
       {selectedRailcarClass && (
         <PlaceSelection railcarClass={selectedRailcarClass} />
       )}
+    </div>
+  );
+};
+
+const DurationTimeText = ({ duration }) => {
+  const hours = getHours(duration);
+  const minutes = getMinutes(duration);
+
+  return (
+    <div className="time__text">
+      <div className="time__row">{getPlural(hours, pluralWords.hours)}</div>
+      <div className="time__row">{getPlural(minutes, pluralWords.minutes)}</div>
     </div>
   );
 };

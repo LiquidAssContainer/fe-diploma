@@ -87,6 +87,9 @@
   align-items: flex-start
   margin-top: 30px
 
+  &:disabled &__input:checked + .online-payment-methods__label_text
+    color: #292929
+
   &__item
     flex-basis: 200px
 
@@ -167,3 +170,26 @@
 
     &:not(:last-child)
       margin-right: 0.5em
+
+.spinner-loader
+  width: 90px
+  min-height: 90px
+  border: 8px solid #ffa800
+  border-bottom-color: transparent
+  border-radius: 50%
+  display: inline-block
+  box-sizing: border-box
+  animation: rotation 1s linear infinite
+
+  @keyframes rotation
+    0%
+      transform: rotate(0deg)
+
+    100%
+      transform: rotate(360deg)
+
+  &__wrapper
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: flex-start

@@ -11,6 +11,8 @@ const stringifyQuery = (params) =>
   });
 
 const initialState = {
+  isLoading: false,
+  loadingFromSearchForm: true,
   cityList: { from_city: null, to_city: null },
   resultsCount: 0,
   resultItems: [],
@@ -85,9 +87,9 @@ export const searchSlice = createSlice({
     clearCitiesList: (state, { payload }) => {
       state.cityList[payload] = null;
     },
-    // changeSearchParameter: (state, { payload: { name, value } }) => {
-    //   state[name] = value;
-    // },
+    setLoadingFromSearchForm: (state) => {
+      state.loadingFromSearchForm = true;
+    },
     invertCities: (state) => {
       const { from_city, to_city, from_city_id, to_city_id } =
         state.queryParams;
@@ -130,10 +132,16 @@ export const searchSlice = createSlice({
       state,
       { payload: { total_count, items } },
     ) => {
+      state.isLoading = false;
       state.resultsCount = total_count;
       state.resultItems = items;
+      state.loadingFromSearchForm = false;
+    },
+    [getDirectionsAsync.pending]: (state) => {
+      state.isLoading = true;
     },
     [getDirectionsAsync.rejected]: (state) => {
+      state.isLoading = false;
       state.resultsCount = 0;
       state.resultItems = [];
     },
@@ -149,6 +157,7 @@ export const {
   updateQueryString,
   updateQueryParams,
   invertCities,
+  setLoadingFromSearchForm,
 } = searchSlice.actions;
 
 export const searchReducer = searchSlice.reducer;

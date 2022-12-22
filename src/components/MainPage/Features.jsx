@@ -21,9 +21,11 @@ export const Features = () => {
           <Header size="m" className="text_light">
             Как это работает
           </Header>
-          <Button style="transparent-light" size="l">
-            Узнать больше
-          </Button>
+          <a className="link__button" href="https://google.com" target="_blank">
+            <Button style="transparent-light" size="l">
+              Узнать больше
+            </Button>
+          </a>
         </header>
         <FeatureList items={items} />
       </section>

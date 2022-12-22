@@ -6,12 +6,18 @@ export const pluralWords = {
   children: ['ребёнка', 'детей', 'детей'],
   adultPassengers: ['Взрослый', 'Взрослых', 'Взрослых'],
   childPassengers: ['Ребёнок', 'Ребёнка', 'Детей'],
+  hours: ['час', 'часа', 'часов'],
+  minutes: ['минута', 'минуты', 'минут'],
+};
+
+export const getTwoDigitNumber = (number) => {
+  return number < 10 ? `0${number}` : number;
 };
 
 export const formatDateToHM = (date) => {
   const hours = getHours(date);
   const minutes = getMinutes(date);
-  return `${hours < 10 && '0'}${hours}:${minutes}`;
+  return `${getTwoDigitNumber(hours)}:${getTwoDigitNumber(minutes)}`;
 };
 
 export const formatNumber = (number) => {

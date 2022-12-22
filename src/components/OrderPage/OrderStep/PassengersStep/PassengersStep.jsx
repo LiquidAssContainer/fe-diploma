@@ -54,14 +54,7 @@ export const PassengersStep = () => {
     }
   };
 
-  const handleNextStepClick = () => {
-    const formsData = forms.reduce((acc, curr) => {
-      acc.push(curr.data);
-      return acc;
-    }, []);
-
-    dispatch(setPassengerForms(formsData));
-  };
+  const handleNextStepClick = () => {};
 
   const onFormChange = (data, index, isValid) => {
     const formsState = [...forms];
@@ -69,8 +62,15 @@ export const PassengersStep = () => {
     formsState[index].isValid = isValid;
     setForms(formsState);
 
-    const isThereInvalidForm = forms.find(({ isValid }) => !isValid);
+    const isThereInvalidForm = formsState.find(({ isValid }) => !isValid);
     setAreFormsValid(!isThereInvalidForm);
+
+    const formsData = forms.reduce((acc, curr) => {
+      acc.push(curr.data);
+      return acc;
+    }, []);
+
+    dispatch(setPassengerForms(formsData));
   };
 
   return (

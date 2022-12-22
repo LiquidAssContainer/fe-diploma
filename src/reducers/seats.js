@@ -3,6 +3,9 @@ import { apiService } from 'services/apiService';
 
 // const defaultRailcarList = { first: [], second: [], third: [], fourth: [] };
 
+const fromDatetime = new Date(2022, 12, 11, 0, 0, 0).getTime();
+const toDatetime = new Date(2022, 12, 11, 5, 0, 0).getTime();
+
 const initialState = {
   // ↓ заглушка, потому что нельзя запросом добыть эту инфу для конкретного направления
   tripInfo: {
@@ -12,14 +15,14 @@ const initialState = {
       city: {
         name: 'Заглушка-Сити',
       },
-      datetime: 1643457170,
+      datetime: fromDatetime,
     },
     to: {
       railway_station_name: 'Славы Альянсу',
       city: {
         name: 'Сити-17',
       },
-      datetime: 1643754350,
+      datetime: toDatetime,
     },
     train: { name: 'Поровозик-12' },
     price_info: {
@@ -46,15 +49,16 @@ const initialState = {
       third: 33,
       fourth: 44,
     },
-    duration: 0,
+    duration: toDatetime,
   },
 
   seatsInfo: null,
   selectedRailcarClass: null,
   passengersAmount: {
-    adult: { amount: 0, limit: 5 },
-    child: { amount: 0, limit: 0 },
-    baby: { amount: 0, limit: 0 },
+    adult: { amount: '', selected: 0, limit: 5 },
+    child: { amount: '', selected: 0, limit: 0 },
+    baby: { amount: '', selected: 0, limit: 0 },
+    total: 0,
   },
   selectedAmount: 0,
   selectedSeats: [],
@@ -139,7 +143,17 @@ export const seatsSlice = createSlice({
     },
     changeSeatSelection: (
       state,
-      { payload: { placeNumber, railcarId, railcarClass, value, priceDiff } },
+      {
+        payload: {
+          placeNumber,
+          railcarId,
+          railcarClass,
+          value,
+          price,
+          type,
+          priceDiff,
+        },
+      },
     ) => {
       const list = current(state.seatsInfo[railcarClass]);
 
@@ -148,12 +162,17 @@ export const seatsSlice = createSlice({
       );
 
       if (value) {
-        state.selectedSeats.push({ id: railcarId, number: placeNumber });
+        state.selectedSeats.push({ id: railcarId, number: placeNumber, type });
+        state.passengersAmount[type].selected += 1;
+        state.totalPrice += type === 'adult' ? price : price / 2;
       } else {
         const selectedSeatIndex = state.selectedSeats.findIndex(
           ({ id, number }) => id === railcarId && number === placeNumber,
         );
+        const { type } = state.selectedSeats[selectedSeatIndex];
+        state.passengersAmount[type].selected -= 1;
         state.selectedSeats.splice(selectedSeatIndex, 1);
+        state.totalPrice -= type === 'adult' ? price : price / 2;
       }
 
       const seatIndex = placeNumber - 1;

@@ -22,6 +22,7 @@ import { errorMessages, patternValues } from './helpers';
 import { setUserData } from 'reducers/order';
 
 export const PaymentStep = () => {
+  const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.order);
 
   const form = useForm({
@@ -40,13 +41,13 @@ export const PaymentStep = () => {
   const {
     formState: { errors, isValid },
     getValues,
-    // watch,
+    watch,
     setValue,
   } = form;
+  console.log(getValues(), 1);
 
-  // const payment_method = watch('payment_method');
-
-  const dispatch = useDispatch();
+  const payment_method = watch('payment_method');
+  console.log(payment_method);
 
   const handleChangeStepClick = () => {
     const formData = getValues();
@@ -54,13 +55,21 @@ export const PaymentStep = () => {
   };
 
   useEffect(() => {
+    console.log(getValues(), 2);
     if (userData) {
       const fields = getValues();
       for (const field in fields) {
-        setValue(field, userData[field]);
+        if (userData[field]) {
+          setValue(field, userData[field], {
+            shouldDirty: true,
+            // shouldValidate: true,
+          });
+        }
       }
     }
   }, []);
+
+  useEffect(() => {}, [payment_method]);
 
   return (
     <>
@@ -120,7 +129,7 @@ export const PaymentStep = () => {
               />
               <fieldset
                 className="online-payment-methods"
-                // disabled={payment_method !== 'online'}
+                disabled={payment_method !== 'online'}
               >
                 <OnlinePaymentRadioItem
                   label="Банковской картой"

@@ -1,26 +1,29 @@
 import './style.sass';
 
+import cn from 'classnames';
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useFormContext } from 'react-hook-form';
 import { useHistory, useLocation } from 'react-router-dom';
-import cn from 'classnames';
+
+import { DateInput, LocationInput } from '../Input';
+import { Header } from 'components/Header';
+import { Button } from 'components/Button';
+import { Form } from 'lib/Form';
 
 import { ReactComponent as InverseBtnIcon } from 'assets/icons/inverse_button.svg';
+
 import { useOnClickOutside } from 'hooks/useOnClickOutside';
+import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
+import { useWatchQueryParams } from 'hooks/useWatchQueryParams';
 import {
   clearCitiesList,
   getCitiesAsync,
   getDirectionsAsync,
   invertCities,
+  setLoadingFromSearchForm,
   updateQueryParams,
 } from 'reducers/search';
-import { DateInput, LocationInput } from '../Input';
-import { Header } from 'components/Header';
-import { Form } from 'lib/Form';
-import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
-import { useWatchQueryParams } from 'hooks/useWatchQueryParams';
-import { Button } from 'components/Button';
 
 export const SearchTicketsForm = ({ isSquare }) => {
   const form = useForm({
@@ -59,6 +62,7 @@ export const SearchTicketsForm = ({ isSquare }) => {
     const from_city_id = findCityId(from_city, cityList.from_city);
     const to_city_id = findCityId(to_city, cityList.to_city);
 
+    dispatch(setLoadingFromSearchForm());
     dispatch(
       updateQueryParams({
         ...data,
@@ -108,6 +112,7 @@ export const SearchTicketsForm = ({ isSquare }) => {
           </Header>
           <div className="tickets__form_inputs_group">
             <CitySelectInput
+              className="form__input_city-select"
               name="from_city"
               placeholder="Откуда"
               onChange={onChangeSearch}
@@ -121,6 +126,7 @@ export const SearchTicketsForm = ({ isSquare }) => {
               <InverseBtnIcon />
             </button>
             <CitySelectInput
+              className="form__input_city-select"
               name="to_city"
               placeholder="Куда"
               setValue={setValue}
@@ -159,14 +165,17 @@ export const SearchTicketsForm = ({ isSquare }) => {
       >
         Найти билеты
       </Button>
-      {/* <button className="tickets__form_button_submit" type="submit">
-        Найти билеты
-      </button> */}
     </Form>
   );
 };
 
-const CitySelectInput = ({ name, placeholder, onChange, cityList }) => {
+const CitySelectInput = ({
+  className,
+  name,
+  placeholder,
+  onChange,
+  cityList,
+}) => {
   const ref = useRef();
   const [isCitySelectOpen, setIsCitySelectOpen] = useState(false);
 
@@ -186,6 +195,7 @@ const CitySelectInput = ({ name, placeholder, onChange, cityList }) => {
   return (
     <div ref={ref} className="city-select__container">
       <LocationInput
+        className={className}
         name={name}
         size="l"
         placeholder={placeholder}
