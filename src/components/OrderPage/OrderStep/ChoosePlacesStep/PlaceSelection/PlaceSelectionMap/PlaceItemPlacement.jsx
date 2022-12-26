@@ -3,7 +3,7 @@ import './style.sass';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { changeSeatSelection } from 'reducers/seats';
+import { changeSeatSelection, recalculatePrice } from 'reducers/seats';
 import { useRef, useState } from 'react';
 import { useOnClickOutside } from 'hooks/useOnClickOutside';
 
@@ -166,6 +166,7 @@ export const PlaceItem = ({
         type,
       }),
     );
+    dispatch(recalculatePrice());
   };
 
   const onTicketTypeClick = (type) => {
@@ -180,6 +181,7 @@ export const PlaceItem = ({
         type,
       }),
     );
+    dispatch(recalculatePrice());
   };
 
   return (

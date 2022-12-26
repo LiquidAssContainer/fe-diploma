@@ -27,7 +27,7 @@ import { getHours, getMinutes } from 'date-fns';
 export const TicketDetailsInfo = () => {
   const {
     tripInfo,
-    totalPrice,
+    price,
     passengersAmount: { adult, child },
   } = useSelector((state) => state.seats);
 
@@ -93,10 +93,21 @@ export const TicketDetailsInfo = () => {
       >
         <TicketDetailsSectionContent>
           {!!adult.amount && (
-            <TicketDetailsTicketSum type="adult" amount={adult.amount} />
+            <TicketDetailsTicketSum
+              type="adult"
+              amount={adult.amount}
+              sum={price.adult}
+            />
           )}
           {!!child.amount && (
-            <TicketDetailsTicketSum type="child" amount={child.amount} />
+            <TicketDetailsTicketSum
+              type="child"
+              amount={child.amount}
+              sum={price.child}
+            />
+          )}
+          {!!price.features && (
+            <TicketDetailsTicketSum type="features" sum={price.features} />
           )}
         </TicketDetailsSectionContent>
       </TicketDetailsSection>
@@ -105,7 +116,7 @@ export const TicketDetailsInfo = () => {
         <TicketDetailsRow>
           <div className="ticket-details__info_total">Итог</div>
           <div className="ticket-details__info_price">
-            <span>{formatNumber(totalPrice)} </span>
+            <span>{formatNumber(price.total)} </span>
             <span className="ticket-details__info_currency">₽</span>
           </div>
         </TicketDetailsRow>
@@ -215,13 +226,16 @@ const TicketDetailsStation = ({ city, station }) => {
 };
 
 const TicketDetailsTicketSum = ({ amount, type, sum }) => {
-  const plural = getPlural(amount, pluralWords.adultPassengers);
+  const label =
+    type === 'features'
+      ? 'Услуги'
+      : getPlural(amount, pluralWords[`${type}Passengers`]);
 
   return (
     <TicketDetailsRow>
-      <TicketDetailsRowLabel value={`${plural}`} />
+      <TicketDetailsRowLabel value={label} />
       <TicketDetailsRowValue>
-        <span>5 560</span>
+        <span>{formatNumber(sum)}</span>
         <span className="ticket-details__tickets-summary_currency">₽</span>
       </TicketDetailsRowValue>
     </TicketDetailsRow>

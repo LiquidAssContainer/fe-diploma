@@ -49,7 +49,7 @@ export const CheckStep = () => {
     userData: { payment_method },
   } = useSelector((state) => state.order);
 
-  const { tripInfo, totalPrice } = useSelector((state) => state.seats);
+  const { tripInfo, price } = useSelector((state) => state.seats);
 
   const dispatch = useDispatch();
 
@@ -89,7 +89,7 @@ export const CheckStep = () => {
               <div className="check-step__sum">
                 <span>Всего</span>
                 <span className="check-step__sum_number">
-                  {formatNumber(totalPrice)}
+                  {formatNumber(price.total)}
                 </span>
                 <span className="check-step__sum_currency">₽</span>
               </div>

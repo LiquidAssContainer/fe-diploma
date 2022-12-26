@@ -225,7 +225,7 @@ export const PassengerForm = ({
                       placeholder="Иванович"
                       name="birthday"
                       size="s"
-                      // required={errorMessages.required('Дата рождения')}
+                      required={errorMessages.required('Дата рождения')}
                     />
                   </OrderBlockSectionRow>
 
@@ -277,7 +277,7 @@ export const PassengerForm = ({
                           label="Номер"
                           type="number"
                           placeholder="______"
-                          // required={errorMessages.required('Номер паспорта')}
+                          required={errorMessages.required('Номер паспорта')}
                           minLength={{
                             value: 6,
                             message: 'Номер паспорта должен состоять из 6 цифр',

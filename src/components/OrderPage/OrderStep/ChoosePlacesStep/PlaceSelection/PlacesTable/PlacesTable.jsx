@@ -9,7 +9,11 @@ import { ReactComponent as BedclothesIcon } from 'assets/icons/bedclothes.svg';
 import { ReactComponent as DrinksIcon } from 'assets/icons/drinks.svg';
 
 import { formatNumber } from 'lib/helpers';
-import { changeFeatureSelection, changePrice } from 'reducers/seats';
+import {
+  changeFeatureSelection,
+  changePrice,
+  recalculatePrice,
+} from 'reducers/seats';
 
 const seatTypes = [
   { priceName: 'top_price', label: 'Верхние' },
@@ -139,23 +143,22 @@ const PlacesTableFeature = ({
   const { selectedFeatures } = useSelector((state) => state.seats);
 
   const railcarFeatures = selectedFeatures[railcarId];
-  const isSelected = railcarFeatures?.[name];
+  const isSelected = railcarFeatures?.[name]?.value;
 
   const handleClick = () => {
     if (isIncluded) {
       return;
     }
 
-    const priceDiff = isSelected ? -price : price;
-    dispatch(changePrice(priceDiff));
-
     dispatch(
       changeFeatureSelection({
         id: railcarId,
         feature: name,
         value: !isSelected,
+        price,
       }),
     );
+    dispatch(recalculatePrice());
   };
 
   return (

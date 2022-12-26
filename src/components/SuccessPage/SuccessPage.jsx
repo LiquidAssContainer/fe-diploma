@@ -58,7 +58,7 @@ export const SuccessPage = () => {
     userData: { last_name, first_name, patronymic },
   } = useSelector((state) => state.order);
 
-  const { totalPrice } = useSelector((state) => state.seats);
+  const { price } = useSelector((state) => state.seats);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -83,7 +83,7 @@ export const SuccessPage = () => {
             <div className="order-header__sum">
               сумма{' '}
               <span className="order-header__digits">
-                {formatNumber(totalPrice)}
+                {formatNumber(price.total)}
               </span>{' '}
               ₽
             </div>

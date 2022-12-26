@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
 import { apiService } from 'services/apiService';
 
-// const defaultRailcarList = { first: [], second: [], third: [], fourth: [] };
-
 const fromDatetime = new Date(2022, 12, 11, 0, 0, 0).getTime();
 const toDatetime = new Date(2022, 12, 11, 5, 0, 0).getTime();
 
@@ -63,7 +61,7 @@ const initialState = {
   selectedAmount: 0,
   selectedSeats: [],
   selectedFeatures: {},
-  totalPrice: 0,
+  price: { total: 0, adult: 0, child: 0 },
 };
 
 export const getSeatsDetailAsync = createAsyncThunk(
@@ -98,22 +96,44 @@ export const seatsSlice = createSlice({
       state.seatsInfo[railcarClass][railcarIndex].coach.isSelected =
         !isSelected;
     },
-    changeFeatureSelection: (state, { payload: { id, feature, value } }) => {
+    changeFeatureSelection: (
+      state,
+      { payload: { id, feature, value, price } },
+    ) => {
       const railcar = state.selectedFeatures[id];
       if (!railcar) {
         state.selectedFeatures[id] = {};
       }
-      state.selectedFeatures[id][feature] = value;
+      state.selectedFeatures[id][feature] = { value, price };
     },
-    changePrice: (state, { payload }) => {
-      // const { amount: adultAmount } = state.passengersAmount.adult;
-      // const { amount: childAmount } = state.passengersAmount.child;
+    recalculatePrice: (state) => {
+      const ticketsPrice = state.selectedSeats.reduce(
+        (acc, { type, price }) => {
+          const currPrice = type === 'adult' ? price : price / 2;
+          acc[type] += currPrice;
+          acc.total += currPrice;
+          return acc;
+        },
+        { adult: 0, child: 0 },
+      );
 
-      // const isChildPrice = state.selectedSeats.length > adultAmount;
-      // const priceDiff = isChildPrice ? payload / 2 : payload;
-      // state.totalPrice = state.totalPrice + priceDiff;
+      const selectedFeatures = current(state.selectedFeatures);
+      const featuresPrice = Object.values(selectedFeatures).reduce(
+        (acc, railcar) => {
+          let sum = 0;
+          for (const feature in railcar) {
+            const { value, price } = railcar[feature];
+            console.log(acc, value, price);
+            sum += value ? price : 0;
+          }
+          return acc + sum;
+        },
+        0,
+      );
 
-      state.totalPrice = state.totalPrice + payload;
+      const { adult, child } = ticketsPrice;
+      const total = adult + child + featuresPrice;
+      state.price = { adult, child, total, features: featuresPrice };
     },
     changeTicketsAmount: (state, { payload: { type, number } }) => {
       const limit = state.passengersAmount[type].limit;
@@ -143,17 +163,7 @@ export const seatsSlice = createSlice({
     },
     changeSeatSelection: (
       state,
-      {
-        payload: {
-          placeNumber,
-          railcarId,
-          railcarClass,
-          value,
-          price,
-          type,
-          priceDiff,
-        },
-      },
+      { payload: { placeNumber, railcarId, railcarClass, value, price, type } },
     ) => {
       const list = current(state.seatsInfo[railcarClass]);
 
@@ -162,9 +172,13 @@ export const seatsSlice = createSlice({
       );
 
       if (value) {
-        state.selectedSeats.push({ id: railcarId, number: placeNumber, type });
+        state.selectedSeats.push({
+          id: railcarId,
+          number: placeNumber,
+          type,
+          price,
+        });
         state.passengersAmount[type].selected += 1;
-        state.totalPrice += type === 'adult' ? price : price / 2;
       } else {
         const selectedSeatIndex = state.selectedSeats.findIndex(
           ({ id, number }) => id === railcarId && number === placeNumber,
@@ -172,7 +186,6 @@ export const seatsSlice = createSlice({
         const { type } = state.selectedSeats[selectedSeatIndex];
         state.passengersAmount[type].selected -= 1;
         state.selectedSeats.splice(selectedSeatIndex, 1);
-        state.totalPrice -= type === 'adult' ? price : price / 2;
       }
 
       const seatIndex = placeNumber - 1;
@@ -203,8 +216,8 @@ export const {
   changeRailcarSelection,
   changeSeatSelection,
   changeTicketsAmount,
-  changePrice,
   changeFeatureSelection,
+  recalculatePrice,
 } = seatsSlice.actions;
 
 export const seatsReducer = seatsSlice.reducer;

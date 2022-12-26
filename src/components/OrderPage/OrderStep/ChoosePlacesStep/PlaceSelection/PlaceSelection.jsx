@@ -10,7 +10,7 @@ import { formatNumber, getPlural, pluralWords } from 'lib/helpers';
 
 export const PlaceSelection = ({ railcarClass }) => {
   const dispatch = useDispatch();
-  const { seatsInfo, totalPrice } = useSelector((state) => state.seats);
+  const { seatsInfo, price } = useSelector((state) => state.seats);
 
   const railcarList = seatsInfo[railcarClass];
 
@@ -62,7 +62,9 @@ export const PlaceSelection = ({ railcarClass }) => {
 
       {/* todo */}
       <div className="places__price">
-        <span className="places__price_number">{formatNumber(totalPrice)}</span>{' '}
+        <span className="places__price_number">
+          {formatNumber(price.total)}
+        </span>{' '}
         ₽
       </div>
     </div>
