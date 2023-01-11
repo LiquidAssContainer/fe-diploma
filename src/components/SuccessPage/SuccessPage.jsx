@@ -2,27 +2,21 @@ import './style.sass';
 
 import cn from 'classnames';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { HashLink as Link } from 'react-router-hash-link';
-import {
-  HashRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-  // useLocation,
-} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import { PageHeader } from 'components/PageHeader';
 import { Header } from 'components/Header';
 import { Button } from 'components/Button';
+
 import { ReactComponent as TicketsEmailIcon } from 'assets/icons/tickets_email.svg';
 import { ReactComponent as TicketsIcon } from 'assets/icons/tickets.svg';
 import { ReactComponent as ControlerIcon } from 'assets/icons/controler.svg';
 import { ReactComponent as StarIcon } from 'assets/icons/star.svg';
 
-import { formatNumber } from 'lib/helpers';
-import { useDispatch } from 'react-redux';
 import { setStep } from 'reducers/stepper';
+import { formatNumber } from 'lib/helpers';
 
 const ticketInstructions = [
   {

@@ -14,12 +14,12 @@ import {
 } from '../OrderBlock';
 import { OrderInput } from '../OrderInput';
 import { NextStepButton, PrevStepButton } from '../OrderPage';
-import { Form } from 'lib/Form';
 import { FullnameInputBlock } from './FullnameInputBlock';
 import { OrderRadioInput } from '../OrderInput/OrderInput';
+import { Form } from 'lib/Form';
 
-import { errorMessages, patternValues } from './helpers';
 import { setUserData } from 'reducers/order';
+import { errorMessages, patternValues } from './helpers';
 
 export const PaymentStep = () => {
   const dispatch = useDispatch();

@@ -1,6 +1,8 @@
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
+
 import { Header } from 'components/Header';
+
 import { reviews } from './constants';
 
 const reviewList = reviews.reduce((acc, curr, i) => {

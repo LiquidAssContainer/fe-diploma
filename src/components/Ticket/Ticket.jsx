@@ -1,11 +1,15 @@
 import './style.sass';
 
 import cn from 'classnames';
+import { nanoid } from 'nanoid';
 import { getHours, getMinutes } from 'date-fns';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { Header } from 'components/Header';
 import { Button } from 'components/Button';
 import { Icon } from 'components/OrderPage/TicketDetails/TicketDetails';
+import { formatDateToHM, formatNumber, getTwoDigitNumber } from 'lib/helpers';
 
 import { ReactComponent as TrainIcon } from 'assets/icons/train.svg';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow.svg';
@@ -13,11 +17,7 @@ import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
 import { ReactComponent as ExpressIcon } from 'assets/icons/express.svg';
 import { ReactComponent as FeedIcon } from 'assets/icons/drinks.svg';
 
-import { formatDateToHM, formatNumber, getTwoDigitNumber } from 'lib/helpers';
-import { Link, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { setTripInfo } from 'reducers/seats';
-import { nanoid } from 'nanoid';
 import { setStep } from 'reducers/stepper';
 
 const features = {

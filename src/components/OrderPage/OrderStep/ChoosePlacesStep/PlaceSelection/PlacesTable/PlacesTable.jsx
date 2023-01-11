@@ -9,11 +9,7 @@ import { ReactComponent as BedclothesIcon } from 'assets/icons/bedclothes.svg';
 import { ReactComponent as DrinksIcon } from 'assets/icons/drinks.svg';
 
 import { formatNumber } from 'lib/helpers';
-import {
-  changeFeatureSelection,
-  changePrice,
-  recalculatePrice,
-} from 'reducers/seats';
+import { changeFeatureSelection, recalculatePrice } from 'reducers/seats';
 
 const seatTypes = [
   { priceName: 'top_price', label: 'Верхние' },

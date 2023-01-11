@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { DateInput, Input } from '../../Input';
 import { HoursRangeSlider, RangeSlider } from './RangeSlider';
-
 import {
   Icon,
   TicketDetails,

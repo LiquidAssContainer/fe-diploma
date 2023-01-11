@@ -1,11 +1,12 @@
 import './style.sass';
 
 import cn from 'classnames';
-import { useFormContext, useController } from 'react-hook-form';
 import { useState } from 'react';
+import { useFormContext, useController } from 'react-hook-form';
 import { format, parseISO } from 'date-fns';
 
 import { DatePicker } from 'components/DatePicker';
+
 import { ReactComponent as LocationIcon } from '../../assets/icons/location.svg';
 import { ReactComponent as CalendarIcon } from '../../assets/icons/calendar.svg';
 

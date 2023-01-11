@@ -1,6 +1,10 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { format } from 'date-fns';
+import { parse } from 'date-fns/esm';
+
 import { OrderBlockContainer, OrderBlockHeaderTitle } from '../OrderBlock';
 import { Icon } from '../TicketDetails/TicketDetails';
-import { ReactComponent as PersonIcon } from 'assets/icons/person.svg';
 import { Button } from 'components/Button';
 import { Ticket } from 'components/Ticket';
 import {
@@ -8,11 +12,9 @@ import {
   PrevStepButton,
   StepButtonsContainer,
 } from '../OrderPage';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { useEffect } from 'react';
-import { format } from 'date-fns';
-import { parse } from 'date-fns/esm';
+
+import { ReactComponent as PersonIcon } from 'assets/icons/person.svg';
+
 import { createOrder } from 'reducers/order';
 import { setStep } from 'reducers/stepper';
 import { formatNumber } from 'lib/helpers';
@@ -44,7 +46,6 @@ const documentTypes = {
 
 export const CheckStep = () => {
   const {
-    // tripInfo,
     passengerForms,
     userData: { payment_method },
   } = useSelector((state) => state.order);
@@ -56,14 +57,9 @@ export const CheckStep = () => {
   const history = useHistory();
 
   const handleConfirmation = () => {
-    // dispatch(setStep(1));
     dispatch(createOrder());
     history.push('/success');
   };
-
-  // useEffect(() => {
-
-  // }, [])
 
   return (
     <>

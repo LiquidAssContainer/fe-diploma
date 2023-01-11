@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { PlaceSelectionMap } from './PlaceSelectionMap';
 import { PlacesTable } from './PlacesTable';
+
 import { changeRailcarSelection } from 'reducers/seats';
 import { formatNumber, getPlural, pluralWords } from 'lib/helpers';
 
@@ -60,7 +61,6 @@ export const PlaceSelection = ({ railcarClass }) => {
         })}
       </ul>
 
-      {/* todo */}
       <div className="places__price">
         <span className="places__price_number">
           {formatNumber(price.total)}

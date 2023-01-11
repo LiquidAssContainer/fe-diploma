@@ -19,19 +19,19 @@ import {
 } from 'components/OrderPage/OrderInput';
 import { Icon } from '../../TicketDetails/TicketDetails';
 import { Button } from 'components/Button';
-
-import { ReactComponent as PlusIcon } from 'assets/icons/plus_icon.svg';
-import { ReactComponent as MinusIcon } from 'assets/icons/minus_icon.svg';
-import { ReactComponent as CloseIcon } from 'assets/icons/close_icon.svg';
-import { ReactComponent as CheckedIcon } from 'assets/icons/checked.svg';
-
-import { Form } from 'lib/Form';
 import {
   PassengerFormGenderRadioGroup,
   PassengerFormHeaderContent,
   PassengerFormIconButton,
   PassengerFormSelect,
 } from './PassengersStepComponents';
+import { Form } from 'lib/Form';
+
+import { ReactComponent as PlusIcon } from 'assets/icons/plus_icon.svg';
+import { ReactComponent as MinusIcon } from 'assets/icons/minus_icon.svg';
+import { ReactComponent as CloseIcon } from 'assets/icons/close_icon.svg';
+import { ReactComponent as CheckedIcon } from 'assets/icons/checked.svg';
+
 import { errorMessages, patternValues } from '../helpers';
 import { setPrevStep } from 'reducers/stepper';
 import {
@@ -39,6 +39,7 @@ import {
   changeSeatType,
   recalculatePrice,
 } from 'reducers/seats';
+import { openModal } from 'reducers/app';
 
 const adultOption = { label: 'Взрослый', value: 'adult' };
 const childOption = { label: 'Детский', value: 'child' };
@@ -133,7 +134,12 @@ export const PassengerForm = ({
   const handleRemovePassenger = () => {
     const type = getValues('ticket_type');
     if (type === 'adult' && adult.amount === 1) {
-      console.log('Невозможно удалить единственного взрослого пассажира');
+      dispatch(
+        openModal({
+          type: 'error',
+          message: 'Невозможно удалить единственного взрослого пассажира',
+        }),
+      );
       return;
     }
     onRemovePassenger(formIndex, type);

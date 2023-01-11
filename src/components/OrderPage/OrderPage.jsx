@@ -8,9 +8,7 @@ import {
   Redirect,
   Route,
   Switch,
-  // useLocation,
 } from 'react-router-dom';
-import { formatNumber } from 'lib/helpers';
 
 import { PageHeader } from '../PageHeader';
 import { SearchTicketsForm } from '../SearchTicketsForm';
@@ -24,10 +22,10 @@ import { PassengersStep } from './OrderStep/PassengersStep';
 
 import { getLastDirectionsAsync } from 'reducers/search';
 import { setNextStep, setPrevStep } from 'reducers/stepper';
+import { formatNumber } from 'lib/helpers';
 
 export const OrderPage = () => {
   const dispatch = useDispatch();
-  // const location = useLocation();
   const { step } = useSelector((state) => state.stepper);
   const { isLoading, loadingFromSearchForm } = useSelector(
     (state) => state.search,
@@ -219,11 +217,7 @@ export const ChangeStepButton = ({
   const dispatch = useDispatch();
 
   const changeStep = () => {
-    // if () {
     dispatch(type === 'next' ? setNextStep() : setPrevStep());
-    // } else {
-    //   dispatch(setPrevStep());
-    // }
   };
 
   return (

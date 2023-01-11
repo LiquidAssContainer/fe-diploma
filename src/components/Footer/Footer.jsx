@@ -3,6 +3,7 @@ import './style.sass';
 import { FooterContacts } from './FooterContacts';
 import { FooterSubscription } from './FooterSubscription';
 import { Logo } from 'components/Logo';
+
 import { ReactComponent as UpArrowIcon } from 'assets/icons/up_arrow.svg';
 
 export const Footer = () => {

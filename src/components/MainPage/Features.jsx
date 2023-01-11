@@ -1,11 +1,11 @@
 import { nanoid } from 'nanoid';
 
+import { Button } from 'components/Button';
+import { Header } from 'components/Header';
+
 import { ReactComponent as ScreenIcon } from '../../assets/icons/screen.svg';
 import { ReactComponent as BuildingIcon } from '../../assets/icons/building.svg';
 import { ReactComponent as GlobeIcon } from '../../assets/icons/globe.svg';
-
-import { Button } from 'components/Button';
-import { Header } from 'components/Header';
 
 const items = [
   { Icon: ScreenIcon, text: 'Удобный заказ на сайте' },

@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom';
 
 import { Button } from 'components/Button';
 import { Icon } from 'components/OrderPage/TicketDetails/TicketDetails';
+
 import { ReactComponent as InfoIcon } from 'assets/icons/info_icon.svg';
 import { ReactComponent as WarningIcon } from 'assets/icons/warning_icon.svg';
 

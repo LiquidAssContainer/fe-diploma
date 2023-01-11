@@ -1,15 +1,17 @@
+import { useDispatch } from 'react-redux';
+import { useForm } from 'react-hook-form';
+
+import { EmailInput } from 'components/Input';
+import { Button } from 'components/Button';
+import { patternValues } from 'components/OrderPage/OrderStep/helpers';
+import { Form } from 'lib/Form';
+
 import { ReactComponent as Youtube } from '../../assets/icons/youtube.svg';
 import { ReactComponent as Linkedin } from '../../assets/icons/linked_in.svg';
 import { ReactComponent as Googleplus } from '../../assets/icons/google_plus.svg';
 import { ReactComponent as Twitter } from '../../assets/icons/twitter.svg';
 import { ReactComponent as Facebook } from '../../assets/icons/facebook.svg';
 
-import { EmailInput } from 'components/Input';
-import { Button } from 'components/Button';
-import { Form } from 'lib/Form';
-import { useForm } from 'react-hook-form';
-import { patternValues } from 'components/OrderPage/OrderStep/helpers';
-import { useDispatch } from 'react-redux';
 import { subscribeAsync } from 'reducers/app';
 
 const socialNetworks = [

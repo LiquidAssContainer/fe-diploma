@@ -1,13 +1,10 @@
 import './style.sass';
 
 import cn from 'classnames';
+import { useSelector } from 'react-redux';
+import { getHours, getMinutes } from 'date-fns';
 
 import { Header } from 'components/Header';
-
-import { ReactComponent as ArrowInRectangleIcon } from 'assets/icons/arrow_in_rectangle.svg';
-import { ReactComponent as PersonIcon } from 'assets/icons/person.svg';
-import { ReactComponent as ArrowIcon } from 'assets/icons/arrow.svg';
-
 import {
   TicketDetails,
   TicketDetailsHeader,
@@ -15,14 +12,17 @@ import {
   Icon,
   TicketDetailsSectionContent,
 } from './TicketDetails';
-import { useSelector } from 'react-redux';
+
+import { ReactComponent as ArrowInRectangleIcon } from 'assets/icons/arrow_in_rectangle.svg';
+import { ReactComponent as PersonIcon } from 'assets/icons/person.svg';
+import { ReactComponent as ArrowIcon } from 'assets/icons/arrow.svg';
+
 import {
   formatNumber,
   getPlural,
   getTwoDigitNumber,
   pluralWords,
 } from 'lib/helpers';
-import { getHours, getMinutes } from 'date-fns';
 
 export const TicketDetailsInfo = () => {
   const {
@@ -147,7 +147,6 @@ const TicketDetailsTripInfo = ({ from, to, duration, train, isReturn }) => {
               wrapperClassName={cn('ticket-details__icon_arrow', {
                 arrow_left: isReturn,
               })}
-              // iconClassName={isReturn && 'arrow_left'}
               icon={ArrowIcon}
             />
           </div>

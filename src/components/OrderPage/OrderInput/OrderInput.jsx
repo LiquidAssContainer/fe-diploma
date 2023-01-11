@@ -1,10 +1,12 @@
 import './style.sass';
 
-import { Icon } from '../TicketDetails/TicketDetails';
-import { ReactComponent as CheckedIcon } from 'assets/icons/checked.svg';
-import { Input } from 'components/Input';
 import cn from 'classnames';
 import { useController, useFormContext } from 'react-hook-form';
+
+import { Icon } from '../TicketDetails/TicketDetails';
+import { Input } from 'components/Input';
+
+import { ReactComponent as CheckedIcon } from 'assets/icons/checked.svg';
 
 export const OrderInput = ({
   className,
