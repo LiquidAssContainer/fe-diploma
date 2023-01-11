@@ -1,25 +1,24 @@
 import './style.sass';
 
 import cn from 'classnames';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useController, useForm, useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import {
   OrderBlockContainer,
   OrderBlockHeader,
   OrderBlockItem,
   OrderBlockSection,
+  OrderBlockHeaderTitle,
+  OrderBlockSectionRow,
 } from '../../OrderBlock';
-
 import {
   OrderInput,
   OrderCheckboxInput,
 } from 'components/OrderPage/OrderInput';
 import { Icon } from '../../TicketDetails/TicketDetails';
-import { OrderBlockHeaderTitle, OrderBlockSectionRow } from '../../OrderBlock';
 import { Button } from 'components/Button';
-import { NextStepButton } from '../../OrderPage';
 
 import { ReactComponent as PlusIcon } from 'assets/icons/plus_icon.svg';
 import { ReactComponent as MinusIcon } from 'assets/icons/minus_icon.svg';
@@ -27,20 +26,24 @@ import { ReactComponent as CloseIcon } from 'assets/icons/close_icon.svg';
 import { ReactComponent as CheckedIcon } from 'assets/icons/checked.svg';
 
 import { Form } from 'lib/Form';
-import { setNextStep } from 'reducers/stepper';
 import {
-  PassengerFormAdd,
   PassengerFormGenderRadioGroup,
   PassengerFormHeaderContent,
   PassengerFormIconButton,
   PassengerFormSelect,
 } from './PassengersStepComponents';
 import { errorMessages, patternValues } from '../helpers';
+import { setPrevStep } from 'reducers/stepper';
+import {
+  changeAdditionalPassenger,
+  changeSeatType,
+  recalculatePrice,
+} from 'reducers/seats';
 
-const ticketTypeOptions = [
-  { label: 'Взрослый', value: 'adult' },
-  { label: 'Детский', value: 'child' },
-];
+const adultOption = { label: 'Взрослый', value: 'adult' };
+const childOption = { label: 'Детский', value: 'child' };
+
+const ticketTypeOptions = [adultOption, childOption];
 
 const documentTypeOptions = [
   { label: 'Паспорт РФ', value: 'passport' },
@@ -48,7 +51,6 @@ const documentTypeOptions = [
 ];
 
 export const PassengerForm = ({
-  // number,
   onFormChange,
   formIndex,
   passengers,
@@ -59,10 +61,26 @@ export const PassengerForm = ({
   isLast,
   ...props
 }) => {
+  const dispatch = useDispatch();
   const { passengerForms } = useSelector((state) => state.order);
+  const {
+    selectedSeats,
+    passengersAmount: { adult },
+  } = useSelector((state) => state.seats);
+
+  let seatName = 'Место не выбрано';
+  let seat = false;
+  const selectedSeat = selectedSeats[formIndex];
+
+  if (selectedSeat.name) {
+    const { name, number } = selectedSeats[formIndex];
+    seatName = `${name}, место ${number}`;
+    seat = true;
+  }
+
   const form = useForm({
     defaultValues: {
-      ticket_type: 'adult',
+      ticket_type: selectedSeat ? selectedSeat.type : 'adult',
       last_name: '',
       first_name: '',
       patronymic: '',
@@ -73,6 +91,7 @@ export const PassengerForm = ({
       passport_series: '',
       passport_number: '',
       birth_certificate_number: '',
+      seat: 'seat',
     },
     mode: 'onChange',
   });
@@ -83,11 +102,15 @@ export const PassengerForm = ({
 
   const [isExpanded, setIsExpanded] = useState(isExpandedProp);
 
-  const { setValue, getValues, watch } = form;
+  const { setValue, getValues, watch, setError } = form;
 
   const document_type = watch('document_type');
+  const ticket_type = watch('ticket_type');
 
   const handleSubmit = () => {
+    if (!seat) {
+      setError('test', { message: 'Выберите место' });
+    }
     if (isValid) {
       onNextPassengerClick(formIndex);
     }
@@ -97,8 +120,34 @@ export const PassengerForm = ({
     onFormChange(getValues(), formIndex, isValid);
   };
 
+  const handleSelectSeat = () => {
+    dispatch(
+      changeAdditionalPassenger({
+        index: formIndex,
+        type: getValues('ticket_type'),
+      }),
+    );
+    dispatch(setPrevStep());
+  };
+
   const handleRemovePassenger = () => {
-    onRemovePassenger(formIndex);
+    const type = getValues('ticket_type');
+    if (type === 'adult' && adult.amount === 1) {
+      console.log('Невозможно удалить единственного взрослого пассажира');
+      return;
+    }
+    onRemovePassenger(formIndex, type);
+  };
+
+  const handleTicketTypeSelect = (type) => {
+    const oldTypeValue = getValues('ticket_type');
+    if (oldTypeValue === type) {
+      return;
+    }
+
+    setValue('ticket_type', type);
+    dispatch(changeSeatType({ index: formIndex, type }));
+    dispatch(recalculatePrice());
   };
 
   useEffect(() => {
@@ -120,10 +169,8 @@ export const PassengerForm = ({
     if (!isDirty) {
       return;
     }
-    onFormChange(getValues(), formIndex, isValid);
+    onFormChange(getValues(), formIndex, seat && isValid);
   }, [isValid]);
-
-  console.log(document_type);
 
   return (
     <OrderBlockContainer {...props}>
@@ -152,21 +199,20 @@ export const PassengerForm = ({
                 <OrderBlockSection>
                   <OrderBlockSectionRow>
                     <PassengerFormSelect
-                      options={ticketTypeOptions}
+                      className="width-auto"
+                      options={
+                        adult.amount === 1 && ticket_type === 'adult'
+                          ? [adultOption]
+                          : ticketTypeOptions
+                      }
                       name="ticket_type"
+                      onSelect={handleTicketTypeSelect}
                     />
-                    {/* <PassengerFormSelect
-                      // className="document-type"
-                      options={ticketTypeOptions}
-                      name="railcar"
-                      label="Вагон"
-                    />
+
                     <PassengerFormSelect
-                      // className="document-type"
-                      options={ticketTypeOptions}
-                      name="seat_number"
-                      label="Место"
-                    /> */}
+                      options={[{ label: seatName, value: 'seat' }]}
+                      name="seat"
+                    />
                   </OrderBlockSectionRow>
 
                   <OrderBlockSectionRow>
@@ -308,14 +354,14 @@ export const PassengerForm = ({
 
                 <div
                   className={cn('form__footer', {
-                    valid: isValid,
+                    valid: seat && isValid,
                     invalid: Object.keys(errors).length,
                   })}
                 >
                   <OrderBlockSection>
                     <div className="form__footer_content">
                       <div className="form__footer_validation-info">
-                        {isValid && (
+                        {seat && isValid && (
                           <>
                             <Icon
                               wrapperClassName="form__footer_validation-info_icon valid"
@@ -347,7 +393,16 @@ export const PassengerForm = ({
                           </>
                         )}
                       </div>
-                      {!Object.keys(errors).length && !isLast && (
+                      {!seat && (
+                        <Button
+                          style="transparent-dark"
+                          size="m"
+                          onClick={handleSelectSeat}
+                        >
+                          Выбрать место
+                        </Button>
+                      )}
+                      {!Object.keys(errors).length && !isLast && seat && (
                         <Button
                           style="transparent-dark"
                           size="m"

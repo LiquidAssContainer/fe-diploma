@@ -6,6 +6,7 @@ const initialState = {
   tripInfo: {},
   passengerForms: [],
   userData: {},
+  // scrollPosition: null,
 };
 
 export const getSeatsDetailAsync = createAsyncThunk(

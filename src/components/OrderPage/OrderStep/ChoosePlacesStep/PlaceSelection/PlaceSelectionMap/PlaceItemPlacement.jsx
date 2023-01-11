@@ -1,11 +1,17 @@
 import './style.sass';
 
 import cn from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { changeSeatSelection, recalculatePrice } from 'reducers/seats';
 import { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
 import { useOnClickOutside } from 'hooks/useOnClickOutside';
+import { setNextStep } from 'reducers/stepper';
+import {
+  changeAdditionalPassenger,
+  changeSeatSelection,
+  recalculatePrice,
+} from 'reducers/seats';
 
 export const FirstClassPlacement = ({
   firstNumber,
@@ -113,22 +119,42 @@ export const PlaceItem = ({
   railcarClass,
   isLeftSide,
   railcarId,
+  railcarName,
   seats,
   price = 0,
 }) => {
   const {
     selectedSeats,
     selectedAmount,
+    additionalPassenger,
     passengersAmount: {
       adult: { amount: adultAmount, selected: adultSelected },
       child: { amount: childAmount, selected: childSelected },
     },
   } = useSelector((state) => state.seats);
+  const { directionId } = useSelector((state) => state.order);
 
   const seat = seats[placeNumber - 1];
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleChangeSeatSelection = (value, type) => {
+    dispatch(
+      changeSeatSelection({
+        id: railcarId,
+        railcarClass,
+        number: placeNumber,
+        value: value,
+        name: railcarName,
+        price,
+        type,
+        index: additionalPassenger?.index,
+      }),
+    );
+    dispatch(recalculatePrice());
+  };
 
   const onPopupClose = () => {
     setIsPopupOpen(false);
@@ -136,6 +162,19 @@ export const PlaceItem = ({
 
   const handleClick = () => {
     const newValue = !seat.isSelected;
+
+    if (additionalPassenger) {
+      if (!newValue) {
+        return;
+      }
+      const { type } = additionalPassenger;
+      handleChangeSeatSelection(newValue, type);
+
+      dispatch(setNextStep());
+      history.push(`/seats/${directionId}/order`);
+      dispatch(changeAdditionalPassenger(null));
+      return;
+    }
 
     let type;
 
@@ -156,32 +195,14 @@ export const PlaceItem = ({
       }
     }
 
-    dispatch(
-      changeSeatSelection({
-        railcarId,
-        railcarClass,
-        placeNumber,
-        value: newValue,
-        price,
-        type,
-      }),
-    );
-    dispatch(recalculatePrice());
+    // if ()
+
+    handleChangeSeatSelection(newValue, type);
   };
 
   const onTicketTypeClick = (type) => {
     setIsPopupOpen(false);
-    dispatch(
-      changeSeatSelection({
-        railcarId,
-        railcarClass,
-        placeNumber,
-        value: true,
-        price,
-        type,
-      }),
-    );
-    dispatch(recalculatePrice());
+    handleChangeSeatSelection(true, type);
   };
 
   return (

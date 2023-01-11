@@ -62,6 +62,7 @@ const initialState = {
   selectedSeats: [],
   selectedFeatures: {},
   price: { total: 0, adult: 0, child: 0 },
+  additionalPassenger: null,
 };
 
 export const getSeatsDetailAsync = createAsyncThunk(
@@ -123,7 +124,6 @@ export const seatsSlice = createSlice({
           let sum = 0;
           for (const feature in railcar) {
             const { value, price } = railcar[feature];
-            console.log(acc, value, price);
             sum += value ? price : 0;
           }
           return acc + sum;
@@ -161,34 +161,63 @@ export const seatsSlice = createSlice({
       const { adult, child } = current(state.passengersAmount);
       state.selectedAmount = Number(adult.amount) + Number(child.amount);
     },
+    changeAdditionalPassenger: (state, { payload }) => {
+      state.additionalPassenger = payload;
+    },
+    changeSeatType: (state, { payload: { index, type } }) => {
+      state.selectedSeats[index].type = type;
+      const { name } = state.selectedSeats[index];
+      const { amount } = current(state.passengersAmount[type]);
+
+      state.passengersAmount[type].amount = +amount + 1;
+
+      const otherType = type === 'adult' ? 'child' : 'adult';
+
+      state.passengersAmount[otherType].amount -= 1;
+      if (name) {
+        state.passengersAmount[type].selected += 1;
+        state.passengersAmount[otherType].selected -= 1;
+      }
+    },
+    addEmptySeat: (state) => {
+      state.selectedSeats.push({ type: 'adult', price: 0 });
+    },
     changeSeatSelection: (
       state,
-      { payload: { placeNumber, railcarId, railcarClass, value, price, type } },
+      {
+        payload: { number, id, railcarClass, value, price, type, name, index },
+      },
     ) => {
       const list = current(state.seatsInfo[railcarClass]);
 
-      const railcarIndex = list.findIndex(
-        ({ coach: { _id } }) => railcarId === _id,
-      );
+      const railcarIndex = list.findIndex(({ coach: { _id } }) => _id === id);
 
       if (value) {
-        state.selectedSeats.push({
-          id: railcarId,
-          number: placeNumber,
+        const seat = {
+          id,
+          number,
           type,
           price,
-        });
+          name,
+          railcarClass,
+        };
+
+        if (index) {
+          state.selectedSeats[index] = seat;
+        } else {
+          state.selectedSeats.push(seat);
+        }
         state.passengersAmount[type].selected += 1;
       } else {
         const selectedSeatIndex = state.selectedSeats.findIndex(
-          ({ id, number }) => id === railcarId && number === placeNumber,
+          ({ id: _id, number: _number }) => id === _id && number === _number,
         );
         const { type } = state.selectedSeats[selectedSeatIndex];
         state.passengersAmount[type].selected -= 1;
         state.selectedSeats.splice(selectedSeatIndex, 1);
       }
 
-      const seatIndex = placeNumber - 1;
+      const seatIndex = number - 1;
       // ужас
       state.seatsInfo[railcarClass][railcarIndex].seats[seatIndex].isSelected =
         value;
@@ -214,10 +243,13 @@ export const {
   setTripInfo,
   changeSelectedRailcarType,
   changeRailcarSelection,
+  addEmptySeat,
   changeSeatSelection,
   changeTicketsAmount,
   changeFeatureSelection,
   recalculatePrice,
+  changeAdditionalPassenger,
+  changeSeatType,
 } = seatsSlice.actions;
 
 export const seatsReducer = seatsSlice.reducer;

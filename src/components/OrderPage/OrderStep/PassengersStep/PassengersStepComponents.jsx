@@ -4,7 +4,6 @@ import cn from 'classnames';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { OrderBlockContainer, OrderBlockHeader } from '../../OrderBlock';
-
 import { Icon } from '../../TicketDetails/TicketDetails';
 import { OrderBlockHeaderTitle } from '../../OrderBlock';
 import { Select } from 'components/Select';
@@ -13,10 +12,6 @@ import { Input } from 'components/Input';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus_icon.svg';
 
 export const PassengerFormAdd = ({ onAddPassenger }) => {
-  // const handleAddPassenger = () = {
-
-  // }
-
   return (
     <OrderBlockContainer>
       <OrderBlockHeader>
@@ -110,8 +105,8 @@ export const PassengerFormSelect = ({
   className,
   options,
   label,
-  selected,
   name,
+  ...props
 }) => {
   const { control, setValue } = useFormContext();
   const { field } = useController({
@@ -125,13 +120,14 @@ export const PassengerFormSelect = ({
   };
 
   return (
-    <div className={`order__input_container ${className}`}>
+    <div className={cn('order__input_container', className)}>
       {label && <label className="order__input_label">{label}</label>}
       <Select
         className="passenger-form__select"
         optionsList={options}
         selected={field.value}
         onSelect={onSelect}
+        {...props}
       />
     </div>
   );

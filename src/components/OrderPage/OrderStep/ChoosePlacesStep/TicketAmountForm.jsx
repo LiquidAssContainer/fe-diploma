@@ -11,7 +11,7 @@ export const TicketAmountForm = () => {
   } = useSelector((state) => state.seats);
 
   const onInputChange = (type, number) => {
-    dispatch(changeTicketsAmount({ type, number }));
+    dispatch(changeTicketsAmount({ type, number: +number }));
   };
 
   return (

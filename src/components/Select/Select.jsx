@@ -4,13 +4,16 @@ import cn from 'classnames';
 import { useRef, useState } from 'react';
 
 import { useOnClickOutside } from 'hooks/useOnClickOutside';
-import { useEffect } from 'react';
 
 export const Select = ({ className, optionsList, selected, onSelect }) => {
   const ref = useRef();
 
+  const initialSelectedIndex = optionsList.findIndex(
+    (item) => item.value === selected,
+  );
+
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(initialSelectedIndex);
 
   const toggleOptions = () => {
     setIsOptionsOpen(!isOptionsOpen);
@@ -58,13 +61,6 @@ export const Select = ({ className, optionsList, selected, onSelect }) => {
       setIsOptionsOpen(false);
     }
   });
-
-  useEffect(() => {
-    const valueIndex = optionsList.findIndex(
-      (option) => option.value === selected,
-    );
-    setSelectedOption(valueIndex);
-  }, [selected]);
 
   return (
     <div className={cn('select__container', className)}>

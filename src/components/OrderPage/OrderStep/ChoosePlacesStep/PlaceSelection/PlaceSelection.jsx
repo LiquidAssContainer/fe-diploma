@@ -101,6 +101,7 @@ const PlacesChoosingRailcar = ({ coach, seats, railcarClass }) => {
       <PlaceSelectionMap
         seats={seats}
         railcarId={coach._id}
+        railcarName={coach.name}
         railcarClass={railcarClass}
         {...prices}
       />

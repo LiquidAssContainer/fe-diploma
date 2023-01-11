@@ -21,7 +21,14 @@ export const formatDateToHM = (date) => {
 };
 
 export const formatNumber = (number) => {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  let stringNumber = number.toString();
+  if (stringNumber.includes('.')) {
+    stringNumber.replace('.', ',');
+    if (stringNumber.match(/\.\d$/)) {
+      stringNumber = `${stringNumber}0`;
+    }
+  }
+  return stringNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 };
 
 // заимствованная функция

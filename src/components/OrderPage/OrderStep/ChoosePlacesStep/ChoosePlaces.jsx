@@ -38,6 +38,8 @@ export const ChoosePlaces = ({
   },
 }) => {
   const dispatch = useDispatch();
+
+  const { additionalPassenger } = useSelector((state) => state.seats);
   const history = useHistory();
   const {
     tripInfo,
@@ -71,12 +73,14 @@ export const ChoosePlaces = ({
         />
         {/* <ChoosePlacesBlock direction="return" /> */}
       </div>
-      <NextStepButton
-        disabled={!selectedAmount || selectedSeats !== selectedAmount}
-        onClick={handleNextStepClick}
-      >
-        Далее
-      </NextStepButton>
+      {!additionalPassenger && (
+        <NextStepButton
+          disabled={!selectedAmount || selectedSeats !== selectedAmount}
+          onClick={handleNextStepClick}
+        >
+          Далее
+        </NextStepButton>
+      )}
     </>
   );
 };
@@ -91,7 +95,9 @@ const ChoosePlacesBlock = ({
 }) => {
   const dispatch = useDispatch();
 
-  const { selectedRailcarClass } = useSelector((state) => state.seats);
+  const { selectedRailcarClass, additionalPassenger } = useSelector(
+    (state) => state.seats,
+  );
 
   const onRailcarTypeChange = (type) => {
     dispatch(changeSelectedRailcarType(type));
@@ -141,12 +147,15 @@ const ChoosePlacesBlock = ({
           <DurationTimeText duration={duration} />
         </div>
       </div>
-      <div className="places__ticket-amount">
-        <Header className="places__header" size="s">
-          Количество билетов
-        </Header>
-        <TicketAmountForm />
-      </div>
+      {!additionalPassenger && (
+        <div className="places__ticket-amount">
+          <Header className="places__header" size="s">
+            Количество билетов
+          </Header>
+          <TicketAmountForm />
+        </div>
+      )}
+
       <div className="places__railcar-type">
         <Header className="places__header" size="s">
           Тип вагона

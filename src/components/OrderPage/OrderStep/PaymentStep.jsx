@@ -44,10 +44,8 @@ export const PaymentStep = () => {
     watch,
     setValue,
   } = form;
-  console.log(getValues(), 1);
 
   const payment_method = watch('payment_method');
-  console.log(payment_method);
 
   const handleChangeStepClick = () => {
     const formData = getValues();
@@ -55,7 +53,6 @@ export const PaymentStep = () => {
   };
 
   useEffect(() => {
-    console.log(getValues(), 2);
     if (userData) {
       const fields = getValues();
       for (const field in fields) {

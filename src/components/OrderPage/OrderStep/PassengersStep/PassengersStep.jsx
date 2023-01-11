@@ -8,9 +8,16 @@ import { PassengerFormAdd } from './PassengersStepComponents';
 import { NextStepButton, PrevStepButton } from 'components/OrderPage';
 
 import { setPassengerForms } from 'reducers/order';
+import {
+  addEmptySeat,
+  changeSeatSelection,
+  changeTicketsAmount,
+} from 'reducers/seats';
 
 export const PassengersStep = () => {
-  const { selectedAmount } = useSelector((state) => state.seats);
+  const { selectedAmount, passengersAmount, selectedSeats } = useSelector(
+    (state) => state.seats,
+  );
 
   const refArray = useRef([]);
 
@@ -25,6 +32,12 @@ export const PassengersStep = () => {
   const [forms, setForms] = useState(initialForms);
   const [areFormsValid, setAreFormsValid] = useState(false);
 
+  const getFormsData = () =>
+    forms.reduce((acc, curr) => {
+      acc.push(curr.data);
+      return acc;
+    }, []);
+
   const onNextPassengerClick = (i) => {
     const nextForm = refArray.current[i + 1];
     if (nextForm) {
@@ -35,10 +48,17 @@ export const PassengersStep = () => {
     }
   };
 
-  const onRemovePassenger = (index) => {
+  const onRemovePassenger = (index, type) => {
     const splicedForm = [...forms];
     splicedForm.splice(index, 1);
     setForms(splicedForm);
+
+    const seat = selectedSeats[index];
+    const newAmount = passengersAmount[type].amount - 1;
+
+    dispatch(changeSeatSelection({ ...seat, value: false }));
+    dispatch(changeTicketsAmount({ type, number: newAmount }));
+    dispatch(setPassengerForms(getFormsData()));
   };
 
   const onAddPassenger = () => {
@@ -51,6 +71,18 @@ export const PassengersStep = () => {
           isExpanded: false,
         },
       ]);
+
+      const {
+        adult: { amount },
+      } = passengersAmount;
+
+      dispatch(addEmptySeat());
+      dispatch(
+        changeTicketsAmount({
+          type: 'adult',
+          number: amount + 1,
+        }),
+      );
     }
   };
 
@@ -65,10 +97,7 @@ export const PassengersStep = () => {
     const isThereInvalidForm = formsState.find(({ isValid }) => !isValid);
     setAreFormsValid(!isThereInvalidForm);
 
-    const formsData = forms.reduce((acc, curr) => {
-      acc.push(curr.data);
-      return acc;
-    }, []);
+    const formsData = getFormsData();
 
     dispatch(setPassengerForms(formsData));
   };
@@ -79,7 +108,6 @@ export const PassengersStep = () => {
         <PassengerForm
           key={i}
           onFormChange={onFormChange}
-          // number={i + 1}
           passengers={forms}
           isExpandedProp={isExpanded}
           formIndex={i}
