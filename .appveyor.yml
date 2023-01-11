@@ -14,7 +14,7 @@ install:
 build: off
 
 build_script:
-  - yarn build # команда сборки
+  - CI=false yarn build # команда сборки
 
 # test_script:
 # - yarn lint && yarn test # скрипт тестирования
