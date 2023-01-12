@@ -1,6 +1,7 @@
 .DS_STORE
 jspm_packages/
 node_modules/
+build/
 *.sublime-project
 *.sublime-workspace
 .idea

@@ -160,7 +160,7 @@ export const SearchTicketsForm = ({ isSquare }) => {
       <Button
         classname="tickets__form_button_submit"
         size="l"
-        style="colored"
+        styleName="colored"
         type="submit"
       >
         Найти билеты

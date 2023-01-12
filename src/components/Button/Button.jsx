@@ -5,7 +5,7 @@ import cn from 'classnames';
 export const Button = ({
   children,
   size,
-  style,
+  styleName,
   classname,
   onClick,
   type = 'button',
@@ -15,7 +15,7 @@ export const Button = ({
     <button
       className={cn('form__button', classname, {
         [`form__button_size_${size}`]: size,
-        [`form__button_style_${style}`]: style,
+        [`form__button_style_${styleName}`]: styleName,
         form__button_disabled: disabled,
       })}
       disabled={disabled}

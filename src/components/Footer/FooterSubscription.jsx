@@ -56,7 +56,7 @@ export const FooterSubscription = () => {
           <Button
             classname="footer__button"
             type="submit"
-            style="transparent-light"
+            styleName="transparent-light"
             size="l"
             disabled={!isValid}
           >
@@ -69,7 +69,12 @@ export const FooterSubscription = () => {
         <ul className="socials__list">
           {socialNetworks.map(({ icon: IconComponent, link }, i) => (
             <li key={i} className="socials__item">
-              <a className="social__link" href={link} target="_blank">
+              <a
+                className="social__link"
+                href={link}
+                target="_blank"
+                rel="noreferrer"
+              >
                 <IconComponent className="social__icon" />
               </a>
             </li>

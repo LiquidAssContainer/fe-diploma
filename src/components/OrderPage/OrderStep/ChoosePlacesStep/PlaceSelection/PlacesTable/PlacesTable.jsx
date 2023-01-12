@@ -33,32 +33,28 @@ export const PlacesTable = ({
           <span>Места </span>
           <PlacesTableQuantity>{available_seats}</PlacesTableQuantity>
         </PlacesTableCell>
-        {seatTypes.map(({ priceName, label }) => {
-          if (props[priceName]) {
-            return (
-              <PlacesTableCell key={priceName} type="seat-type">
-                <span>{label} </span>
-                <PlacesTableQuantity>3</PlacesTableQuantity>
-              </PlacesTableCell>
-            );
-          }
-        })}
+        {seatTypes.map(({ priceName, label }) =>
+          props[priceName] ? (
+            <PlacesTableCell key={priceName} type="seat-type">
+              <span>{label} </span>
+              <PlacesTableQuantity>3</PlacesTableQuantity>
+            </PlacesTableCell>
+          ) : null,
+        )}
       </PlacesTableCol>
 
       <PlacesTableCol>
         <PlacesTableCell type="header">
           <span>Стоимость</span>
         </PlacesTableCell>
-        {seatTypes.map(({ priceName }) => {
-          if (props[priceName]) {
-            return (
-              <PlacesTableCell key={priceName} type="price">
-                <span>{formatNumber(props[priceName])} </span>
-                <PlacesTableCurrencySign />
-              </PlacesTableCell>
-            );
-          }
-        })}
+        {seatTypes.map(({ priceName }) =>
+          props[priceName] ? (
+            <PlacesTableCell key={priceName} type="price">
+              <span>{formatNumber(props[priceName])} </span>
+              <PlacesTableCurrencySign />
+            </PlacesTableCell>
+          ) : null,
+        )}
       </PlacesTableCol>
 
       <PlacesTableCol>

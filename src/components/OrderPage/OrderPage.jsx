@@ -89,7 +89,8 @@ export const OrderPage = () => {
                           return <PassengersStep />;
                         case 3:
                           return <PaymentStep />;
-                        case 4:
+                        // case 4:
+                        default:
                           return <CheckStep />;
                       }
                     }}
@@ -228,7 +229,7 @@ export const ChangeStepButton = ({
         onClick?.();
       }}
       size="l"
-      style="colored"
+      styleName="colored"
       {...props}
     >
       {children}

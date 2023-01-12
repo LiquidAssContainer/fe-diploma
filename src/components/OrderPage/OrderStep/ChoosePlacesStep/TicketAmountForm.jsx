@@ -60,7 +60,7 @@ const TicketAmountBlock = ({ name, limit, amount, ...props }) => {
                 pluralWords.children,
               )} до 10 лет. Свое место в вагоне, как у взрослых, но дешевле 
                 в среднем на 50-65%`;
-            case 'baby':
+            default:
               return `Можно добавить еще ${getPlural(
                 limit - amount,
                 pluralWords.children,

@@ -42,7 +42,7 @@ export const Select = ({ className, optionsList, selected, onSelect }) => {
       case 'ArrowDown':
         e.preventDefault();
         setSelectedOption(
-          selectedOption == optionsList.length - 1 ? 0 : selectedOption + 1,
+          selectedOption === optionsList.length - 1 ? 0 : selectedOption + 1,
         );
         break;
       case ' ':
@@ -88,7 +88,7 @@ export const Select = ({ className, optionsList, selected, onSelect }) => {
             className="select__options_item"
             id={option.value}
             role="option"
-            aria-selected={selectedOption == index}
+            aria-selected={selectedOption === index}
             tabIndex={0}
             onClick={() => {
               setSelectedThenCloseDropdown(index);

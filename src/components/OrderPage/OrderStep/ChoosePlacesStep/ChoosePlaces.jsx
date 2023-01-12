@@ -115,7 +115,7 @@ const ChoosePlacesBlock = ({
             arrow_left: direction === 'return',
           })}
         />
-        <Button size="l" style="transparent-dark">
+        <Button size="l" styleName="transparent-dark">
           Выбрать другой поезд
         </Button>
       </div>

@@ -14,7 +14,11 @@ export const PlaceSelectionMap = ({ railcarClass, ...props }) => {
       <div className="places__railcar-side">
         {/* нигде в данных не вижу номеров вагона в виде цифр */}
         <div className="places__railcar-side_number">00</div>
-        <img className="places__railcar-side_img" src={railcarFrontImg} />
+        <img
+          className="places__railcar-side_img"
+          src={railcarFrontImg}
+          alt="Схематическое изображение передней части вагона"
+        />
       </div>
       {(() => {
         switch (railcarClass) {
@@ -25,11 +29,16 @@ export const PlaceSelectionMap = ({ railcarClass, ...props }) => {
           case 'second':
             return <SecondClassPlaces {...props} />;
           case 'first':
+          default:
             return <FirstClassPlaces {...props} />;
         }
       })()}
       <div className="places__railcar-side">
-        <img className="places__railcar-side_img" src={railcarBackImg} />
+        <img
+          className="places__railcar-side_img"
+          src={railcarBackImg}
+          alt="Схематическое изображение задней части вагона"
+        />
       </div>
     </div>
   );

@@ -66,7 +66,7 @@ export const PaymentStep = () => {
     }
   }, []);
 
-  useEffect(() => {}, [payment_method]);
+  // useEffect(() => {}, [payment_method]);
 
   return (
     <>

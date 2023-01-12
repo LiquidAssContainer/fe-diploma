@@ -91,7 +91,7 @@ export const CheckStep = () => {
               </div>
               <Button
                 size="s"
-                style="transparent-dark"
+                styleName="transparent-dark"
                 onClick={() => dispatch(setStep(2))}
               >
                 Изменить
@@ -113,7 +113,7 @@ export const CheckStep = () => {
             <CheckStepSectionAside>
               <Button
                 size="s"
-                style="transparent-dark"
+                styleName="transparent-dark"
                 onClick={() => dispatch(setStep(3))}
               >
                 Изменить

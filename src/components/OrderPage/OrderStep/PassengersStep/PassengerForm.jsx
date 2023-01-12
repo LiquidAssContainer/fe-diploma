@@ -401,7 +401,7 @@ export const PassengerForm = ({
                       </div>
                       {!seat && (
                         <Button
-                          style="transparent-dark"
+                          styleName="transparent-dark"
                           size="m"
                           onClick={handleSelectSeat}
                         >
@@ -410,7 +410,7 @@ export const PassengerForm = ({
                       )}
                       {!Object.keys(errors).length && !isLast && seat && (
                         <Button
-                          style="transparent-dark"
+                          styleName="transparent-dark"
                           size="m"
                           type="submit"
                           onClick={handleSubmit}

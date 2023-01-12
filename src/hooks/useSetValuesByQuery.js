@@ -5,6 +5,17 @@ import { useDispatch } from 'react-redux';
 
 import { updateQueryParams } from 'reducers/search';
 
+const formatParam = (param) => {
+  switch (param) {
+    case 'true':
+      return true;
+    case 'false':
+      return false;
+    default:
+      return param;
+  }
+};
+
 export const useSetValuesByQuery = (values, setValue) => {
   const { search } = useLocation();
   const dispatch = useDispatch();
@@ -12,9 +23,10 @@ export const useSetValuesByQuery = (values, setValue) => {
 
   useEffect(() => {
     dispatch(updateQueryParams(queryParams));
-    for (const param in queryParams) {
-      if (values.hasOwnProperty(param)) {
-        setValue(param, queryParams[param]);
+    for (const paramName in queryParams) {
+      if (values.hasOwnProperty(paramName)) {
+        const value = formatParam(queryParams[paramName]);
+        setValue(paramName, value);
       }
     }
   }, []);

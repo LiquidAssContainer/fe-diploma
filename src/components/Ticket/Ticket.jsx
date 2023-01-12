@@ -3,7 +3,7 @@ import './style.sass';
 import cn from 'classnames';
 import { nanoid } from 'nanoid';
 import { getHours, getMinutes } from 'date-fns';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { Header } from 'components/Header';
@@ -47,7 +47,7 @@ export const Ticket = ({
   ...props
 }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+
   const availableSeats = classOrder.reduce((acc, classType) => {
     const seatsCount = available_seats_info[classType];
     if (seatsCount) {
@@ -103,14 +103,14 @@ export const Ticket = ({
         {isChecking ? (
           <Button
             size="s"
-            style="transparent-dark"
+            styleName="transparent-dark"
             onClick={handleChangePlaces}
           >
             Изменить
           </Button>
         ) : (
           <Link to={`/seats/${_id}`}>
-            <Button size="s" style="colored" onClick={handleChoosePlaces}>
+            <Button size="s" styleName="colored" onClick={handleChoosePlaces}>
               Выбрать места
             </Button>
           </Link>

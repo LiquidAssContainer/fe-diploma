@@ -51,7 +51,7 @@ export const Modal = ({
               <Button
                 classname="modal__button"
                 size="m"
-                style="transparent-dark"
+                styleName="transparent-dark"
                 onClick={handleClose}
               >
                 Понятно

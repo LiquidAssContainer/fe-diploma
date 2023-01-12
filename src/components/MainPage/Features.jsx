@@ -21,8 +21,13 @@ export const Features = () => {
           <Header size="m" className="text_light">
             Как это работает
           </Header>
-          <a className="link__button" href="https://google.com" target="_blank">
-            <Button style="transparent-light" size="l">
+          <a
+            className="link__button"
+            href="https://google.com"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Button styleName="transparent-light" size="l">
               Узнать больше
             </Button>
           </a>

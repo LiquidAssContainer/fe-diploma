@@ -145,8 +145,8 @@ export const seatsSlice = createSlice({
             state.passengersAmount.child.limit = number * 2;
             state.passengersAmount.baby.limit = number;
           }
-        case 'child':
-        case 'baby':
+          break;
+        default:
           if (number <= limit) {
             state.passengersAmount[type].amount = number;
           }

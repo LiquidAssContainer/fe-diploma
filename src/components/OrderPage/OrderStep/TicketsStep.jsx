@@ -100,20 +100,18 @@ export const SearchTickets = () => {
   );
 };
 
-const AmountRadioGroup = ({ checked, name }) => {
-  return (
-    <div className="results__amount-per-page_inputs">
-      {pageLimits.map((value) => (
-        <AmountRadioInput
-          key={value}
-          value={value}
-          isChecked={checked == value}
-          name={name}
-        />
-      ))}
-    </div>
-  );
-};
+const AmountRadioGroup = ({ checked, name }) => (
+  <div className="results__amount-per-page_inputs">
+    {pageLimits.map((value) => (
+      <AmountRadioInput
+        key={value}
+        value={value}
+        isChecked={checked === value}
+        name={name}
+      />
+    ))}
+  </div>
+);
 
 const AmountRadioInput = ({ value, name, isChecked }) => {
   const dispatch = useDispatch();

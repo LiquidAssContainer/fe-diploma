@@ -16,7 +16,7 @@ export const errorMessages = {
           return 'должен';
         case 'female':
           return 'должна';
-        case 'neuter':
+        default:
           return 'должно';
       }
     })()} содержать только буквы русского алфавита`;
