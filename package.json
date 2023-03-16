@@ -1,16 +1,18 @@
 {
-  "name": "fe_diploma",
-  "version": "0.1.0",
+  "name": "fe-diploma",
+  "version": "0.1.1",
   "description": "Netology FE diploma",
   "main": "index.js",
   "homepage": "./",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
-    "@bem-react/classname": "^1.5.12",
     "@reduxjs/toolkit": "^1.7.1",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^12.0.0",
-    "@testing-library/user-event": "^13.2.1",
     "classnames": "^2.3.1",
     "date-fns": "^2.29.2",
     "nanoid": "^3.3.4",
@@ -24,15 +26,18 @@
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "5.3.0",
     "react-router-hash-link": "^2.4.3",
-    "react-scripts": "5.0.0",
-    "redux": "^4.1.2",
-    "sass": "^1.52.1"
+    "redux": "^4.1.2"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "@types/node": "^18.15.3",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@types/react-redux": "^7.1.25",
+    "@types/react-router-dom": "^5.3.3",
+    "node-sass": "^8.0.0",
+    "react-scripts": "^5.0.1",
+    "sass": "^1.59.3",
+    "typescript": "^4.9.5"
   },
   "eslintConfig": {
     "extends": [
@@ -57,11 +62,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LiquidAssContainer/fe_diploma.git"
+    "url": "git+https://github.com/LiquidAssContainer/fe-diploma.git"
   },
   "author": "LiquidAssContainer",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/LiquidAssContainer/fe_diploma/issues"
+    "url": "https://github.com/LiquidAssContainer/fe-diploma/issues"
   }
 }
