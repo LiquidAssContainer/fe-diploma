@@ -1,3 +1,5 @@
+import './index.sass';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -11,7 +13,7 @@ import { hideModal } from 'reducers/app';
 
 export const App = () => {
   const dispatch = useDispatch();
-  const { modal } = useSelector((state) => state.app);
+  const { modal } = useSelector((state: any) => state.app);
 
   return (
     <>
