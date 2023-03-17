@@ -1,8 +1,8 @@
 import './style.sass';
 
-import { PageHeader } from 'components/PageHeader';
+import { Header } from 'widgets/header';
 import { SearchTicketsForm } from 'components/SearchTicketsForm';
-import { Header } from 'components/Header';
+import { Heading } from 'shared/ui/components/Heading';
 import { Features } from './Features';
 import { Reviews } from './Reviews';
 
@@ -10,7 +10,7 @@ export const MainPage = () => {
   return (
     <>
       <section className="hero">
-        <PageHeader />
+        <Header />
         <div className="hero_content">
           <div className="hero_content_text">
             Вся жизнь — <span className="text_accent">путешествие!</span>
@@ -19,9 +19,9 @@ export const MainPage = () => {
         </div>
       </section>
       <section className="about" id="about">
-        <Header size="m" className="about__header">
+        <Heading size="m" className="about__header">
           О нас
-        </Header>
+        </Heading>
         <div className="about__content">
           <p>
             Мы рады вас видеть! Мы работаем для вас с 2003-го года. 14 лет мы

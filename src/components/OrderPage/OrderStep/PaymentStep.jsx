@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
-import { Header } from 'components/Header';
+import { Heading } from 'shared/ui/components/Heading';
 import {
   OrderBlockItem,
   OrderBlockContainer,
@@ -74,7 +74,7 @@ export const PaymentStep = () => {
         <Form form={form}>
           <OrderBlockItem>
             <OrderBlockHeader>
-              <Header size="s">Персональные данные</Header>
+              <Heading size="s">Персональные данные</Heading>
             </OrderBlockHeader>
 
             <OrderBlockSection>
@@ -114,7 +114,7 @@ export const PaymentStep = () => {
 
           <OrderBlockItem>
             <OrderBlockHeader>
-              <Header size="s">Способ оплаты</Header>
+              <Heading size="s">Способ оплаты</Heading>
             </OrderBlockHeader>
             <OrderBlockSection>
               <OrderRadioInput

@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { getHours, getMinutes } from 'date-fns';
 import { getPlural, pluralWords } from 'lib/helpers';
 
-import { Header } from 'components/Header';
+import { Heading } from 'shared/ui/components/Heading';
 import { Button } from 'components/Button';
 import { PlaceSelection } from './PlaceSelection';
 import { TicketAmountForm } from './TicketAmountForm';
@@ -62,9 +62,9 @@ export const ChoosePlaces = ({
 
   return (
     <>
-      <Header size="s" className="uppercase">
+      <Heading size="s" className="uppercase">
         Выбор мест
-      </Header>
+      </Heading>
       <div className="places__block_list">
         <ChoosePlacesBlock
           {...tripInfo}
@@ -125,9 +125,9 @@ const ChoosePlacesBlock = ({
             <TrainIcon className="train-info__train-icon" />
           </div>
           <div className="train-info__trip">
-            <Header className="train-info__trip_header" size="xs">
+            <Heading className="train-info__trip_header" size="xs">
               {train.name}
-            </Header>
+            </Heading>
             <TripCities from={from} to={to} />
           </div>
         </div>
@@ -149,17 +149,17 @@ const ChoosePlacesBlock = ({
       </div>
       {!additionalPassenger && (
         <div className="places__ticket-amount">
-          <Header className="places__header" size="s">
+          <Heading className="places__header" size="s">
             Количество билетов
-          </Header>
+          </Heading>
           <TicketAmountForm />
         </div>
       )}
 
       <div className="places__railcar-type">
-        <Header className="places__header" size="s">
+        <Heading className="places__header" size="s">
           Тип вагона
-        </Header>
+        </Heading>
         <ul className="railcar-type__buttons">
           {railcarTypes.map((item) => (
             <RailcarTypeButton

@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { useSelector } from 'react-redux';
 import { getHours, getMinutes } from 'date-fns';
 
-import { Header } from 'components/Header';
+import { Heading } from 'shared/ui/components/Heading';
 import {
   TicketDetails,
   TicketDetailsHeader,
@@ -34,9 +34,9 @@ export const TicketDetailsInfo = () => {
   return (
     <TicketDetails>
       <TicketDetailsSection>
-        <Header className="ticket-details__info_header" size="s">
+        <Heading className="ticket-details__info_header" size="s">
           Детали поездки
-        </Header>
+        </Heading>
       </TicketDetailsSection>
 
       <TicketDetailsSection

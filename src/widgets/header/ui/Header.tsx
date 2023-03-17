@@ -1,11 +1,12 @@
 import './style.sass';
 
+import { FC } from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
 
-import { useMenuLinks } from '../../hooks/useMenuLinks';
 import { Logo } from 'shared/ui/components/Logo';
+import { useMenuLinks } from 'hooks/useMenuLinks';
 
-export const PageHeader = () => {
+export const Header: FC = () => {
   const links = useMenuLinks();
   return (
     <header>
@@ -17,7 +18,7 @@ export const PageHeader = () => {
         </div>
       </div>
       <div className="menu-links">
-        <ul className="menu-links__list" links={links}>
+        <ul className="menu-links__list">
           {links.map(({ label, href }) => {
             return (
               <li key={href} className="menu-links__item">

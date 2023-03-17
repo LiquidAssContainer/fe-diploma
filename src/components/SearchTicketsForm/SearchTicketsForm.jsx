@@ -7,7 +7,7 @@ import { useForm, useFormContext } from 'react-hook-form';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { DateInput, LocationInput } from '../Input';
-import { Header } from 'components/Header';
+import { Heading } from 'shared/ui/components/Heading';
 import { Button } from 'components/Button';
 import { Form } from 'lib/Form';
 
@@ -107,9 +107,9 @@ export const SearchTicketsForm = ({ isSquare }) => {
     >
       <div className="tickets__form_inputs_container">
         <div className="tickets__form_block">
-          <Header className="tickets__form_header" size="s">
+          <Heading className="tickets__form_header" size="s">
             Направление
-          </Header>
+          </Heading>
           <div className="tickets__form_inputs_group">
             <CitySelectInput
               className="form__input_city-select"
@@ -136,9 +136,9 @@ export const SearchTicketsForm = ({ isSquare }) => {
           </div>
         </div>
         <div className="tickets__form_block">
-          <Header className="tickets__form_header" size="s">
+          <Heading className="tickets__form_header" size="s">
             Дата
-          </Header>
+          </Heading>
           <div className="tickets__form_inputs_group">
             <DateInput
               name="date_start"

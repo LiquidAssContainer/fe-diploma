@@ -1,7 +1,7 @@
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 
-import { Header } from 'components/Header';
+import { Heading } from 'shared/ui/components/Heading';
 
 import { reviews } from './constants';
 
@@ -18,7 +18,7 @@ const reviewList = reviews.reduce((acc, curr, i) => {
 export const Reviews = () => {
   return (
     <section className="reviews" id="reviews">
-      <Header size="m">Отзывы</Header>
+      <Heading size="m">Отзывы</Heading>
       <Carousel
         autoPlay
         interval={5000}

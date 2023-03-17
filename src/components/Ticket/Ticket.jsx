@@ -6,7 +6,7 @@ import { getHours, getMinutes } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { Header } from 'components/Header';
+import { Heading } from 'shared/ui/components/Heading';
 import { Button } from 'components/Button';
 import { Icon } from 'components/OrderPage/TicketDetails/TicketDetails';
 import { formatDateToHM, formatNumber, getTwoDigitNumber } from 'lib/helpers';
@@ -86,9 +86,9 @@ export const Ticket = ({
           <div className="ticket__train-icon_wrapper">
             <TrainIcon className="ticket__train-icon" />
           </div>
-          <Header className="ticket__header" size="xs">
+          <Heading className="ticket__header" size="xs">
             {train.name}
-          </Header>
+          </Heading>
         </div>
         <TripCities from={from} to={to} />
       </div>

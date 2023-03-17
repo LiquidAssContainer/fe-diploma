@@ -6,8 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { HashLink as Link } from 'react-router-hash-link';
 import { Redirect } from 'react-router-dom';
 
-import { PageHeader } from 'components/PageHeader';
-import { Header } from 'components/Header';
+import { Header } from 'widgets/header';
+import { Heading } from 'shared/ui/components/Heading';
 import { Button } from 'components/Button';
 
 import { ReactComponent as TicketsEmailIcon } from 'assets/icons/tickets_email.svg';
@@ -65,7 +65,7 @@ export const SuccessPage = () => {
   ) : (
     <div className="success-page__container">
       <section className="success-page__header">
-        <PageHeader />
+        <Header />
         <div className="success-page__header_text hero_content_text text_accent">
           Благодарим вас за заказ!
         </div>
@@ -89,9 +89,9 @@ export const SuccessPage = () => {
               ))}
             </ul>
             <div className="success-page__text">
-              <Header size="m" className="order-information__title">
+              <Heading size="m" className="order-information__title">
                 {first_name} {patronymic || last_name}!
-              </Header>
+              </Heading>
               <p className="success-page__paragraph">
                 Ваш заказ успешно оформлен.
                 <br />В ближайшее время с вами свяжется наш оператор для

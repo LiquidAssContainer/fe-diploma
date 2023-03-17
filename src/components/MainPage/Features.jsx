@@ -1,11 +1,11 @@
 import { nanoid } from 'nanoid';
 
 import { Button } from 'components/Button';
-import { Header } from 'components/Header';
 
 import { ReactComponent as ScreenIcon } from '../../assets/icons/screen.svg';
 import { ReactComponent as BuildingIcon } from '../../assets/icons/building.svg';
 import { ReactComponent as GlobeIcon } from '../../assets/icons/globe.svg';
+import { Heading } from 'shared/ui/components/Heading';
 
 const items = [
   { Icon: ScreenIcon, text: 'Удобный заказ на сайте' },
@@ -18,9 +18,9 @@ export const Features = () => {
     <div className="features__wrapper" id="features">
       <section className="features">
         <header className="features__header">
-          <Header size="m" className="text_light">
+          <Heading size="m" className="text_light">
             Как это работает
-          </Header>
+          </Heading>
           <a
             className="link__button"
             href="https://google.com"

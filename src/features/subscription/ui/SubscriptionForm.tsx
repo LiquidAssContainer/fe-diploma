@@ -19,12 +19,16 @@ export const SubscriptionForm: FC = () => {
 
   const {
     formState: { isValid },
+    reset,
   } = form;
 
   const handleSubmit = ({ email }: FormData) => {
     dispatch(fetchSubscribe(email))
       .unwrap()
-      .then((message) => dispatch(openModal({ type: 'info', message })))
+      .then((message) => {
+        dispatch(openModal({ type: 'info', message }));
+        reset();
+      })
       .catch((message) => dispatch(openModal({ type: 'error', message })));
   };
 

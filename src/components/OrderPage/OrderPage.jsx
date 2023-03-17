@@ -10,10 +10,10 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import { PageHeader } from '../PageHeader';
+import { Header } from 'widgets/header';
 import { SearchTicketsForm } from '../SearchTicketsForm';
 import { TicketDetailsFilter, TicketDetailsInfo } from './TicketDetails';
-import { Header } from 'components/Header';
+import { Heading } from 'shared/ui/components/Heading';
 import { CheckStep, PaymentStep, SearchTickets } from './OrderStep';
 import { ChoosePlaces } from './OrderStep/ChoosePlacesStep';
 import { Button } from 'components/Button';
@@ -48,7 +48,7 @@ export const OrderPage = () => {
   return (
     <>
       <section className="order-page__hero">
-        <PageHeader />
+        <Header />
         <SearchTicketsForm />
         {!loadingFromSearchForm && (
           <Stepper innerRef={stepperRef} activeStep={step} />
@@ -111,9 +111,9 @@ const LastTickets = () => {
 
   return (
     <div className="last-tickets">
-      <Header size="s" className="last-tickets__header">
+      <Heading size="s" className="last-tickets__header">
         Последние билеты
-      </Header>
+      </Heading>
       <ul className="last-tickets__list">
         {lastDirections.map(
           ({ departure }, i) =>
