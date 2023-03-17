@@ -1,8 +1,8 @@
 import qs from 'qs';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { apiService } from 'services/apiService';
-import { openModal } from './app';
+import { apiService } from 'shared/api';
+import { openModal } from 'entities/modal/model';
 
 const stringifyQuery = (params) =>
   qs.stringify(params, {

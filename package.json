@@ -14,6 +14,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.7.1",
     "classnames": "^2.3.1",
+    "compose-function": "^3.0.3",
     "date-fns": "^2.29.2",
     "nanoid": "^3.3.4",
     "qs": "^6.11.0",
@@ -29,6 +30,7 @@
     "redux": "^4.1.2"
   },
   "devDependencies": {
+    "@types/compose-function": "^0.0.30",
     "@types/node": "^18.15.3",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",

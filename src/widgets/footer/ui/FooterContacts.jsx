@@ -1,7 +1,7 @@
-import { ReactComponent as Phone } from '../../assets/icons/phone.svg';
-import { ReactComponent as Mail } from '../../assets/icons/mail.svg';
-import { ReactComponent as Skype } from '../../assets/icons/skype.svg';
-import { ReactComponent as Location } from '../../assets/icons/location.svg';
+import { ReactComponent as Phone } from './icons/phone.svg';
+import { ReactComponent as Mail } from './icons/mail.svg';
+import { ReactComponent as Skype } from './icons/skype.svg';
+import { ReactComponent as Location } from 'shared/ui/icons/location.svg';
 
 export const FooterContacts = () => {
   const contacts = [

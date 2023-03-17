@@ -39,7 +39,7 @@ import {
   changeSeatType,
   recalculatePrice,
 } from 'reducers/seats';
-import { openModal } from 'reducers/app';
+import { openModal } from 'entities/modal/model';
 
 const adultOption = { label: 'Взрослый', value: 'adult' };
 const childOption = { label: 'Детский', value: 'child' };

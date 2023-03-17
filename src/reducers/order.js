@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiService } from 'services/apiService';
+import { apiService } from 'shared/api';
 
 const initialState = {
   directionId: null,

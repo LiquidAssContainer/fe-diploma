@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
-import { apiService } from 'services/apiService';
+import { apiService } from 'shared/api';
 
 const fromDatetime = new Date(2022, 12, 11, 0, 0, 0).getTime();
 const toDatetime = new Date(2022, 12, 11, 5, 0, 0).getTime();

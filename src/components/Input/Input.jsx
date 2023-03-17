@@ -7,7 +7,7 @@ import { format, parseISO } from 'date-fns';
 
 import { DatePicker } from 'components/DatePicker';
 
-import { ReactComponent as LocationIcon } from '../../assets/icons/location.svg';
+import { ReactComponent as LocationIcon } from 'shared/ui/icons/location.svg';
 import { ReactComponent as CalendarIcon } from '../../assets/icons/calendar.svg';
 
 const parseDate = (date) => date && parseISO(date);

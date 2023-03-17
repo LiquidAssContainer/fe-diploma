@@ -1,31 +1,20 @@
 import './index.sass';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { FC } from 'react';
 
-import { MainPage } from 'components/MainPage';
-import { SuccessPage } from 'components/SuccessPage';
-import { OrderPage } from 'components/OrderPage';
-import { Footer } from 'components/Footer';
-import { Modal } from 'components/Modal';
+import { Routing } from 'pages';
+import { Modal } from 'entities/modal';
+import { Footer } from 'widgets/footer';
 
-import { hideModal } from 'reducers/app';
+import { withProviders } from './providers';
 
-export const App = () => {
-  const dispatch = useDispatch();
-  const { modal } = useSelector((state: any) => state.app);
-
+export const App: FC = withProviders(() => {
   return (
     <>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={MainPage} />
-          <Route path="/success" component={SuccessPage} />
-          <Route component={OrderPage} />
-        </Switch>
-      </Router>
+      <Routing />
       <Footer />
-      <Modal onClose={() => dispatch(hideModal())} {...modal} />
+      {/* <Modal onClose={modalModel.closeModal()} {...modal} /> */}
+      <Modal />
     </>
   );
-};
+});
