@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { OrderBlockContainer, OrderBlockHeader } from '../../OrderBlock';
-import { Icon } from '../../TicketDetails/TicketDetails';
+import { Icon } from 'shared/ui/components/Icon';
 import { OrderBlockHeaderTitle } from '../../OrderBlock';
 import { Select } from 'components/Select';
 import { Input } from 'components/Input';

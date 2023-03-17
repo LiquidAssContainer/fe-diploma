@@ -8,8 +8,12 @@ import { useDispatch } from 'react-redux';
 
 import { Heading } from 'shared/ui/components/Heading';
 import { Button } from 'components/Button';
-import { Icon } from 'components/OrderPage/TicketDetails/TicketDetails';
-import { formatDateToHM, formatNumber, getTwoDigitNumber } from 'lib/helpers';
+import { Icon } from 'shared/ui/components/Icon';
+import {
+  formatDateToHM,
+  formatNumber,
+  getTwoDigitNumber,
+} from 'shared/lib/helpers';
 
 import { ReactComponent as TrainIcon } from 'assets/icons/train.svg';
 import { ReactComponent as ArrowIcon } from 'assets/icons/arrow.svg';
@@ -18,7 +22,7 @@ import { ReactComponent as ExpressIcon } from 'assets/icons/express.svg';
 import { ReactComponent as FeedIcon } from 'assets/icons/drinks.svg';
 
 import { setTripInfo } from 'reducers/seats';
-import { setStep } from 'reducers/stepper';
+import { setStep } from 'entities/steps/model';
 
 const features = {
   have_wifi: { icon: WiFiIcon, label: 'Wi-Fi', id: nanoid() },

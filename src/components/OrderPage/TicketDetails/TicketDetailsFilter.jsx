@@ -11,7 +11,7 @@ import {
   TicketDetailsHeader,
   TicketDetailsSection,
 } from './TicketDetails';
-import { Form } from 'lib/Form';
+import { Form } from 'shared/lib/Form';
 
 import { ReactComponent as SecondClassIcon } from 'assets/icons/second_class.svg';
 import { ReactComponent as ThirdClassIcon } from 'assets/icons/third_class.svg';
@@ -21,7 +21,7 @@ import { ReactComponent as WiFiIcon } from 'assets/icons/wifi.svg';
 import { ReactComponent as ArrowInRectangleIcon } from 'assets/icons/arrow_in_rectangle.svg';
 
 import { updateQueryParams } from 'reducers/search';
-import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
+import { useSetValuesByQuery } from 'shared/hooks/useSetValuesByQuery';
 
 const switchList = [
   { name: 'have_second_class', icon: SecondClassIcon, label: 'Купе' },

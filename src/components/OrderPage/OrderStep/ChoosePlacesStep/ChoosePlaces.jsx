@@ -5,13 +5,13 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { getHours, getMinutes } from 'date-fns';
-import { getPlural, pluralWords } from 'lib/helpers';
+import { getPlural, pluralWords } from 'shared/lib/helpers';
 
 import { Heading } from 'shared/ui/components/Heading';
 import { Button } from 'components/Button';
 import { PlaceSelection } from './PlaceSelection';
 import { TicketAmountForm } from './TicketAmountForm';
-import { NextStepButton } from 'components/OrderPage/OrderPage';
+import { NextStepButton } from 'features/change-step';
 import { TicketDirection, TripCities } from 'components/Ticket/Ticket';
 
 import { ReactComponent as SecondClassIcon } from 'assets/icons/second_class.svg';

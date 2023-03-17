@@ -4,20 +4,20 @@ import { format } from 'date-fns';
 import { parse } from 'date-fns/esm';
 
 import { OrderBlockContainer, OrderBlockHeaderTitle } from '../OrderBlock';
-import { Icon } from '../TicketDetails/TicketDetails';
+import { Icon } from 'shared/ui/components/Icon';
 import { Button } from 'components/Button';
 import { Ticket } from 'components/Ticket';
 import {
   NextStepButton,
   PrevStepButton,
   StepButtonsContainer,
-} from '../OrderPage';
+} from 'features/change-step';
 
 import { ReactComponent as PersonIcon } from 'assets/icons/person.svg';
 
 import { createOrder } from 'reducers/order';
-import { setStep } from 'reducers/stepper';
-import { formatNumber } from 'lib/helpers';
+import { stepsModel } from 'entities/steps';
+import { formatNumber } from 'shared/lib/helpers';
 
 const formatBirthday = (string = new Date()) => {
   const parsed = parse(string, 'yyyy-MM-dd', new Date());
@@ -92,7 +92,7 @@ export const CheckStep = () => {
               <Button
                 size="s"
                 styleName="transparent-dark"
-                onClick={() => dispatch(setStep(2))}
+                onClick={() => dispatch(stepsModel.setStep(2))}
               >
                 Изменить
               </Button>
@@ -114,7 +114,7 @@ export const CheckStep = () => {
               <Button
                 size="s"
                 styleName="transparent-dark"
-                onClick={() => dispatch(setStep(3))}
+                onClick={() => dispatch(stepsModel.setStep(3))}
               >
                 Изменить
               </Button>

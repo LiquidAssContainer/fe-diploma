@@ -1,11 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+type StepsSliceState = {
+  step: number;
+};
+
+const initialState: StepsSliceState = {
   step: 1,
 };
 
-export const stepperSlice = createSlice({
-  name: 'stepper',
+export const stepsSlice = createSlice({
+  name: 'steps',
   initialState,
   reducers: {
     setPrevStep: (state) => {
@@ -20,6 +24,6 @@ export const stepperSlice = createSlice({
   },
 });
 
-export const { setPrevStep, setNextStep, setStep } = stepperSlice.actions;
+export const { setPrevStep, setNextStep, setStep } = stepsSlice.actions;
 
-export const stepperReducer = stepperSlice.reducer;
+export const { reducer } = stepsSlice;

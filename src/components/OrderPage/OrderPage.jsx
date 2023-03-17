@@ -21,15 +21,15 @@ import { TicketFeatures } from 'components/Ticket/Ticket';
 import { PassengersStep } from './OrderStep/PassengersStep';
 
 import { getLastDirectionsAsync } from 'reducers/search';
-import { setNextStep, setPrevStep } from 'reducers/stepper';
-import { formatNumber } from 'lib/helpers';
+import { formatNumber } from 'shared/lib/helpers';
+import { Stepper } from 'entities/steps';
 
-export const OrderPage = () => {
+export const OrderPage = ({ children }) => {
   const dispatch = useDispatch();
-  const { step } = useSelector((state) => state.stepper);
   const { isLoading, loadingFromSearchForm } = useSelector(
     (state) => state.search,
   );
+  const { step } = useSelector((state) => state.steps);
 
   const stepperRef = useRef(null);
 
@@ -50,9 +50,7 @@ export const OrderPage = () => {
       <section className="order-page__hero">
         <Header />
         <SearchTicketsForm />
-        {!loadingFromSearchForm && (
-          <Stepper innerRef={stepperRef} activeStep={step} />
-        )}
+        {!loadingFromSearchForm && <Stepper innerRef={stepperRef} />}
       </section>
       {isLoading && loadingFromSearchForm ? (
         <SearchLoader />
@@ -69,36 +67,7 @@ export const OrderPage = () => {
                 <TicketDetailsInfo />
               )}
             </aside>
-            <main className="order-page__main">
-              <Router>
-                <Switch>
-                  <Route path="/search" component={SearchTickets} />
-                  <Route path="/seats/:id/order">
-                    {() => {
-                      switch (step) {
-                        case 1:
-                          return (
-                            <Switch>
-                              <Redirect
-                                from="/seats/:id/order"
-                                to="/seats/:id"
-                              />
-                            </Switch>
-                          );
-                        case 2:
-                          return <PassengersStep />;
-                        case 3:
-                          return <PaymentStep />;
-                        // case 4:
-                        default:
-                          return <CheckStep />;
-                      }
-                    }}
-                  </Route>
-                  <Route path="/seats/:id" component={ChoosePlaces} />
-                </Switch>
-              </Router>
-            </main>
+            <main className="order-page__main">{children}</main>
           </div>
         </section>
       )}
@@ -162,78 +131,6 @@ const LastTicketDirection = ({
         {railway_station_name} вокзал
       </div>
     </div>
-  );
-};
-
-const Stepper = ({ activeStep, innerRef }) => {
-  const steps = [
-    { number: 1, name: 'tickets', label: 'Билеты' },
-    { number: 2, name: 'passengers', label: 'Пассажиры' },
-    { number: 3, name: 'payment', label: 'Оплата' },
-    { number: 4, name: 'check', label: 'Проверка' },
-  ];
-
-  const activeStepIndex = steps.findIndex((step) => step.number === activeStep);
-
-  return (
-    <div ref={innerRef} className="steps__list_wrapper">
-      <ul className="steps__list">
-        {steps.map((step, i) => {
-          return (
-            <Step key={i} {...step} i={i} isColored={i <= activeStepIndex} />
-          );
-        })}
-      </ul>
-    </div>
-  );
-};
-
-const Step = ({ label, isColored, i }) => {
-  return (
-    <li className={`step__item${isColored ? ' step__item_colored' : ''}`}>
-      <div className="steps__item_number">{i + 1}</div>
-      <div className="steps__item_label">{label}</div>
-    </li>
-  );
-};
-
-export const StepButtonsContainer = ({ children }) => (
-  <div className="step-buttons__container">{children}</div>
-);
-
-export const PrevStepButton = ({ ...props }) => (
-  <ChangeStepButton type="prev" {...props} />
-);
-
-export const NextStepButton = ({ ...props }) => (
-  <ChangeStepButton type="next" {...props} />
-);
-
-export const ChangeStepButton = ({
-  children,
-  onClick,
-  type = 'next',
-  ...props
-}) => {
-  const dispatch = useDispatch();
-
-  const changeStep = () => {
-    dispatch(type === 'next' ? setNextStep() : setPrevStep());
-  };
-
-  return (
-    <Button
-      classname={`button__${type}-step`}
-      onClick={() => {
-        changeStep();
-        onClick?.();
-      }}
-      size="l"
-      styleName="colored"
-      {...props}
-    >
-      {children}
-    </Button>
   );
 };
 

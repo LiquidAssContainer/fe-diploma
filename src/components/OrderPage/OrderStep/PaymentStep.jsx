@@ -13,10 +13,10 @@ import {
   OrderBlockSectionRow,
 } from '../OrderBlock';
 import { OrderInput } from '../OrderInput';
-import { NextStepButton, PrevStepButton } from '../OrderPage';
+import { NextStepButton, PrevStepButton } from 'features/change-step';
 import { FullnameInputBlock } from './FullnameInputBlock';
 import { OrderRadioInput } from '../OrderInput/OrderInput';
-import { Form } from 'lib/Form';
+import { Form } from 'shared/lib/Form';
 
 import { setUserData } from 'reducers/order';
 import { errorMessages, patternValues } from './helpers';

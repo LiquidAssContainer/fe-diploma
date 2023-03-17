@@ -8,10 +8,10 @@ import { Pagination } from 'components/Pagination';
 import { Ticket } from 'components/Ticket';
 import { Select } from 'components/Select';
 import { Input } from 'components/Input';
-import { Form } from 'lib/Form';
+import { Form } from 'shared/lib/Form';
 
 import { updateQueryParams } from 'reducers/search';
-import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
+import { useSetValuesByQuery } from 'shared/hooks/useSetValuesByQuery';
 
 const pageLimits = [5, 10, 20];
 

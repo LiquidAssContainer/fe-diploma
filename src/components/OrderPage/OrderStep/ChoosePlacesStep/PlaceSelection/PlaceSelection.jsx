@@ -7,7 +7,7 @@ import { PlaceSelectionMap } from './PlaceSelectionMap';
 import { PlacesTable } from './PlacesTable';
 
 import { changeRailcarSelection } from 'reducers/seats';
-import { formatNumber, getPlural, pluralWords } from 'lib/helpers';
+import { formatNumber, getPlural, pluralWords } from 'shared/lib/helpers';
 
 export const PlaceSelection = ({ railcarClass }) => {
   const dispatch = useDispatch();

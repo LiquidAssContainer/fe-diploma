@@ -4,7 +4,7 @@ import { FC } from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
 
 import { Logo } from 'shared/ui/components/Logo';
-import { useMenuLinks } from 'hooks/useMenuLinks';
+import { useMenuLinks } from 'shared/hooks/useMenuLinks';
 
 export const Header: FC = () => {
   const links = useMenuLinks();

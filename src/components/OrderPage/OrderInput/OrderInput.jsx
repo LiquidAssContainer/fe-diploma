@@ -3,7 +3,7 @@ import './style.sass';
 import cn from 'classnames';
 import { useController, useFormContext } from 'react-hook-form';
 
-import { Icon } from '../TicketDetails/TicketDetails';
+import { Icon } from 'shared/ui/components/Icon';
 import { Input } from 'components/Input';
 
 import { ReactComponent as CheckedIcon } from 'assets/icons/checked.svg';

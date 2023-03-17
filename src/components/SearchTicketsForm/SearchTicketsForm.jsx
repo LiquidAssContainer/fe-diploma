@@ -9,13 +9,13 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { DateInput, LocationInput } from '../Input';
 import { Heading } from 'shared/ui/components/Heading';
 import { Button } from 'components/Button';
-import { Form } from 'lib/Form';
+import { Form } from 'shared/lib/Form';
 
 import { ReactComponent as InverseBtnIcon } from 'assets/icons/inverse_button.svg';
 
-import { useOnClickOutside } from 'hooks/useOnClickOutside';
-import { useSetValuesByQuery } from 'hooks/useSetValuesByQuery';
-import { useWatchQueryParams } from 'hooks/useWatchQueryParams';
+import { useOnClickOutside } from 'shared/hooks/useOnClickOutside';
+import { useSetValuesByQuery } from 'shared/hooks/useSetValuesByQuery';
+import { useWatchQueryParams } from 'shared/hooks/useWatchQueryParams';
 import {
   clearCitiesList,
   getCitiesAsync,

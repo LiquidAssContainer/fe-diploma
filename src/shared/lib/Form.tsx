@@ -1,6 +1,7 @@
+import { FC, PropsWithChildren } from 'react';
 import { FormProvider } from 'react-hook-form';
 
-export const Form = (props) => {
+export const Form: FC<any> = (props: any) => {
   const { form, onSubmit: submit, children, ...rest } = props;
 
   const onSubmit = form.handleSubmit(submit);

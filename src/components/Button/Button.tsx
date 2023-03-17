@@ -1,8 +1,15 @@
 import './style.sass';
 
+import { ButtonHTMLAttributes, FC } from 'react';
 import cn from 'classnames';
 
-export const Button = ({
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  size: string;
+  styleName?: string;
+  classname: string;
+};
+
+export const Button: FC<ButtonProps> = ({
   children,
   size,
   styleName,

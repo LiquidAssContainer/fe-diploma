@@ -61,11 +61,3 @@ export const TicketDetailsSection = ({
 export const TicketDetailsSectionContent = ({ children }) => {
   return <div className="ticket-details__section_content">{children}</div>;
 };
-
-export const Icon = ({ wrapperClassName, iconClassName = '', icon: Icon }) => {
-  return (
-    <div className={cn('icon__wrapper_tmp', wrapperClassName)}>
-      <Icon className={cn('icon', iconClassName)} />
-    </div>
-  );
-};

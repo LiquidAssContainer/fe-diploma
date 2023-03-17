@@ -6,7 +6,7 @@ import { DayPicker, useNavigation } from 'react-day-picker';
 import { format, addMonths } from 'date-fns';
 import ru from 'date-fns/locale/ru';
 
-import { useOnClickOutside } from 'hooks/useOnClickOutside';
+import { useOnClickOutside } from 'shared/hooks/useOnClickOutside';
 
 const locale = ru;
 

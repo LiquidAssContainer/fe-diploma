@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { EmailInput } from 'components/Input';
 import { Button } from 'components/Button';
 import { patternValues } from 'components/OrderPage/OrderStep/helpers';
-import { Form } from 'lib/Form';
+import { Form } from 'shared/lib/Form';
 import { fetchSubscribe } from '../model/subscriptionModel';
 import { useAppThunkDispatch } from 'shared/lib';
 import { openModal } from 'entities/modal/model';

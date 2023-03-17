@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { PassengerForm } from './PassengerForm';
 import { PassengerFormAdd } from './PassengersStepComponents';
-import { NextStepButton, PrevStepButton } from 'components/OrderPage';
+import { NextStepButton, PrevStepButton } from 'features/change-step';
 
 import { setPassengerForms } from 'reducers/order';
 import {

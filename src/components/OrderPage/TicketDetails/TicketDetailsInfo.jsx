@@ -22,7 +22,7 @@ import {
   getPlural,
   getTwoDigitNumber,
   pluralWords,
-} from 'lib/helpers';
+} from 'shared/lib/helpers';
 
 export const TicketDetailsInfo = () => {
   const {

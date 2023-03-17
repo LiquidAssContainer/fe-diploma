@@ -1,0 +1,46 @@
+@import 'shared/ui/styles'
+
+$color-typo-dark-primary: $grey-dark-3
+$color-typo-dark-secondary: $grey-dark-1
+$color-typo-grey-primary: $grey-2
+
+$color-bg-light-primary: $violet-light-3
+$color-bg-light-secondary: $violet-light-1
+$color-bg-white-primary: $white
+$color-bg-orange-primary: $orange-3
+$color-bg-step: $orange-2
+$color-bg-overlay: $orange-2
+
+$color-border-grey-primary: $grey-1
+$color-border-btn: $grey-dark-1
+$color-border-step: $white
+$color-border-star: $white
+
+.rate-service
+  display: flex
+  align-items: center
+  gap: 30px
+
+  @media (max-width: 768px)
+    flex-direction: column
+
+  &__label
+    font-size: 1.5rem
+    color: $color-typo-dark-primary
+  &__stars
+    display: flex
+    gap: 20px
+    @include media(mobile)
+      gap: 10px
+
+.star
+  fill: none
+  &__wrapper
+    width: 48px
+    height: 48px
+    cursor: pointer
+  path
+    stroke: $color-border-star
+    stroke-width: 2px
+  &.filled
+    fill: $color-border-star

@@ -5,8 +5,8 @@ import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { useOnClickOutside } from 'hooks/useOnClickOutside';
-import { setNextStep } from 'reducers/stepper';
+import { useOnClickOutside } from 'shared/hooks/useOnClickOutside';
+import { setNextStep } from 'entities/steps/model';
 import {
   changeAdditionalPassenger,
   changeSeatSelection,

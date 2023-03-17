@@ -6,14 +6,14 @@ import { createPortal } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from 'components/Button';
-import { Icon } from 'components/OrderPage/TicketDetails/TicketDetails';
+import { Icon } from 'shared/ui/components/Icon';
 
 import { ReactComponent as InfoIcon } from './icons/info.svg';
 import { ReactComponent as WarningIcon } from './icons/warning.svg';
 
-import { useDisableBodyScroll } from 'hooks/useDisableBodyScroll';
-import { useOnClickOutside } from 'hooks/useOnClickOutside';
-import { useOnKeyDown } from 'hooks/useOnKeyDown';
+import { useDisableBodyScroll } from 'shared/hooks/useDisableBodyScroll';
+import { useOnClickOutside } from 'shared/hooks/useOnClickOutside';
+import { useOnKeyDown } from 'shared/hooks/useOnKeyDown';
 import { modalModel } from '..';
 
 type ModalProps = {

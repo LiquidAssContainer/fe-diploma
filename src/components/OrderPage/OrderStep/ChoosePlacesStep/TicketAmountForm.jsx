@@ -2,7 +2,7 @@ import './style.sass';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { changeTicketsAmount } from 'reducers/seats';
-import { getPlural, pluralWords } from 'lib/helpers';
+import { getPlural, pluralWords } from 'shared/lib/helpers';
 
 export const TicketAmountForm = () => {
   const dispatch = useDispatch();

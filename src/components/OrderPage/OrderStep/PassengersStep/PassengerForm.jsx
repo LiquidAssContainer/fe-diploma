@@ -17,7 +17,7 @@ import {
   OrderInput,
   OrderCheckboxInput,
 } from 'components/OrderPage/OrderInput';
-import { Icon } from '../../TicketDetails/TicketDetails';
+import { Icon } from 'shared/ui/components/Icon';
 import { Button } from 'components/Button';
 import {
   PassengerFormGenderRadioGroup,
@@ -25,7 +25,7 @@ import {
   PassengerFormIconButton,
   PassengerFormSelect,
 } from './PassengersStepComponents';
-import { Form } from 'lib/Form';
+import { Form } from 'shared/lib/Form';
 
 import { ReactComponent as PlusIcon } from 'assets/icons/plus_icon.svg';
 import { ReactComponent as MinusIcon } from 'assets/icons/minus_icon.svg';
@@ -33,7 +33,7 @@ import { ReactComponent as CloseIcon } from 'assets/icons/close_icon.svg';
 import { ReactComponent as CheckedIcon } from 'assets/icons/checked.svg';
 
 import { errorMessages, patternValues } from '../helpers';
-import { setPrevStep } from 'reducers/stepper';
+import { setPrevStep } from 'entities/steps/model';
 import {
   changeAdditionalPassenger,
   changeSeatType,
