@@ -1,0 +1,65 @@
+.range-slider__container
+  display: flex
+  flex-direction: column
+  gap: 60px
+
+  margin-top: 20px
+  margin-bottom: 45px
+
+.range-slider
+  &__from-and-to
+    display: flex
+    justify-content: space-between
+    font-size: 18px
+    color: $color-typo-white-primary
+    margin-bottom: 10px
+
+  &__title
+    font-size: 1.5rem
+    color: #E5E5E5
+    margin-bottom: 20px
+
+    &_right
+      text-align: right
+
+  .rc-slider
+    padding: 0
+
+    &-handle
+      z-index: 3
+
+  &__size_l
+    .rc-slider
+      height: 19px
+      width: calc(100% - 24px)
+      margin-inline: 12px
+
+    .rc-slider-rail
+      width: calc(100% + 24px)
+      left: -12px
+
+  &__size_s
+    .rc-slider
+      height: 10px
+      width: calc(100% - 18px)
+      margin-inline: 9px
+
+    .rc-slider-rail
+      width: calc(100% + 18px)
+      left: -9px
+
+  .rc-slider-mark
+    top: auto
+    bottom: 0
+
+.rc-slider-mark-text
+  white-space: nowrap
+  top: 10px
+
+.rc-slider-handle-dragging
+  box-shadow: 0 0 0 5px $orange-pale-2 !important
+
+.rc-slider-mark-text-active
+  background-color: rgba(62, 60, 65, 0.8)
+  box-shadow: 0 0 6px 3px rgb(62 60 65 / 80%)
+  z-index: 1

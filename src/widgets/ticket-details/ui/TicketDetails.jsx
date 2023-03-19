@@ -9,7 +9,6 @@ import {
   TicketDetails,
   TicketDetailsHeader,
   TicketDetailsSection,
-  Icon,
   TicketDetailsSectionContent,
 } from './TicketDetails';
 
@@ -23,6 +22,7 @@ import {
   getTwoDigitNumber,
   pluralWords,
 } from 'shared/lib/helpers';
+import { Icon } from 'shared/ui/components/Icon';
 
 export const TicketDetailsInfo = () => {
   const {

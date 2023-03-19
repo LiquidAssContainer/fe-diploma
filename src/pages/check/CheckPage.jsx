@@ -3,7 +3,10 @@ import { useHistory } from 'react-router-dom';
 import { format } from 'date-fns';
 import { parse } from 'date-fns/esm';
 
-import { OrderBlockContainer, OrderBlockHeaderTitle } from '../OrderBlock';
+import {
+  OrderBlockContainer,
+  OrderBlockHeaderTitle,
+} from '../../components/OrderPage/OrderBlock';
 import { Icon } from 'shared/ui/components/Icon';
 import { Button } from 'components/Button';
 import { Ticket } from 'components/Ticket';

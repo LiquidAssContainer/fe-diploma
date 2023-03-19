@@ -32,60 +32,7 @@ const railcarTypes = [
   { name: 'first', label: 'Люкс', Icon: FirstClassIcon },
 ];
 
-export const ChoosePlaces = ({
-  match: {
-    params: { id },
-  },
-}) => {
-  const dispatch = useDispatch();
-
-  const { additionalPassenger } = useSelector((state) => state.seats);
-  const history = useHistory();
-  const {
-    tripInfo,
-    seatsInfo,
-    selectedAmount,
-    selectedSeats: { length: selectedSeats },
-  } = useSelector((state) => state.seats);
-
-  const handleNextStepClick = () => {
-    history.push(`/seats/${id}/order`);
-  };
-
-  useEffect(() => {
-    dispatch(setDirectionId(id));
-
-    if (!seatsInfo) {
-      dispatch(getSeatsDetailAsync(id));
-    }
-  }, []);
-
-  return (
-    <>
-      <Heading size="s" className="uppercase">
-        Выбор мест
-      </Heading>
-      <div className="places__block_list">
-        <ChoosePlacesBlock
-          {...tripInfo}
-          seatsInfo={seatsInfo}
-          direction="forward"
-        />
-        {/* <ChoosePlacesBlock direction="return" /> */}
-      </div>
-      {!additionalPassenger && (
-        <NextStepButton
-          disabled={!selectedAmount || selectedSeats !== selectedAmount}
-          onClick={handleNextStepClick}
-        >
-          Далее
-        </NextStepButton>
-      )}
-    </>
-  );
-};
-
-const ChoosePlacesBlock = ({
+const ChooseSeats = ({
   direction,
   from,
   to,

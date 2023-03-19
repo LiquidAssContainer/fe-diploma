@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DateInput, Input } from '../../Input';
 import { HoursRangeSlider, RangeSlider } from './RangeSlider';
 import {
-  Icon,
   TicketDetails,
   TicketDetailsHeader,
   TicketDetailsSection,
@@ -22,6 +21,7 @@ import { ReactComponent as ArrowInRectangleIcon } from 'assets/icons/arrow_in_re
 
 import { updateQueryParams } from 'reducers/search';
 import { useSetValuesByQuery } from 'shared/hooks/useSetValuesByQuery';
+import { Icon } from 'shared/ui/components/Icon';
 
 const switchList = [
   { name: 'have_second_class', icon: SecondClassIcon, label: 'Купе' },
@@ -228,19 +228,5 @@ export const CheckboxLabel = ({ name, label, icon: Icon, ...props }) => {
       <span className="checkbox__label_text">{label}</span>
       <CheckboxInput {...props} name={name} />
     </label>
-  );
-};
-
-export const CheckboxInput = ({ ...props }) => {
-  return (
-    <div className="input_checkbox_wrapper">
-      <Input
-        {...props}
-        className="input_checkbox"
-        type="checkbox"
-        name={props.name}
-      />
-      <div className="input_checkbox_slider"></div>
-    </div>
   );
 };
