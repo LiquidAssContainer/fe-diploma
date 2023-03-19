@@ -10,8 +10,8 @@ import { DatePicker } from 'components/DatePicker';
 import { ReactComponent as LocationIcon } from 'shared/ui/icons/location.svg';
 import { ReactComponent as CalendarIcon } from '../../assets/icons/calendar.svg';
 
-const parseDate = (date) => date && parseISO(date);
-const formatDate = (date) => format(date, 'yyyy-MM-dd');
+const parseDate = (date: string) => date && parseISO(date);
+const formatDate = (date: any) => format(date, 'yyyy-MM-dd');
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   name: string;

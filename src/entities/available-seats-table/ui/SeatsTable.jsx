@@ -17,7 +17,7 @@ const seatTypes = [
   { priceName: 'side_price', label: 'Боковые' },
 ];
 
-export const PlacesTable = ({
+const SeatsTable = ({
   available_seats = 0,
   have_wifi = false,
   have_air_conditioning = false,
@@ -107,64 +107,25 @@ export const PlacesTable = ({
   );
 };
 
-const PlacesTableCol = ({ children }) => {
+const SeatsTableCol = ({ children }) => {
   return <div className="places__table_column">{children}</div>;
 };
 
-const PlacesTableCell = ({ children, type }) => {
+const SeatsTableCell = ({ children, type }) => {
   return <div className={`places__table_cell_${type}`}>{children}</div>;
 };
 
-const PlacesTableQuantity = ({ children }) => {
+const SeatsTableQuantity = ({ children }) => {
   return <span className="places__table_quantity">{children}</span>;
 };
 
-const PlacesTableCurrencySign = () => {
+const SeatsTableCurrencySign = () => {
   return <span className="places__table_currency">₽</span>;
 };
 
-const PlacesTableFeature = ({
-  name,
-  icon: Icon,
-  title,
-  isIncluded,
-  price = 0,
-  railcarId,
-}) => {
-  const dispatch = useDispatch();
-  const { selectedFeatures } = useSelector((state) => state.seats);
+SeatsTable.Col = SeatsTableCol;
+SeatsTable.Cell = SeatsTableCell;
+SeatsTable.Quantity = SeatsTableQuantity;
+SeatsTable.CurrencySign = SeatsTableCurrencySign;
 
-  const railcarFeatures = selectedFeatures[railcarId];
-  const isSelected = railcarFeatures?.[name]?.value;
-
-  const handleClick = () => {
-    if (isIncluded) {
-      return;
-    }
-
-    dispatch(
-      changeFeatureSelection({
-        id: railcarId,
-        feature: name,
-        value: !isSelected,
-        price,
-      }),
-    );
-    dispatch(recalculatePrice());
-  };
-
-  return (
-    <button
-      className={cn('places__table_feature', {
-        included: isIncluded,
-        selected: isSelected,
-      })}
-      onClick={handleClick}
-    >
-      <Icon className="places__table_feature_icon" />
-      <div className="places__table_feature_title">
-        {title} ({price ? `+${price} ₽` : 'включено в стоимость'})
-      </div>
-    </button>
-  );
-};
+export { SeatsTable };

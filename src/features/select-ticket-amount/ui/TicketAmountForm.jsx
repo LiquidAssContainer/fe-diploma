@@ -1,7 +1,7 @@
 import './style.sass';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { changeTicketsAmount } from 'reducers/seats';
+import { changeTicketsAmount } from 'entities/railcarModel';
 import { getPlural, pluralWords } from 'shared/lib/helpers';
 
 export const TicketAmountForm = () => {
@@ -73,7 +73,7 @@ const TicketAmountBlock = ({ name, limit, amount, ...props }) => {
 };
 
 const TicketAmountInput = ({ label, max, name, onInputChange, ...props }) => {
-  const handleInputChange = ({ target: { value } }) => {
+  const handleChange = ({ target: { value } }) => {
     onInputChange(name, value);
   };
 
@@ -87,7 +87,7 @@ const TicketAmountInput = ({ label, max, name, onInputChange, ...props }) => {
         max={max}
         type="number"
         placeholder="0"
-        onChange={handleInputChange}
+        onChange={handleChange}
         {...props}
       />
     </label>
