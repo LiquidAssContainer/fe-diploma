@@ -2,7 +2,7 @@
 
 # Frontend Diploma
 
-[GitHub Pages](https://liquidasscontainer.github.io/fe_diploma)
+[GitHub Pages](https://liquidasscontainer.github.io/fe-diploma)
 
 Итоговый диплом по курсу FE в Нетологии.
 
