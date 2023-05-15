@@ -72,8 +72,12 @@ export const DateInput = ({
 }) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
 
-  const onClick = () => {
+  const handleBtnClick = () => {
     setIsPickerOpen(!isPickerOpen);
+  };
+
+  const handleInputClick = (e) => {
+    e.preventDefault();
   };
 
   const handleInputChange = ({ target: { value } }) => {
@@ -89,17 +93,20 @@ export const DateInput = ({
     <div className="date-input__wrapper">
       <InputContainer size={size}>
         <Input
+          className="date-input"
           name={name}
           size={size}
           type="date"
           min={startDate}
           max={endDate}
+          onClick={handleInputClick}
           onChange={handleInputChange}
           {...props}
         />
+        <div className="date-input__placeholder">ДД/ММ/ГГГГ</div>
         <button
           className="input__btn input__btn_pick-date"
-          onClick={onClick}
+          onClick={handleBtnClick}
           type="button"
         >
           <CalendarIcon className="input__btn_icon" />
