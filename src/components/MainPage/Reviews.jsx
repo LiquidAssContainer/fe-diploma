@@ -43,7 +43,12 @@ const ReviewItem = ({ title, content, img }) => {
   return (
     <li className="reviews__item">
       <div className="review__image_wrapper">
-        <img className="review__image" src={img} alt="Аватар автора отзыва" />
+        <img
+          className="review__image"
+          src={img}
+          loading="lazy"
+          alt="Аватар автора отзыва"
+        />
       </div>
       <div className="review__content">
         <h5 className="review__header header_size_xs">{title}</h5>
